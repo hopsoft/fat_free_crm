@@ -20,7 +20,7 @@ if defined?(FatFreeCRM::Application)
 
     # Configure static file server for tests with Cache-Control for performance.
     config.public_file_server.enabled = true
-    config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
+    config.public_file_server.headers = {"Cache-Control" => "public, max-age=3600"}
 
     # Show full error reports and disable caching
     config.consider_all_requests_local       = true
@@ -38,7 +38,7 @@ if defined?(FatFreeCRM::Application)
     config.action_mailer.delivery_method = :test
 
     # Set default host for mailer specs
-    config.action_mailer.default_url_options = { host: "www.example.com" }
+    config.action_mailer.default_url_options = {host: "www.example.com"}
 
     # Randomize the order test cases are executed.
     config.active_support.test_order = :random
@@ -49,8 +49,8 @@ if defined?(FatFreeCRM::Application)
 
   # Optionally load 'awesome_print' for debugging in development mode.
   begin
-    require 'ruby-debug'
-    require 'ap'
+    require "ruby-debug"
+    require "ap"
   rescue LoadError
   end
 end

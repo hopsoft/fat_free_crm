@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
 describe HomeController do
   # GET /
@@ -53,13 +53,13 @@ describe HomeController do
     end
 
     it "should get a list of my opportunities ordered by closes_on" do
-      opportunity_1 = create(:opportunity, name: "Your first opportunity", closes_on: 15.days.from_now, assigned_to: current_user.id, stage: 'proposal')
-      opportunity_2 = create(:opportunity, name: "Another opportunity for you", closes_on: 10.days.from_now, assigned_to: current_user.id, stage: 'proposal')
-      opportunity_3 = create(:opportunity, name: "Third Opportunity", closes_on: 5.days.from_now, assigned_to: current_user.id, stage: 'proposal')
-      opportunity_4 = create(:opportunity, name: "Fourth Opportunity", closes_on: 50.days.from_now, assigned_to: nil, user_id: current_user.id, stage: 'proposal')
+      opportunity_1 = create(:opportunity, name: "Your first opportunity", closes_on: 15.days.from_now, assigned_to: current_user.id, stage: "proposal")
+      opportunity_2 = create(:opportunity, name: "Another opportunity for you", closes_on: 10.days.from_now, assigned_to: current_user.id, stage: "proposal")
+      opportunity_3 = create(:opportunity, name: "Third Opportunity", closes_on: 5.days.from_now, assigned_to: current_user.id, stage: "proposal")
+      opportunity_4 = create(:opportunity, name: "Fourth Opportunity", closes_on: 50.days.from_now, assigned_to: nil, user_id: current_user.id, stage: "proposal")
 
-      create(:opportunity_in_pipeline, name: "Someone else's Opportunity", assigned_to: create(:user).id, stage: 'proposal')
-      create(:opportunity_in_pipeline, name: "Not my opportunity", assigned_to: create(:user).id, stage: 'proposal')
+      create(:opportunity_in_pipeline, name: "Someone else's Opportunity", assigned_to: create(:user).id, stage: "proposal")
+      create(:opportunity_in_pipeline, name: "Not my opportunity", assigned_to: create(:user).id, stage: "proposal")
 
       get :index
       expect(assigns[:my_opportunities]).to eq([opportunity_3, opportunity_2, opportunity_1, opportunity_4])
@@ -99,7 +99,7 @@ describe HomeController do
     end
 
     it "should not assign instance variables when hiding options" do
-      get :options, params: { cancel: "true" }, xhr: true
+      get :options, params: {cancel: "true"}, xhr: true
       expect(assigns[:asset]).to eq(nil)
       expect(assigns[:user]).to eq(nil)
       expect(assigns[:duration]).to eq(nil)
@@ -115,7 +115,7 @@ describe HomeController do
     end
 
     it "should save user selected options" do
-      get :redraw, params: { asset: "tasks", user: "Billy Bones", duration: "two days" }, xhr: true
+      get :redraw, params: {asset: "tasks", user: "Billy Bones", duration: "two days"}, xhr: true
       expect(current_user.pref[:activity_asset]).to eq("tasks")
       expect(current_user.pref[:activity_user]).to eq("Billy Bones")
       expect(current_user.pref[:activity_duration]).to eq("two days")
@@ -138,14 +138,14 @@ describe HomeController do
     end
 
     it "should toggle expand/collapse state of form section in the session (delete existing session key)" do
-      session[:toggle_states] = { hello: "world" }
-      get :toggle, params: { id: "hello" }, xhr: true
+      session[:toggle_states] = {hello: "world"}
+      get :toggle, params: {id: "hello"}, xhr: true
       expect(session[:toggle_states].keys).not_to include(:hello)
     end
 
     it "should toggle expand/collapse state of form section in the session (save new session key)" do
       session[:toggle_states] = {}
-      get :toggle, params: { id: "hello" }, xhr: true
+      get :toggle, params: {id: "hello"}, xhr: true
       expect(session[:toggle_states][:hello]).to eq(true)
     end
   end
@@ -157,30 +157,30 @@ describe HomeController do
     end
 
     it "should find a user by email" do
-      allow(@cur_user).to receive(:pref).and_return(activity_user: 'billy@example.com')
+      allow(@cur_user).to receive(:pref).and_return(activity_user: "billy@example.com")
       allow(controller).to receive(:current_user).and_return(@cur_user)
-      expect(User).to receive(:where).with(email: 'billy@example.com').and_return([@user])
+      expect(User).to receive(:where).with(email: "billy@example.com").and_return([@user])
       expect(controller.send(:activity_user)).to eq(1)
     end
 
     it "should find a user by first name or last name" do
-      allow(@cur_user).to receive(:pref).and_return(activity_user: 'Billy')
+      allow(@cur_user).to receive(:pref).and_return(activity_user: "Billy")
       allow(controller).to receive(:current_user).and_return(@cur_user)
-      expect(User).to receive(:where).with(first_name: 'Billy').and_return([@user])
-      expect(User).to receive(:where).with(last_name: 'Billy').and_return([@user])
+      expect(User).to receive(:where).with(first_name: "Billy").and_return([@user])
+      expect(User).to receive(:where).with(last_name: "Billy").and_return([@user])
       expect(controller.send(:activity_user)).to eq(1)
     end
 
     it "should find a user by first name and last name" do
-      allow(@cur_user).to receive(:pref).and_return(activity_user: 'Billy Elliot')
+      allow(@cur_user).to receive(:pref).and_return(activity_user: "Billy Elliot")
       allow(controller).to receive(:current_user).and_return(@cur_user)
-      expect(User).to receive(:where).with(first_name: 'Billy', last_name: "Elliot").and_return([@user])
-      expect(User).to receive(:where).with(first_name: 'Elliot', last_name: "Billy").and_return([@user])
+      expect(User).to receive(:where).with(first_name: "Billy", last_name: "Elliot").and_return([@user])
+      expect(User).to receive(:where).with(first_name: "Elliot", last_name: "Billy").and_return([@user])
       expect(controller.send(:activity_user)).to eq(1)
     end
 
     it "should return nil when 'all_users' is specified" do
-      allow(@cur_user).to receive(:pref).and_return(activity_user: 'all_users')
+      allow(@cur_user).to receive(:pref).and_return(activity_user: "all_users")
       allow(controller).to receive(:current_user).and_return(@cur_user)
       expect(User).not_to receive(:where)
       expect(controller.send(:activity_user)).to eq(nil)
@@ -195,41 +195,41 @@ describe HomeController do
     it "should collapse all comments and emails on a specific contact" do
       comment = double(Comment)
       expect(Comment).to receive(:find).with("1").and_return(comment)
-      expect(comment).to receive(:update_attribute).with(:state, 'Collapsed')
-      get :timeline, params: { type: "comment", id: "1", state: "Collapsed" }, xhr: true
+      expect(comment).to receive(:update_attribute).with(:state, "Collapsed")
+      get :timeline, params: {type: "comment", id: "1", state: "Collapsed"}, xhr: true
     end
 
     it "should expand all comments and emails on a specific contact" do
       comment = double(Comment)
       expect(Comment).to receive(:find).with("1").and_return(comment)
-      expect(comment).to receive(:update_attribute).with(:state, 'Expanded')
-      get :timeline, params: { type: "comment", id: "1", state: "Expanded" }, xhr: true
+      expect(comment).to receive(:update_attribute).with(:state, "Expanded")
+      get :timeline, params: {type: "comment", id: "1", state: "Expanded"}, xhr: true
     end
 
     it "should not do anything when state neither Expanded nor Collapsed" do
       expect(Comment).not_to receive(:find).with("1")
-      get :timeline, params: { type: "comment", id: "1", state: "Explode" }, xhr: true
+      get :timeline, params: {type: "comment", id: "1", state: "Explode"}, xhr: true
     end
 
     it "should collapse all comments and emails on Contact" do
       where_stub = double
       expect(where_stub).to receive(:update_all).with(state: "Collapsed")
       expect(Comment).to receive(:where).and_return(where_stub)
-      get :timeline, params: { id: "1,2,3,4+", state: "Collapsed" }, xhr: true
+      get :timeline, params: {id: "1,2,3,4+", state: "Collapsed"}, xhr: true
     end
 
     it "should not allow an arbitary state (sanitizes input)" do
       where_stub = double
       expect(where_stub).to receive(:update_all).with(state: "Expanded")
       expect(Comment).to receive(:where).and_return(where_stub)
-      get :timeline, params: { id: "1,2,3,4+", state: "Expanded" }, xhr: true
+      get :timeline, params: {id: "1,2,3,4+", state: "Expanded"}, xhr: true
     end
 
     it "should not update an arbitary model (sanitizes input)" do
       where_stub = double
       expect(where_stub).to receive(:update_all).with(state: "Expanded")
       expect(Comment).to receive(:where).and_return(where_stub)
-      get :timeline, params: { id: "1,2,3,4+", state: "Expanded" }, xhr: true
+      get :timeline, params: {id: "1,2,3,4+", state: "Expanded"}, xhr: true
     end
   end
 end

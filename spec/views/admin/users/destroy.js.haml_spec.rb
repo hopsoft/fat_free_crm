@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "admin/users/destroy" do
   before do
@@ -22,7 +22,7 @@ describe "admin/users/destroy" do
     it "blinds up destroyed user partial" do
       render
 
-      expect(rendered).to include('slideUp')
+      expect(rendered).to include("slideUp")
     end
   end
 
@@ -46,7 +46,7 @@ describe "admin/users/destroy" do
     it "should show flash message" do
       render
 
-      expect(rendered).to include('flash')
+      expect(rendered).to include("flash")
       expect(rendered).to include(%/crm.flash('warning')/)
     end
   end

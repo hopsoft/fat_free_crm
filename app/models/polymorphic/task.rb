@@ -46,8 +46,8 @@ class Task < ActiveRecord::Base
     options = args[0] || {}
     user_option = (options.is_a?(Hash) ? options[:user] : options) || User.current_user
     includes(:assignee)
-      .where('(user_id = ? AND assigned_to IS NULL) OR assigned_to = ?', user_option, user_option)
-      .order(options[:order] || 'name ASC')
+      .where("(user_id = ? AND assigned_to IS NULL) OR assigned_to = ?", user_option, user_option)
+      .order(options[:order] || "name ASC")
       .limit(options[:limit]) # nil selects all records
   }
 
@@ -57,64 +57,64 @@ class Task < ActiveRecord::Base
   # Tasks assigned by the user to others. That's what we see on Tasks/Assigned.
   scope :assigned_by, ->(user) {
     includes(:assignee)
-      .where('user_id = ? AND assigned_to IS NOT NULL AND assigned_to != ?', user.id, user.id)
+      .where("user_id = ? AND assigned_to IS NOT NULL AND assigned_to != ?", user.id, user.id)
   }
 
   # Tasks created by the user or assigned to the user, i.e. the union of the two
   # scopes above. That's the tasks the user is allowed to see and track.
   scope :tracked_by, ->(user) {
     includes(:assignee)
-      .where('user_id = ? OR assigned_to = ?', user.id, user.id)
+      .where("user_id = ? OR assigned_to = ?", user.id, user.id)
   }
 
   # Show tasks which either belong to the user and are unassigned, or are assigned to the user
   scope :visible_on_dashboard, ->(user) {
-    where('(user_id = :user_id AND assigned_to IS NULL) OR assigned_to = :user_id', user_id: user.id).where('completed_at IS NULL')
+    where("(user_id = :user_id AND assigned_to IS NULL) OR assigned_to = :user_id", user_id: user.id).where("completed_at IS NULL")
   }
 
   scope :by_due_at, -> {
     order({
-      "MySQL"      => "due_at NOT NULL, due_at ASC",
-      "PostgreSQL" => "due_at ASC NULLS FIRST"
+      "MySQL" => "due_at NOT NULL, due_at ASC",
+      "PostgreSQL" => "due_at ASC NULLS FIRST",
     }[ActiveRecord::Base.connection.adapter_name] || :due_at)
   }
 
   # Status based scopes to be combined with the due date and completion time.
-  scope :pending,       -> { where('completed_at IS NULL').order('tasks.due_at, tasks.id') }
-  scope :assigned,      -> { where('completed_at IS NULL AND assigned_to IS NOT NULL').order('tasks.due_at, tasks.id') }
-  scope :completed,     -> { where('completed_at IS NOT NULL').order('tasks.completed_at DESC') }
+  scope :pending,       -> { where("completed_at IS NULL").order("tasks.due_at, tasks.id") }
+  scope :assigned,      -> { where("completed_at IS NULL AND assigned_to IS NOT NULL").order("tasks.due_at, tasks.id") }
+  scope :completed,     -> { where("completed_at IS NOT NULL").order("tasks.completed_at DESC") }
 
   # Due date scopes.
-  scope :due_asap,      -> { where("due_at IS NULL AND bucket = 'due_asap'").order('tasks.id DESC') }
-  scope :overdue,       -> { where('due_at IS NOT NULL AND due_at < ?', Time.zone.now.midnight.utc).order('tasks.id DESC') }
-  scope :due_today,     -> { where('due_at >= ? AND due_at < ?', Time.zone.now.midnight.utc, Time.zone.now.midnight.tomorrow.utc).order('tasks.id DESC') }
-  scope :due_tomorrow,  -> { where('due_at >= ? AND due_at < ?', Time.zone.now.midnight.tomorrow.utc, Time.zone.now.midnight.tomorrow.utc + 1.day).order('tasks.id DESC') }
-  scope :due_this_week, -> { where('due_at >= ? AND due_at < ?', Time.zone.now.midnight.tomorrow.utc + 1.day, Time.zone.now.next_week.utc).order('tasks.id DESC') }
-  scope :due_next_week, -> { where('due_at >= ? AND due_at < ?', Time.zone.now.next_week.utc, Time.zone.now.next_week.end_of_week.utc + 1.day).order('tasks.id DESC') }
-  scope :due_later,     -> { where("(due_at IS NULL AND bucket = 'due_later') OR due_at >= ?", Time.zone.now.next_week.end_of_week.utc + 1.day).order('tasks.id DESC') }
+  scope :due_asap,      -> { where("due_at IS NULL AND bucket = 'due_asap'").order("tasks.id DESC") }
+  scope :overdue,       -> { where("due_at IS NOT NULL AND due_at < ?", Time.zone.now.midnight.utc).order("tasks.id DESC") }
+  scope :due_today,     -> { where("due_at >= ? AND due_at < ?", Time.zone.now.midnight.utc, Time.zone.now.midnight.tomorrow.utc).order("tasks.id DESC") }
+  scope :due_tomorrow,  -> { where("due_at >= ? AND due_at < ?", Time.zone.now.midnight.tomorrow.utc, Time.zone.now.midnight.tomorrow.utc + 1.day).order("tasks.id DESC") }
+  scope :due_this_week, -> { where("due_at >= ? AND due_at < ?", Time.zone.now.midnight.tomorrow.utc + 1.day, Time.zone.now.next_week.utc).order("tasks.id DESC") }
+  scope :due_next_week, -> { where("due_at >= ? AND due_at < ?", Time.zone.now.next_week.utc, Time.zone.now.next_week.end_of_week.utc + 1.day).order("tasks.id DESC") }
+  scope :due_later,     -> { where("(due_at IS NULL AND bucket = 'due_later') OR due_at >= ?", Time.zone.now.next_week.end_of_week.utc + 1.day).order("tasks.id DESC") }
 
   # Completion time scopes.
-  scope :completed_today,      -> { where('completed_at >= ? AND completed_at < ?', Time.zone.now.midnight.utc, Time.zone.now.midnight.tomorrow.utc) }
-  scope :completed_yesterday,  -> { where('completed_at >= ? AND completed_at < ?', Time.zone.now.midnight.yesterday.utc, Time.zone.now.midnight.utc) }
-  scope :completed_this_week,  -> { where('completed_at >= ? AND completed_at < ?', Time.zone.now.beginning_of_week.utc, Time.zone.now.midnight.yesterday.utc) }
-  scope :completed_last_week,  -> { where('completed_at >= ? AND completed_at < ?', Time.zone.now.beginning_of_week.utc - 7.days, Time.zone.now.beginning_of_week.utc) }
-  scope :completed_this_month, -> { where('completed_at >= ? AND completed_at < ?', Time.zone.now.beginning_of_month.utc, Time.zone.now.beginning_of_week.utc - 7.days) }
-  scope :completed_last_month, -> { where('completed_at >= ? AND completed_at < ?', (Time.zone.now.beginning_of_month.utc - 1.day).beginning_of_month.utc, Time.zone.now.beginning_of_month.utc) }
+  scope :completed_today,      -> { where("completed_at >= ? AND completed_at < ?", Time.zone.now.midnight.utc, Time.zone.now.midnight.tomorrow.utc) }
+  scope :completed_yesterday,  -> { where("completed_at >= ? AND completed_at < ?", Time.zone.now.midnight.yesterday.utc, Time.zone.now.midnight.utc) }
+  scope :completed_this_week,  -> { where("completed_at >= ? AND completed_at < ?", Time.zone.now.beginning_of_week.utc, Time.zone.now.midnight.yesterday.utc) }
+  scope :completed_last_week,  -> { where("completed_at >= ? AND completed_at < ?", Time.zone.now.beginning_of_week.utc - 7.days, Time.zone.now.beginning_of_week.utc) }
+  scope :completed_this_month, -> { where("completed_at >= ? AND completed_at < ?", Time.zone.now.beginning_of_month.utc, Time.zone.now.beginning_of_week.utc - 7.days) }
+  scope :completed_last_month, -> { where("completed_at >= ? AND completed_at < ?", (Time.zone.now.beginning_of_month.utc - 1.day).beginning_of_month.utc, Time.zone.now.beginning_of_month.utc) }
 
   scope :text_search, ->(query) {
-    query = query.gsub(/[^\w\s\-\.'\p{L}]/u, '').strip
-    where('upper(name) LIKE upper(?)', "%#{query}%")
+    query = query.gsub(/[^\w\s\-\.'\p{L}]/u, "").strip
+    where("upper(name) LIKE upper(?)", "%#{query}%")
   }
 
   acts_as_commentable
-  has_paper_trail class_name: 'Version', meta: { related: :asset },
+  has_paper_trail class_name: "Version", meta: {related: :asset},
                   ignore: [:subscribed_users]
   has_fields
   exportable
 
   validates_presence_of :user
   validates_presence_of :name, message: :missing_task_name
-  validates_presence_of :calendar, if: -> { bucket == 'specific_time' && !completed_at }
+  validates_presence_of :calendar, if: -> { bucket == "specific_time" && !completed_at }
   validate :specific_time, unless: :completed?
 
   before_create :set_due_date
@@ -176,9 +176,9 @@ class Task < ActiveRecord::Base
     return {} unless ALLOWED_VIEWS.include?(view)
     settings = (view == "completed" ? Setting.task_completed : Setting.task_bucket)
     Hash[
-      settings.map do |key, _value|
+      settings.map { |key, _value|
         [key, view == "assigned" ? assigned_by(user).send(key).pending : my(user).send(key).send(view)]
-      end
+      }
     ]
   end
 

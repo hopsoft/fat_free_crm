@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   # Common auto_complete handler for all core controllers.
   #----------------------------------------------------------------------------
   def auto_complete
-    @query = params[:term] || ''
+    @query = params[:term] || ""
     @auto_complete = hook(:auto_complete, self, query: @query, user: current_user)
     if @auto_complete.empty?
       exclude_ids = auto_complete_ids_to_exclude(params[:related])
@@ -45,16 +45,16 @@ class ApplicationController < ActionController::Base
 
     session[:auto_complete] = controller_name.to_sym
     respond_to do |format|
-      format.any(:js, :html) { render partial: 'auto_complete' }
+      format.any(:js, :html) { render partial: "auto_complete" }
       format.json do
-        results = @auto_complete.map do |a|
+        results = @auto_complete.map { |a|
           {
             id: a.id,
-            text: a.respond_to?(:full_name) ? a.full_name : a.name
+            text: a.respond_to?(:full_name) ? a.full_name : a.name,
           }
-        end
+        }
         render json: {
-          results: results
+          results: results,
         }
       end
     end
@@ -79,10 +79,10 @@ class ApplicationController < ActionController::Base
   #----------------------------------------------------------------------------
   def auto_complete_ids_to_exclude(related)
     return [] if related.blank?
-    return [related.to_i].compact unless related.index('/')
-    related_class, id = related.split('/')
+    return [related.to_i].compact unless related.index("/")
+    related_class, id = related.split("/")
     obj = related_class.classify.constantize.find_by_id(id)
-    if obj && obj.respond_to?(controller_name)
+    if obj&.respond_to?(controller_name)
       obj.send(controller_name).map(&:id)
     else
       []
@@ -133,9 +133,9 @@ class ApplicationController < ActionController::Base
   #----------------------------------------------------------------------------
   def called_from_index_page?(controller = controller_name)
     request.referer =~ if controller != "tasks"
-                         %r{/#{controller}$}
-                       else
-                         /tasks\?*/
+      %r{/#{controller}$}
+    else
+      /tasks\?*/
                        end
   end
 
@@ -168,7 +168,7 @@ class ApplicationController < ActionController::Base
 
   #----------------------------------------------------------------------------
   def current_query
-    @current_query = params[:query] || session[:"#{controller_name}_current_query"] || ''
+    @current_query = params[:query] || session[:"#{controller_name}_current_query"] || ""
   end
 
   #----------------------------------------------------------------------------
@@ -182,7 +182,7 @@ class ApplicationController < ActionController::Base
 
     respond_to do |format|
       format.html { redirect_to(redirection_url) }
-      format.js   { render plain: 'window.location.reload();' }
+      format.js   { render plain: "window.location.reload();" }
       format.json { render plain: flash[:warning], status: :not_found }
       format.xml  { render xml: [flash[:warning]], status: :not_found }
     end
@@ -204,10 +204,10 @@ class ApplicationController < ActionController::Base
 
   #----------------------------------------------------------------------------
   def respond_to_access_denied
-    flash[:warning] = t(:msg_not_authorized, default: 'You are not authorized to take this action.')
+    flash[:warning] = t(:msg_not_authorized, default: "You are not authorized to take this action.")
     respond_to do |format|
       format.html { redirect_to(redirection_url) }
-      format.js   { render plain: 'window.location.reload();' }
+      format.js   { render plain: "window.location.reload();" }
       format.json { render plain: flash[:warning], status: :unauthorized }
       format.xml  { render xml: [flash[:warning]], status: :unauthorized }
     end
@@ -217,27 +217,27 @@ class ApplicationController < ActionController::Base
   def redirection_url
     # Try to redirect somewhere sensible. Note: not all controllers have an index action
     if current_user.present?
-      respond_to?(:index) && action_name != 'index' ? { action: 'index' } : root_url
+      respond_to?(:index) && action_name != "index" ? {action: "index"} : root_url
     else
       login_url
     end
   end
 
   def cors_set_access_control_headers
-    headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-    headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token'
-    headers['Access-Control-Max-Age'] = "1728000"
+    headers["Access-Control-Allow-Origin"] = "*"
+    headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS"
+    headers["Access-Control-Allow-Headers"] = "Origin, Content-Type, Accept, Authorization, Token"
+    headers["Access-Control-Max-Age"] = "1728000"
   end
 
   def cors_preflight_check
-    if request.method == 'OPTIONS'
-      headers['Access-Control-Allow-Origin'] = '*'
-      headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-      headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
-      headers['Access-Control-Max-Age'] = '1728000'
+    if request.method == "OPTIONS"
+      headers["Access-Control-Allow-Origin"] = "*"
+      headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS"
+      headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-Prototype-Version, Token"
+      headers["Access-Control-Max-Age"] = "1728000"
 
-      render plain: ''
+      render plain: ""
     end
   end
 

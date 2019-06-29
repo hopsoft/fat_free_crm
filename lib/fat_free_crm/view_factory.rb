@@ -75,7 +75,7 @@ module FatFreeCRM
     # This defines what it means for one view to be different to another
     #----------------------------------------------------------------------------
     def generate_id
-      [name, controllers.sort, actions.sort].flatten.map(&:to_s).map(&:underscore).join('_')
+      [name, controllers.sort, actions.sort].flatten.map(&:to_s).map(&:underscore).join("_")
     end
 
     ActiveSupport.run_load_hooks(:fat_free_crm_view_factory, self)

@@ -3,7 +3,7 @@
 # http://www.atomenabled.org/developers/syndication/
 item = @items.singularize
 
-if item == 'task'
+if item == "task"
   @assets = @assets.values.flatten
   title = "#{t(:"#{@view}_tab")} #{t(@items.to_sym)}"
 end

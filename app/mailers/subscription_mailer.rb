@@ -16,7 +16,7 @@ class SubscriptionMailer < ActionMailer::Base
 
     # If entity has tags, join them and wrap in parantheses
     subject = "RE: [#{@entity_type.downcase}:#{@entity.id}] #{@entity_name}"
-    subject += " (#{@entity.tags.join(', ')})" if @entity.tags.any?
+    subject += " (#{@entity.tags.join(", ")})" if @entity.tags.any?
 
     mail subject: subject,
          to: user.email,
@@ -28,8 +28,8 @@ class SubscriptionMailer < ActionMailer::Base
 
   def from_address(user = nil)
     address = Setting.dig(:email_comment_replies, :address).presence ||
-              Setting.dig(:smtp, :from).presence ||
-              "noreply@fatfreecrm.com"
+      Setting.dig(:smtp, :from).presence ||
+      "noreply@fatfreecrm.com"
     address = "#{user.full_name} <#{address}>" if user && !address.match(/<.+>\z/)
     address
   end

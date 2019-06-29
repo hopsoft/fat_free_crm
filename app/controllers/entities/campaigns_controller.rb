@@ -14,7 +14,7 @@ class CampaignsController < EntitiesController
     @campaigns = get_campaigns(page: page_param, per_page: per_page_param)
 
     respond_with @campaigns do |format|
-      format.xls { render layout: 'header' }
+      format.xls { render layout: "header" }
       format.csv { render csv: @campaigns }
     end
   end
@@ -43,7 +43,7 @@ class CampaignsController < EntitiesController
 
       format.xls do
         @leads = @campaign.leads
-        render '/leads/index', layout: 'header'
+        render "/leads/index", layout: "header"
       end
 
       format.csv do
@@ -67,10 +67,10 @@ class CampaignsController < EntitiesController
   # GET /campaigns/new.xml                                                 AJAX
   #----------------------------------------------------------------------------
   def new
-    @campaign.attributes = { user: current_user, access: Setting.default_access, assigned_to: nil }
+    @campaign.attributes = {user: current_user, access: Setting.default_access, assigned_to: nil}
 
     if params[:related]
-      model, id = params[:related].split('_')
+      model, id = params[:related].split("_")
       if related = model.classify.constantize.my(current_user).find_by_id(id)
         instance_variable_set("@#{model}", related)
       else

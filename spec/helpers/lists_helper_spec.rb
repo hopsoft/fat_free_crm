@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 # Specs in this file have access to a helper object that includes
 # the ListsHelper. For example:

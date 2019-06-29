@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../../spec_helper")
 
 describe "admin/users/create" do
   before do
@@ -35,7 +35,7 @@ describe "admin/users/create" do
       assign(:users, [current_user])
       render
 
-      expect(rendered).to include('Please specify username')
+      expect(rendered).to include("Please specify username")
       expect(rendered).to include(%/$('#create_user').effect("shake"/)
     end
   end

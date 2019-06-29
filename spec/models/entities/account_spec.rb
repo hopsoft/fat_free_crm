@@ -27,7 +27,7 @@
 #  category        :string(32)
 #
 
-require 'spec_helper'
+require "spec_helper"
 
 describe Account do
   it "should create a new instance given valid attributes" do
@@ -146,13 +146,13 @@ describe Account do
 
   describe "Before save" do
     it "create new: should replace empty category string with nil" do
-      account = build(:account, category: '')
+      account = build(:account, category: "")
       account.save
       expect(account.category).to eq(nil)
     end
 
     it "update existing: should replace empty category string with nil" do
-      account = create(:account, category: '')
+      account = create(:account, category: "")
       account.save
       expect(account.category).to eq(nil)
     end

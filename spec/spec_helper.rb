@@ -5,18 +5,18 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'rubygems'
+require "rubygems"
 
-ENV["RAILS_ENV"] = 'test'
+ENV["RAILS_ENV"] = "test"
 require File.expand_path("../../config/environment", __FILE__)
-require 'rspec/rails'
-require 'capybara/rails'
-require 'paper_trail/frameworks/rspec'
+require "rspec/rails"
+require "capybara/rails"
+require "paper_trail/frameworks/rspec"
 
-require 'acts_as_fu'
-require 'factory_bot_rails'
-require 'ffaker'
-require 'timecop'
+require "acts_as_fu"
+require "factory_bot_rails"
+require "ffaker"
+require "timecop"
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -27,7 +27,7 @@ Dir["./spec/shared/**/*.rb"].sort.each { |f| require f }
 
 TASK_STATUSES = %w[pending assigned completed].freeze
 
-I18n.locale = 'en-US'
+I18n.locale = "en-US"
 
 Paperclip.options[:log] = false
 
@@ -53,8 +53,8 @@ RSpec.configure do |config|
   config.before(:each) do
     # Overwrite locale settings within "config/settings.yml" if necessary.
     # In order to ensure that test still pass if "Setting.locale" is not set to "en-US".
-    I18n.locale = 'en-US'
-    Setting.locale = 'en-US' unless Setting.locale == 'en-US'
+    I18n.locale = "en-US"
+    Setting.locale = "en-US" unless Setting.locale == "en-US"
   end
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
@@ -94,20 +94,20 @@ end
 
 ActionView::TestCase::TestController.class_eval do
   def controller_name
-    HashWithIndifferentAccess.new(request.path_parameters)["controller"].split('/').last
+    HashWithIndifferentAccess.new(request.path_parameters)["controller"].split("/").last
   end
 end
 
 ActionView::Base.class_eval do
   def controller_name
-    HashWithIndifferentAccess.new(request.path_parameters)["controller"].split('/').last
+    HashWithIndifferentAccess.new(request.path_parameters)["controller"].split("/").last
   end
 
   def called_from_index_page?(controller = controller_name)
     request.referer =~ if controller != "tasks"
-                         %r{/#{controller}$}
-                       else
-                         /tasks\?*/
+      %r{/#{controller}$}
+    else
+      /tasks\?*/
                        end
   end
 

@@ -20,7 +20,7 @@ class ChangeFurtherSubscribedUsersToSet < ActiveRecord::Migration[4.2]
           connection.execute %(
             UPDATE #{table}
             SET subscribed_users = '#{subscribed_users_set.to_yaml}'
-            WHERE id = #{entity['id']}
+            WHERE id = #{entity["id"]}
                     )
         end
       end

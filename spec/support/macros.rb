@@ -13,12 +13,12 @@ end
 #----------------------------------------------------------------------------
 def stub_task(view)
   assigns[:task] = if view == "completed"
-                     create(:task, completed_at: Time.now - 1.minute)
-                   elsif view == "assigned"
-                     create(:task, assignee: create(:user))
-                   else
-                     create(:task)
-                   end
+    create(:task, completed_at: Time.now - 1.minute)
+  elsif view == "assigned"
+    create(:task, assignee: create(:user))
+  else
+    create(:task)
+  end
 end
 
 #----------------------------------------------------------------------------

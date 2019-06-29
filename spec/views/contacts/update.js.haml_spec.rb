@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "/contacts/update" do
   include ContactsHelper
@@ -91,9 +91,9 @@ describe "/contacts/update" do
       it "should redraw the [edit_contact] form and shake it" do
         render
         expect(rendered).to include("$('#edit_contact').html")
-        expect(rendered).to include('crm.create_or_select_account(false)')
+        expect(rendered).to include("crm.create_or_select_account(false)")
         expect(rendered).to include(%/$('#edit_contact').effect("shake"/)
-        expect(rendered).to include('focus()')
+        expect(rendered).to include("focus()")
       end
     end
 
@@ -105,9 +105,9 @@ describe "/contacts/update" do
       it "should redraw the [edit_contact] form and shake it" do
         render
         expect(rendered).to include("$('#contact_#{@contact.id}').html")
-        expect(rendered).to include('crm.create_or_select_account(false)')
+        expect(rendered).to include("crm.create_or_select_account(false)")
         expect(rendered).to include(%/$('#contact_#{@contact.id}').effect("shake"/)
-        expect(rendered).to include('focus()')
+        expect(rendered).to include("focus()")
       end
     end
 
@@ -125,7 +125,7 @@ describe "/contacts/update" do
         render
         expect(rendered).to include("$('#contact_#{@contact.id}').html")
         expect(rendered).to include(%/$('#contact_#{@contact.id}').effect("shake"/)
-        expect(rendered).to include('focus()')
+        expect(rendered).to include("focus()")
       end
     end
   end

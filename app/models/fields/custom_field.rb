@@ -58,7 +58,7 @@ class CustomField < Field
 
   SAFE_DB_TRANSITIONS = {
     any: [%w[date time timestamp], %w[integer float]],
-    one: { 'string' => 'text' }
+    one: {"string" => "text"},
   }
 
   def available_as
@@ -72,9 +72,9 @@ class CustomField < Field
   #------------------------------------------------------------------------------
   def custom_validator(obj)
     attr = name.to_sym
-    obj.errors.add(attr, ::I18n.t('activerecord.errors.models.custom_field.required', field: label)) if required? && obj.send(attr).blank?
-    obj.errors.add(attr, ::I18n.t('activerecord.errors.models.custom_field.minlength', field: label)) if (minlength.to_i > 0) && (obj.send(attr).to_s.length < minlength.to_i)
-    obj.errors.add(attr, ::I18n.t('activerecord.errors.models.custom_field.maxlength', field: label)) if (maxlength.to_i > 0) && (obj.send(attr).to_s.length > maxlength.to_i)
+    obj.errors.add(attr, ::I18n.t("activerecord.errors.models.custom_field.required", field: label)) if required? && obj.send(attr).blank?
+    obj.errors.add(attr, ::I18n.t("activerecord.errors.models.custom_field.minlength", field: label)) if (minlength.to_i > 0) && (obj.send(attr).to_s.length < minlength.to_i)
+    obj.errors.add(attr, ::I18n.t("activerecord.errors.models.custom_field.maxlength", field: label)) if (maxlength.to_i > 0) && (obj.send(attr).to_s.length > maxlength.to_i)
   end
 
   protected
@@ -105,9 +105,9 @@ class CustomField < Field
   #------------------------------------------------------------------------------
   def generate_column_name
     suffix = nil
-    field_name = 'cf_' + label.downcase.gsub(/[^a-z0-9]+/, '_')
-    while (final_name = [field_name, suffix].compact.join('_')) &&
-          klass.column_names.include?(final_name)
+    field_name = "cf_" + label.downcase.gsub(/[^a-z0-9]+/, "_")
+    while (final_name = [field_name, suffix].compact.join("_")) &&
+        klass.column_names.include?(final_name)
       suffix = (suffix || 1) + 1
     end
     final_name
@@ -131,7 +131,7 @@ class CustomField < Field
   # Adds custom field translation for Ransack
   def add_ransack_translation
     I18n.backend.store_translations(Setting.locale.to_sym,
-                                    ransack: { attributes: { klass.model_name.singular => { name => label } } })
+      ransack: {attributes: {klass.model_name.singular => {name => label}}})
     # Reset Ransack cache
     # Ransack::Helpers::FormBuilder.cached_searchable_attributes_for_base = {}
   end

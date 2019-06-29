@@ -5,8 +5,8 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-require File.dirname(__FILE__) + '/sample_emails/dropbox'
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
+require File.dirname(__FILE__) + "/sample_emails/dropbox"
 
 require "fat_free_crm/mail_processor/dropbox"
 
@@ -74,7 +74,7 @@ describe FatFreeCRM::MailProcessor::Dropbox do
       expect(@crawler).not_to receive(:with_recipients)
       @crawler.run
 
-      @campaign = Campaign.find_by(name: 'Got milk')
+      @campaign = Campaign.find_by(name: "Got milk")
       expect(@campaign).to be_instance_of(Campaign)
       expect(@campaign.emails.size).to eq(1)
       expect(@campaign.emails.first.mediator).to eq(@campaign)
@@ -97,7 +97,7 @@ describe FatFreeCRM::MailProcessor::Dropbox do
       expect(@crawler).not_to receive(:with_recipients)
       @crawler.run
 
-      @lead = Lead.find_by(first_name: 'Cindy', last_name: 'Cluster')
+      @lead = Lead.find_by(first_name: "Cindy", last_name: "Cluster")
       expect(@lead).to be_instance_of(Lead)
       expect(@lead.status).to eq("contacted")
       expect(@lead.emails.size).to eq(1)
@@ -121,7 +121,7 @@ describe FatFreeCRM::MailProcessor::Dropbox do
       expect(@crawler).not_to receive(:with_recipients)
       @crawler.run
 
-      @contact = Contact.find_by(first_name: 'Cindy', last_name: 'Cluster')
+      @contact = Contact.find_by(first_name: "Cindy", last_name: "Cluster")
       expect(@contact).to be_instance_of(Contact)
       expect(@contact.emails.size).to eq(1)
       expect(@contact.emails.first.mediator).to eq(@contact)
@@ -288,17 +288,17 @@ describe FatFreeCRM::MailProcessor::Dropbox do
   describe "Default values" do
     describe "'access'" do
       it "should be 'Private' if default setting is 'Private'" do
-        allow(Setting).to receive(:default_access).and_return('Private')
+        allow(Setting).to receive(:default_access).and_return("Private")
         expect(@crawler.send(:default_access)).to eq("Private")
       end
 
       it "should be 'Public' if default setting is 'Public'" do
-        allow(Setting).to receive(:default_access).and_return('Public')
+        allow(Setting).to receive(:default_access).and_return("Public")
         expect(@crawler.send(:default_access)).to eq("Public")
       end
 
       it "should be 'Private' if default setting is 'Shared'" do
-        allow(Setting).to receive(:default_access).and_return('Shared')
+        allow(Setting).to receive(:default_access).and_return("Shared")
         expect(@crawler.send(:default_access)).to eq("Private")
       end
     end

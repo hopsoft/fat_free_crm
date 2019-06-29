@@ -19,7 +19,7 @@ module FeatureHelpers
   def login_as_user(user)
     user.confirm
     user.update_attribute(:suspended_at, nil)
-    visit '/users/sign_in'
+    visit "/users/sign_in"
     fill_in "user[email]", with: user.username
     fill_in "user[password]", with: user.password
     click_button "Login"

@@ -8,16 +8,16 @@
 Rails.application.routes.draw do
   resources :lists
 
-  root to: 'home#index'
+  root to: "home#index"
 
   # Deprecated: Compatibility with legacy Authlogic routes
-  get '/login',  to: redirect('/users/sign_in')
-  get '/signup', to: redirect('/users/sign_up')
+  get "/login",  to: redirect("/users/sign_in")
+  get "/signup", to: redirect("/users/sign_up")
 
-  devise_for :users, controllers: { registrations: 'registrations',
-                                    sessions: 'sessions',
-                                    passwords: 'passwords',
-                                    confirmations: 'confirmations' }
+  devise_for :users, controllers: {registrations: "registrations",
+                                   sessions: "sessions",
+                                   passwords: "passwords",
+                                   confirmations: "confirmations",}
 
   devise_scope :user do
     resources :users, only: %i[index show] do
@@ -27,15 +27,15 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'activities' => 'home#index'
-  get 'admin'      => 'admin/users#index',       as: :admin
-  get 'profile'    => 'users#show',              as: :profile
+  get "activities" => "home#index"
+  get "admin"      => "admin/users#index",       :as => :admin
+  get "profile"    => "users#show",              :as => :profile
 
-  get '/home/options',  as: :options
-  get '/home/toggle',   as: :toggle
-  match '/home/timeline', as: :timeline, via: %i[get put post]
-  match '/home/timezone', as: :timezone, via: %i[get put post]
-  post '/home/redraw', as: :redraw
+  get "/home/options",  as: :options
+  get "/home/toggle",   as: :toggle
+  match "/home/timeline", as: :timeline, via: %i[get put post]
+  match "/home/timezone", as: :timezone, via: %i[get put post]
+  post "/home/redraw", as: :redraw
 
   resources :comments,       except: %i[new show]
   resources :emails,         only: [:destroy]

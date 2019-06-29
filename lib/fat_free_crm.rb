@@ -28,9 +28,9 @@ module FatFreeCRM
 end
 
 # Load Fat Free CRM as a Rails Engine, unless running as a Rails Application
-require 'fat_free_crm/engine' unless defined?(FatFreeCRM::Application)
+require "fat_free_crm/engine" unless defined?(FatFreeCRM::Application)
 
-require 'fat_free_crm/load_settings' # register load hook for Setting
+require "fat_free_crm/load_settings" # register load hook for Setting
 
 # Require gem dependencies, monkey patches, and vendored plugins (in lib)
 require "fat_free_crm/gem_dependencies"

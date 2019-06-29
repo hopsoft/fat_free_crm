@@ -16,7 +16,7 @@
 #  updated_at    :datetime
 #
 
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
 describe Setting do
   it "should create a new instance given valid attributes" do
@@ -56,7 +56,7 @@ describe Setting do
 
   describe "#dig" do
     it "should dig into nested hashes" do
-      Setting[:hello] = { foo: { bar: 3 } }
+      Setting[:hello] = {foo: {bar: 3}}
       expect(Setting.dig(:hello, :foo, :bar)).to eq(3)
     end
 

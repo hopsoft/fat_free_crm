@@ -14,7 +14,7 @@ namespace :ffcrm do
 
     desc "Show current settings in the database"
     task show: :environment do
-      Setting.select('name').order('name').pluck('name').each do |name|
+      Setting.select("name").order("name").pluck("name").each do |name|
         puts "\n#{name}:\n  #{Setting.send(name).inspect}"
       end
     end

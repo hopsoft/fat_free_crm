@@ -72,6 +72,6 @@ class Admin::TagsController < Admin::ApplicationController
   end
 
   def setup_current_tab
-    set_current_tab('admin/tags')
+    set_current_tab("admin/tags")
   end
 end

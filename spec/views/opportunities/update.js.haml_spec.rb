@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "/opportunities/update" do
   before do
@@ -110,9 +110,9 @@ describe "/opportunities/update" do
       it "should redraw the [edit_opportunity] form and shake it" do
         render
         expect(rendered).to include("$('#edit_opportunity').html")
-        expect(rendered).to include('crm.create_or_select_account(false)')
+        expect(rendered).to include("crm.create_or_select_account(false)")
         expect(rendered).to include(%/$('#edit_opportunity').effect("shake"/)
-        expect(rendered).to include('focus()')
+        expect(rendered).to include("focus()")
       end
     end
 
@@ -124,9 +124,9 @@ describe "/opportunities/update" do
       it "should redraw the [edit_opportunity] form and shake it" do
         render
         expect(rendered).to include("$('#opportunity_#{@opportunity.id}').html")
-        expect(rendered).to include('crm.create_or_select_account(false)')
+        expect(rendered).to include("crm.create_or_select_account(false)")
         expect(rendered).to include(%/$('#opportunity_#{@opportunity.id}').effect("shake"/)
-        expect(rendered).to include('focus()')
+        expect(rendered).to include("focus()")
       end
     end
 
@@ -144,7 +144,7 @@ describe "/opportunities/update" do
         render
         expect(rendered).to include("$('#opportunity_#{@opportunity.id}').html")
         expect(rendered).to include(%/$('#opportunity_#{@opportunity.id}').effect("shake"/)
-        expect(rendered).to include('focus()')
+        expect(rendered).to include("focus()")
       end
     end
   end

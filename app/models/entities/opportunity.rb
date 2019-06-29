@@ -41,39 +41,39 @@ class Opportunity < ActiveRecord::Base
   serialize :subscribed_users, Set
 
   scope :state, ->(filters) {
-    where('stage IN (?)' + (filters.delete('other') ? ' OR stage IS NULL' : ''), filters)
+    where("stage IN (?)" + (filters.delete("other") ? " OR stage IS NULL" : ""), filters)
   }
-  scope :created_by,  ->(user) { where('user_id = ?', user.id) }
-  scope :assigned_to, ->(user) { where('assigned_to = ?', user.id) }
+  scope :created_by,  ->(user) { where("user_id = ?", user.id) }
+  scope :assigned_to, ->(user) { where("assigned_to = ?", user.id) }
   scope :won,         -> { where("opportunities.stage = 'won'") }
   scope :lost,        -> { where("opportunities.stage = 'lost'") }
   scope :not_lost,    -> { where("opportunities.stage <> 'lost'") }
   scope :pipeline,    -> { where("opportunities.stage IS NULL OR (opportunities.stage != 'won' AND opportunities.stage != 'lost')") }
   scope :unassigned,  -> { where("opportunities.assigned_to IS NULL") }
-  scope :weighted_sort, -> { select('*, amount*probability') }
+  scope :weighted_sort, -> { select("*, amount*probability") }
 
   # Search by name OR id
   scope :text_search, ->(query) {
     if query.match?(/\A\d+\z/)
-      where('upper(name) LIKE upper(:name) OR opportunities.id = :id', name: "%#{query}%", id: query)
+      where("upper(name) LIKE upper(:name) OR opportunities.id = :id", name: "%#{query}%", id: query)
     else
-      ransack('name_cont' => query).result
+      ransack("name_cont" => query).result
     end
   }
 
   scope :visible_on_dashboard, ->(user) {
     # Show opportunities which either belong to the user and are unassigned, or are assigned to the user and haven't been closed (won/lost)
-    where('(user_id = :user_id AND assigned_to IS NULL) OR assigned_to = :user_id', user_id: user.id).where("opportunities.stage != 'won'").where("opportunities.stage != 'lost'")
+    where("(user_id = :user_id AND assigned_to IS NULL) OR assigned_to = :user_id", user_id: user.id).where("opportunities.stage != 'won'").where("opportunities.stage != 'lost'")
   }
 
   scope :by_closes_on, -> { order(:closes_on) }
-  scope :by_amount,    -> { order('opportunities.amount DESC') }
+  scope :by_amount,    -> { order("opportunities.amount DESC") }
 
   uses_user_permissions
   acts_as_commentable
   uses_comment_extensions
   acts_as_taggable_on :tags
-  has_paper_trail class_name: 'Version', ignore: [:subscribed_users]
+  has_paper_trail class_name: "Version", ignore: [:subscribed_users]
   has_fields
   exportable
   sortable by: ["name ASC", "amount DESC", "amount*probability DESC", "probability DESC", "closes_on ASC", "created_at DESC", "updated_at DESC"], default: "created_at DESC"
@@ -84,7 +84,7 @@ class Opportunity < ActiveRecord::Base
   validates_presence_of :name, message: :missing_opportunity_name
   validates_numericality_of %i[probability amount discount], allow_nil: true
   validate :users_for_shared_access
-  validates :stage, inclusion: { in: proc { Setting.unroll(:opportunity_stage).map { |s| s.last.to_s } } }, allow_blank: true
+  validates :stage, inclusion: {in: proc { Setting.unroll(:opportunity_stage).map { |s| s.last.to_s } }}, allow_blank: true
 
   after_create :increment_opportunities_count
   after_destroy :decrement_opportunities_count
@@ -96,7 +96,7 @@ class Opportunity < ActiveRecord::Base
   end
 
   def self.default_stage
-    Setting[:opportunity_default_stage].try(:to_s) || 'prospecting'
+    Setting[:opportunity_default_stage].try(:to_s) || "prospecting"
   end
 
   #----------------------------------------------------------------------------

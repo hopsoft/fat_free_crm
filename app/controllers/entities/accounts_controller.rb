@@ -14,7 +14,7 @@ class AccountsController < EntitiesController
     @accounts = get_accounts(page: page_param, per_page: per_page_param)
 
     respond_with @accounts do |format|
-      format.xls { render layout: 'header' }
+      format.xls { render layout: "header" }
       format.csv { render csv: @accounts }
     end
   end
@@ -32,10 +32,10 @@ class AccountsController < EntitiesController
   # GET /accounts/new
   #----------------------------------------------------------------------------
   def new
-    @account.attributes = { user: current_user, access: Setting.default_access, assigned_to: nil }
+    @account.attributes = {user: current_user, access: Setting.default_access, assigned_to: nil}
 
     if params[:related]
-      model, id = params[:related].split('_')
+      model, id = params[:related].split("_")
       instance_variable_set("@#{model}", model.classify.constantize.find(id))
     end
 
@@ -154,9 +154,9 @@ class AccountsController < EntitiesController
   #----------------------------------------------------------------------------
   def get_data_for_sidebar
     @account_category_total = HashWithIndifferentAccess[
-                              Setting.account_category.map do |key|
+                              Setting.account_category.map { |key|
                                 [key, Account.my(current_user).where(category: key.to_s).count]
-                              end
+                              }
     ]
     categorized = @account_category_total.values.sum
     @account_category_total[:all] = Account.my(current_user).count

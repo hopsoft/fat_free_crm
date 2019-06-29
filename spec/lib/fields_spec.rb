@@ -5,9 +5,9 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-describe 'FatFreeCRM::Fields' do
+describe "FatFreeCRM::Fields" do
   class Foo
     include FatFreeCRM::Fields
     include ActiveModel::Validations
@@ -38,7 +38,7 @@ describe 'FatFreeCRM::Fields' do
 
   describe "field_groups" do
     it "should call FieldGroup" do
-      expect(ActiveRecord::Base.connection).to receive(:data_source_exists?).with('field_groups').and_return(true)
+      expect(ActiveRecord::Base.connection).to receive(:data_source_exists?).with("field_groups").and_return(true)
       dummy_scope = double
       expect(dummy_scope).to receive(:order).with(:position)
       expect(FieldGroup).to receive(:where).and_return(dummy_scope)
@@ -46,7 +46,7 @@ describe 'FatFreeCRM::Fields' do
     end
 
     it "should not call FieldGroup if table doesn't exist (migrations not yet run)" do
-      expect(ActiveRecord::Base.connection).to receive(:data_source_exists?).with('field_groups').and_return(false)
+      expect(ActiveRecord::Base.connection).to receive(:data_source_exists?).with("field_groups").and_return(false)
       expect(Foo.new.field_groups).to eq([])
     end
   end
@@ -67,8 +67,8 @@ describe 'FatFreeCRM::Fields' do
 
   describe "serialize_custom_fields!" do
     before(:each) do
-      @f1 = double(Field, as: 'check_boxes', name: 'field1')
-      @f2 = double(Field, as: 'date', name: 'field2')
+      @f1 = double(Field, as: "check_boxes", name: "field1")
+      @f2 = double(Field, as: "date", name: "field2")
     end
 
     it "should serialize checkbox fields as Array" do

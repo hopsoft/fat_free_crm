@@ -20,6 +20,6 @@ class Admin::PluginsController < Admin::ApplicationController
   protected
 
   def setup_current_tab
-    set_current_tab('admin/plugins')
+    set_current_tab("admin/plugins")
   end
 end

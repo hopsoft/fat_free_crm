@@ -5,8 +5,8 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-require File.dirname(__FILE__) + '/sample_emails/dropbox'
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
+require File.dirname(__FILE__) + "/sample_emails/dropbox"
 
 require "fat_free_crm/mail_processor/base"
 
@@ -21,12 +21,12 @@ describe FatFreeCRM::MailProcessor::Base do
     @crawler = FatFreeCRM::MailProcessor::Base.new
     # MailProcessor::Base doesn't load any settings by default
     @crawler.instance_variable_set "@settings",
-                                   server:   "example.com",
-                                   port:     "123",
-                                   ssl:      true,
-                                   address:  "test@example.com",
-                                   user:     "test@example.com",
-                                   password: "123"
+      server: "example.com",
+      port: "123",
+      ssl: true,
+      address: "test@example.com",
+      user: "test@example.com",
+      password: "123"
   end
 
   #------------------------------------------------------------------------------
@@ -162,7 +162,7 @@ describe FatFreeCRM::MailProcessor::Base do
 
       it "should extract text and strip tags from multipart text/html" do
         text = @crawler.send(:plain_text_body, Mail.new(DROPBOX_EMAILS[:multipart]))
-        expect(text).to eql('Hello,')
+        expect(text).to eql("Hello,")
       end
     end
   end

@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe "/leads/_sidebar_show" do
   include LeadsHelper
@@ -15,10 +15,10 @@ describe "/leads/_sidebar_show" do
     assign(:users, [current_user])
     assign(:comment, Comment.new)
     assign(:lead, build_stubbed(:lead,
-                                blog: 'http://www.blogger.com/home',
-                                linkedin: 'www.linkedin.com',
-                                twitter: 'twitter.com/account',
-                                facebook: ''))
+      blog: "http://www.blogger.com/home",
+      linkedin: "www.linkedin.com",
+      twitter: "twitter.com/account",
+      facebook: ""))
   end
 
   it "should render working web presence links whether a protocol is provided or not" do

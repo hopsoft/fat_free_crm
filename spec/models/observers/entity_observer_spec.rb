@@ -5,11 +5,11 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe EntityObserver do
   before do
-    allow(Setting).to receive(:host).and_return('http://www.example.com')
+    allow(Setting).to receive(:host).and_return("http://www.example.com")
     allow(PaperTrail).to receive(:whodunnit).and_return(assigner)
   end
 
@@ -18,7 +18,7 @@ describe EntityObserver do
       let(:assignee) { create(:user) }
       let(:assigner) { create(:user) }
       let!(:entity)  { build(entity_type, user: assigner, assignee: assignee) }
-      let(:mail) { double('mail', deliver_now: true) }
+      let(:mail) { double("mail", deliver_now: true) }
 
       after :each do
         entity.save
@@ -39,7 +39,7 @@ describe EntityObserver do
       end
 
       it "does not notify me if Setting.host has not been set" do
-        allow(Setting).to receive(:host).and_return('')
+        allow(Setting).to receive(:host).and_return("")
         expect(UserMailer).not_to receive(:assigned_entity_notification)
       end
     end
@@ -48,7 +48,7 @@ describe EntityObserver do
       let(:assignee) { create(:user) }
       let(:assigner) { create(:user) }
       let!(:entity)  { create(entity_type, user: create(:user)) }
-      let(:mail) { double('mail', deliver_now: true) }
+      let(:mail) { double("mail", deliver_now: true) }
 
       it "notifies the new owner if the entity is re-assigned" do
         expect(UserMailer).to receive(:assigned_entity_notification).with(entity, assigner).and_return(mail)

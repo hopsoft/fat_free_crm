@@ -15,7 +15,7 @@ class LeadsController < EntitiesController
     @leads = get_leads(page: page_param)
 
     respond_with @leads do |format|
-      format.xls { render layout: 'header' }
+      format.xls { render layout: "header" }
       format.csv { render csv: @leads }
     end
   end
@@ -32,11 +32,11 @@ class LeadsController < EntitiesController
   # GET /leads/new
   #----------------------------------------------------------------------------
   def new
-    @lead.attributes = { user: current_user, access: Setting.default_access, assigned_to: nil }
+    @lead.attributes = {user: current_user, access: Setting.default_access, assigned_to: nil}
     get_campaigns
 
     if params[:related]
-      model, id = params[:related].split('_')
+      model, id = params[:related].split("_")
       if related = model.classify.constantize.my(current_user).find_by_id(id)
         instance_variable_set("@#{model}", related)
       else
@@ -87,7 +87,7 @@ class LeadsController < EntitiesController
       if @lead.update_with_lead_counters(resource_params)
         update_sidebar
       else
-        @campaigns = Campaign.my(current_user).order('name')
+        @campaigns = Campaign.my(current_user).order("name")
       end
     end
   end
@@ -107,7 +107,7 @@ class LeadsController < EntitiesController
   #----------------------------------------------------------------------------
   def convert
     @account = Account.new(user: current_user, name: @lead.company, access: "Lead")
-    @accounts = Account.my(current_user).order('name')
+    @accounts = Account.my(current_user).order("name")
     @opportunity = Opportunity.new(user: current_user, access: "Lead", stage: "prospecting", campaign: @lead.campaign, source: @lead.source)
 
     if params[:previous].to_s =~ /(\d+)\z/
@@ -121,7 +121,7 @@ class LeadsController < EntitiesController
   #----------------------------------------------------------------------------
   def promote
     @account, @opportunity, @contact = @lead.promote(params.permit!)
-    @accounts = Account.my(current_user).order('name')
+    @accounts = Account.my(current_user).order("name")
     @stage = Setting.unroll(:opportunity_stage)
 
     respond_with(@lead) do |format|
@@ -206,7 +206,7 @@ class LeadsController < EntitiesController
 
   #----------------------------------------------------------------------------
   def get_campaigns
-    @campaigns = Campaign.my(current_user).order('name')
+    @campaigns = Campaign.my(current_user).order("name")
   end
 
   def set_options

@@ -5,11 +5,11 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "/leads/create" do
   before do
-    controller.controller_path = 'leads'
+    controller.controller_path = "leads"
     login
     assign(:campaigns, [build_stubbed(:campaign)])
   end

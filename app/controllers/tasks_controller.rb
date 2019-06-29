@@ -16,7 +16,7 @@ class TasksController < ApplicationController
     @tasks = Task.find_all_grouped(current_user, @view)
 
     respond_with @tasks do |format|
-      format.xls { render layout: 'header' }
+      format.xls { render layout: "header" }
       format.csv { render csv: @tasks.map(&:second).flatten }
       format.xml { render xml: @tasks, except: [:subscribed_users] }
     end
@@ -34,7 +34,7 @@ class TasksController < ApplicationController
   def new
     @view = view
     @task = Task.new
-    @bucket = Setting.unroll(:task_bucket)[1..-1] << [t(:due_specific_date, default: 'On Specific Date...'), :specific_time]
+    @bucket = Setting.unroll(:task_bucket)[1..-1] << [t(:due_specific_date, default: "On Specific Date..."), :specific_time]
     @category = Setting.unroll(:task_category)
 
     if params[:related]
@@ -54,7 +54,7 @@ class TasksController < ApplicationController
   def edit
     @view = view
     @task = Task.tracked_by(current_user).find(params[:id])
-    @bucket = Setting.unroll(:task_bucket)[1..-1] << [t(:due_specific_date, default: 'On Specific Date...'), :specific_time]
+    @bucket = Setting.unroll(:task_bucket)[1..-1] << [t(:due_specific_date, default: "On Specific Date..."), :specific_time]
     @category = Setting.unroll(:task_category)
     @asset = @task.asset if @task.asset_id?
 
@@ -86,10 +86,10 @@ class TasksController < ApplicationController
     @task_before_update = @task.dup
 
     @task_before_update.bucket = if @task.due_at && (@task.due_at < Date.today.to_time)
-                                   "overdue"
-                                 else
-                                   @task.computed_bucket
-                                 end
+      "overdue"
+    else
+      @task.computed_bucket
+    end
 
     respond_with(@task) do |_format|
       if @task.update_attributes(task_params)

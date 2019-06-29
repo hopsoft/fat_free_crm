@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "/opportunities/index" do
   include OpportunitiesHelper
@@ -18,7 +18,7 @@ describe "/opportunities/index" do
   it "should render [opportunity] template with @opportunities collection if there are opportunities" do
     assign(:opportunities, [build_stubbed(:opportunity, id: 42)].paginate)
 
-    render template: 'opportunities/index', formats: [:js]
+    render template: "opportunities/index", formats: [:js]
 
     expect(rendered).to include("$('#opportunities').html")
     expect(rendered).to include("#paginate")
@@ -27,7 +27,7 @@ describe "/opportunities/index" do
   it "should render [empty] template if @opportunities collection if there are no opportunities" do
     assign(:opportunities, [].paginate)
 
-    render template: 'opportunities/index', formats: [:js]
+    render template: "opportunities/index", formats: [:js]
 
     expect(rendered).to include("$('#opportunities').html('<div id=\\'empty\\'>")
     expect(rendered).to include("#paginate")

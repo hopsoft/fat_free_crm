@@ -5,8 +5,8 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
-require 'cancan/matchers'
+require "spec_helper"
+require "cancan/matchers"
 
 def all_actions
   %i[index show create update destroy manage]

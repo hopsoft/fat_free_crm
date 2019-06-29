@@ -46,13 +46,13 @@
 #  confirmation_sent_at    :datetime
 #
 
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe User do
   it "should create a new instance given valid attributes" do
     expect(User.new(
       username: "username",
-      email:    "user@example.com",
+      email: "user@example.com",
       password: "password",
       password_confirmation: "password"
     ).valid?).to eq true
@@ -62,7 +62,7 @@ describe User do
     expect(build(:user)).to be_valid
   end
 
-  describe '#destroyable?' do
+  describe "#destroyable?" do
     describe "Destroying users with and without related assets" do
       before do
         @user = build(:user)
@@ -97,7 +97,7 @@ describe User do
     end
   end
 
-  describe '#destroy' do
+  describe "#destroy" do
     before do
       @user = create(:user)
     end
@@ -118,7 +118,7 @@ describe User do
     end
   end
 
-  describe '#suspend_if_needs_approval' do
+  describe "#suspend_if_needs_approval" do
     it "should set suspended timestamp upon creation if signups need approval and the user is not an admin" do
       allow(Setting).to receive(:user_signup).and_return(:needs_approval)
       @user = build(:user, suspended_at: nil)
@@ -142,15 +142,15 @@ describe User do
     describe "have_assigned_opportunities" do
       before do
         @user1 = create(:user)
-        create(:opportunity, assignee: @user1, stage: 'analysis', account: nil, campaign: nil, user: nil)
+        create(:opportunity, assignee: @user1, stage: "analysis", account: nil, campaign: nil, user: nil)
 
         @user2 = create(:user)
 
         @user3 = create(:user)
-        create(:opportunity, assignee: @user3, stage: 'won', account: nil, campaign: nil, user: nil)
+        create(:opportunity, assignee: @user3, stage: "won", account: nil, campaign: nil, user: nil)
 
         @user4 = create(:user)
-        create(:opportunity, assignee: @user4, stage: 'lost', account: nil, campaign: nil, user: nil)
+        create(:opportunity, assignee: @user4, stage: "lost", account: nil, campaign: nil, user: nil)
 
         @result = User.have_assigned_opportunities
       end
@@ -228,9 +228,9 @@ describe User do
 
   describe "text_search" do
     it "should find user by email" do
-      create(:user, email: 'no-reply@example.com')
-      user = create(:user, email: 'test@example.com')
-      search = User.text_search('test')
+      create(:user, email: "no-reply@example.com")
+      user = create(:user, email: "test@example.com")
+      search = User.text_search("test")
       expect(search.size).to eql(1)
       expect(search.first).to eql(user)
     end

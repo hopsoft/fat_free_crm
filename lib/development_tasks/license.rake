@@ -11,7 +11,7 @@
 # with schema information.
 
 namespace :license do
-  FILES = { ruby: [
+  FILES = {ruby: [
     "app/**/*.rb",
     "app/**/*.coffee",
     "lib/**/*.rake",
@@ -20,18 +20,18 @@ namespace :license do
     "spec/**/*.rb",
     "spec/spec_helper.rb",
     "config/**/*.rb",
-    "config/settings.default.yml"
+    "config/settings.default.yml",
   ],
-            js: [
-              "app/assets/javascripts/**/*.js",
-              "app/assets/javascripts/**/*.js.erb",
-              "app/assets/stylesheets/**/*.sass", # Sass also uses javascript style comments
-              "app/assets/stylesheets/**/*.scss"
-            ],
-            css: [
-              "app/assets/stylesheets/**/*.css",
-              "app/assets/stylesheets/**/*.css.erb"
-            ] }
+           js: [
+             "app/assets/javascripts/**/*.js",
+             "app/assets/javascripts/**/*.js.erb",
+             "app/assets/stylesheets/**/*.sass", # Sass also uses javascript style comments
+             "app/assets/stylesheets/**/*.scss",
+           ],
+           css: [
+             "app/assets/stylesheets/**/*.css",
+             "app/assets/stylesheets/**/*.css.erb",
+           ],}
 
   LICENSE_RB = %{# Copyright (c) 2008-2013 Michael Dvorkin and contributors.
 #
@@ -39,13 +39,13 @@ namespace :license do
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 }
-  LICENSES = { ruby: LICENSE_RB,
-               js: LICENSE_RB.gsub(/^#/, "//"),
-               css: "/*\n" + LICENSE_RB.gsub(/^#/, ' *').sub(/---\n/, "---\n */\n") }
+  LICENSES = {ruby: LICENSE_RB,
+              js: LICENSE_RB.gsub(/^#/, "//"),
+              css: "/*\n" + LICENSE_RB.gsub(/^#/, " *").sub(/---\n/, "---\n */\n"),}
 
-  REGEXPS  = { ruby: /^# Copyright \(c\).*?\n(?:#.*\n)*?#-{10}-*\n/,
-               js: /^\/\/ Copyright \(c\).*?\n(?:\/\/.*\n)*?\/\/-{10}-*\n/,
-               css: /^\/\*\n \* Copyright \(c\).*?\n(?: \*.*\n)*? \*-{10}-*\n \*\/\n/ }
+  REGEXPS  = {ruby: /^# Copyright \(c\).*?\n(?:#.*\n)*?#-{10}-*\n/,
+              js: /^\/\/ Copyright \(c\).*?\n(?:\/\/.*\n)*?\/\/-{10}-*\n/,
+              css: /^\/\*\n \* Copyright \(c\).*?\n(?: \*.*\n)*? \*-{10}-*\n \*\/\n/,}
 
   def expand_globs(globs)
     globs.map { |f| Dir.glob(f) }.flatten.uniq
@@ -56,7 +56,7 @@ namespace :license do
     FILES.each do |lang, globs|
       expand_globs(globs).each do |file|
         old_content = File.read(file)
-        new_content = LICENSES[lang] + old_content.sub(REGEXPS[lang], '')
+        new_content = LICENSES[lang] + old_content.sub(REGEXPS[lang], "")
 
         if new_content != old_content
           File.open(file, "wb") { |f| f.puts new_content }
@@ -71,7 +71,7 @@ namespace :license do
     FILES.each do |lang, globs|
       expand_globs(globs).each do |file|
         old_content = File.read(file)
-        new_content = old_content.sub(REGEXPS[lang], '')
+        new_content = old_content.sub(REGEXPS[lang], "")
         if new_content != old_content
           File.open(file, "wb") { |f| f.puts new_content }
           puts "== Removed license from #{file}"

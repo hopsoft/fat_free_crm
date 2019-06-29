@@ -28,7 +28,7 @@ class FieldGroup < ActiveRecord::Base
   validates_presence_of :label
 
   before_save do
-    self.name = label.downcase.gsub(/[^a-z0-9]+/, '_') if name.blank? && label.present?
+    self.name = label.downcase.gsub(/[^a-z0-9]+/, "_") if name.blank? && label.present?
   end
 
   def key
@@ -40,7 +40,7 @@ class FieldGroup < ActiveRecord::Base
   end
 
   def self.with_tags(tag_ids)
-    where 'tag_id IS NULL OR tag_id IN (?)', tag_ids
+    where "tag_id IS NULL OR tag_id IN (?)", tag_ids
   end
 
   def label_i18n

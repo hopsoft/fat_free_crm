@@ -29,7 +29,7 @@
 #  background_info :string(255)
 #
 
-require 'spec_helper'
+require "spec_helper"
 
 describe Task do
   describe "Task/Create" do
@@ -44,14 +44,14 @@ describe Task do
         adjust_timezone(offset)
       end
 
-      it "should create a task with due date selected from dropdown within #{offset ? 'different' : 'current'} timezone" do
+      it "should create a task with due date selected from dropdown within #{offset ? "different" : "current"} timezone" do
         task = create(:task, due_at: Time.now.end_of_week, bucket: "due_this_week")
         expect(task.errors).to be_empty
         expect(task.bucket).to eq("due_this_week")
         expect(task.due_at.change(usec: 0)).to eq(Time.zone.now.end_of_week.change(usec: 0))
       end
 
-      it "should create a task with due date selected from the calendar within #{offset ? 'different' : 'current'} timezone" do
+      it "should create a task with due date selected from the calendar within #{offset ? "different" : "current"} timezone" do
         task = create(:task, bucket: "specific_time", calendar: "2020-03-20")
         expect(task.errors).to be_empty
         expect(task.bucket).to eq("specific_time")
@@ -99,7 +99,7 @@ describe Task do
         adjust_timezone(offset)
       end
 
-      it "should update due date based on selected bucket within #{offset ? 'different' : 'current'} timezone" do
+      it "should update due date based on selected bucket within #{offset ? "different" : "current"} timezone" do
         task = create(:task, due_at: Time.now.midnight.tomorrow, bucket: "due_tomorrow")
         task.update_attributes(bucket: "due_this_week")
         expect(task.errors).to be_empty
@@ -107,7 +107,7 @@ describe Task do
         expect(task.due_at.change(usec: 0)).to eq(Time.zone.now.end_of_week.change(usec: 0))
       end
 
-      it "should update due date if specific calendar date selected within #{offset ? 'different' : 'current'} timezone" do
+      it "should update due date if specific calendar date selected within #{offset ? "different" : "current"} timezone" do
         task = create(:task, due_at: Time.now.midnight.tomorrow, bucket: "due_tomorrow")
         task.update_attributes(bucket: "specific_time", calendar: "2020-03-20")
         expect(task.errors).to be_empty
@@ -157,11 +157,11 @@ describe Task do
     it "completion should preserve original due date" do
       due_at = Time.now - 42.days
       task = create(:task, due_at: due_at, bucket: "specific_time",
-                           calendar: due_at.strftime('%Y-%m-%d %H:%M'))
-      task.update_attributes(completed_at: Time.now, completed_by: task.user.id, calendar: '')
+                           calendar: due_at.strftime("%Y-%m-%d %H:%M"))
+      task.update_attributes(completed_at: Time.now, completed_by: task.user.id, calendar: "")
 
       expect(task.completed?).to eq(true)
-      expect(task.due_at).to eq(due_at.utc.strftime('%Y-%m-%d %H:%M'))
+      expect(task.due_at).to eq(due_at.utc.strftime("%Y-%m-%d %H:%M"))
     end
   end
 
@@ -343,8 +343,8 @@ describe Task do
 
   describe "#parse_calendar_date" do
     it "should parse the date" do
-      @task = Task.new(calendar: '2020-12-23')
-      expect(Time).to receive(:parse).with('2020-12-23')
+      @task = Task.new(calendar: "2020-12-23")
+      expect(Time).to receive(:parse).with("2020-12-23")
       @task.send(:parse_calendar_date)
     end
   end
@@ -384,9 +384,9 @@ describe Task do
 
     context "by_due_at" do
       it "should show tasks ordered by due_at" do
-        t1 = create(:task, name: 't1', bucket: "due_asap")
+        t1 = create(:task, name: "t1", bucket: "due_asap")
         t2 = create(:task, calendar: 5.days.from_now.strftime("%Y-%m-%d %H:%M"), bucket: "specific_time")
-        t3 = create(:task, name: 't3', bucket: "due_next_week")
+        t3 = create(:task, name: "t3", bucket: "due_next_week")
         t4 = create(:task, calendar: 20.days.from_now.strftime("%Y-%m-%d %H:%M"), bucket: "specific_time")
         expect(Task.by_due_at).to eq([t1, t2, t3, t4])
       end

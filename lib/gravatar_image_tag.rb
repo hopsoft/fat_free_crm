@@ -15,7 +15,7 @@ module GravatarImageTag
 
   class Configuration
     attr_accessor :default_image, :filetype, :rating, :size
-   end
+  end
 
   def self.included(base)
     GravatarImageTag.configure { |_c| nil }
@@ -25,7 +25,7 @@ module GravatarImageTag
   module InstanceMethods
     def gravatar_image_tag(email, options = {})
       raise ArgumentError, "Options must be a hash, got #{options.inspect}" unless options.is_a? Hash
-      options[:alt] ||= 'Gravatar'
+      options[:alt] ||= "Gravatar"
       image_tag(GravatarImageTag.gravatar_url(email, options.delete(:gravatar)), options)
     end
   end
@@ -33,10 +33,10 @@ module GravatarImageTag
   def self.gravatar_url(email, overrides = {})
     overrides ||= {}
     gravatar_params = {
-      default:     GravatarImageTag.configuration.default_image,
-      filetype:    GravatarImageTag.configuration.filetype,
-      rating:      GravatarImageTag.configuration.rating,
-      size:        GravatarImageTag.configuration.size
+      default: GravatarImageTag.configuration.default_image,
+      filetype: GravatarImageTag.configuration.filetype,
+      rating: GravatarImageTag.configuration.rating,
+      size: GravatarImageTag.configuration.size,
     }.merge(overrides).delete_if { |_key, value| value.nil? }
     "#{gravatar_url_base}/#{gravatar_id(email, gravatar_params.delete(:filetype))}#{url_params(gravatar_params)}"
   end
@@ -44,7 +44,7 @@ module GravatarImageTag
   private
 
   def self.gravatar_url_base
-    'https://gravatar.com/avatar'
+    "https://gravatar.com/avatar"
   end
 
   def self.gravatar_id(email, filetype = nil)
@@ -53,7 +53,7 @@ module GravatarImageTag
 
   def self.url_params(gravatar_params)
     return nil if gravatar_params.keys.empty?
-    "?#{gravatar_params.map { |key, value| "#{key}=#{URI.escape(value.is_a?(String) ? value : value.to_s, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}" }.join('&amp;')}"
+    "?#{gravatar_params.map { |key, value| "#{key}=#{URI.escape(value.is_a?(String) ? value : value.to_s, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}" }.join("&amp;")}"
   end
 end
 

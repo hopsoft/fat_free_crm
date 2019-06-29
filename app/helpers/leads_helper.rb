@@ -10,17 +10,17 @@ module LeadsHelper
 
   #----------------------------------------------------------------------------
   def stars_for(lead)
-    star = '&#9733;'
+    star = "&#9733;"
     rating = lead.rating.to_i
-    (star * rating).html_safe + content_tag(:font, (star * (RATING_STARS - rating)).html_safe, color: 'gainsboro')
+    (star * rating).html_safe + content_tag(:font, (star * (RATING_STARS - rating)).html_safe, color: "gainsboro")
   end
 
   #----------------------------------------------------------------------------
   def link_to_convert(lead)
     link_to(t(:convert), convert_lead_path(lead),
-            method: :get,
-            with:   "{ previous: crm.find_form('edit_lead') }",
-            remote: true)
+      method: :get,
+      with: "{ previous: crm.find_form('edit_lead') }",
+      remote: true)
   end
 
   #----------------------------------------------------------------------------
@@ -81,6 +81,6 @@ module LeadsHelper
     summary << lead.email if lead.email.present?
     summary << "#{t(:phone_small)}: #{lead.phone}" if lead.phone.present?
     summary << "#{t(:mobile_small)}: #{lead.mobile}" if lead.mobile.present?
-    summary.join(', ')
+    summary.join(", ")
   end
 end

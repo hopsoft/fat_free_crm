@@ -8,13 +8,13 @@
 module FatFreeCRM
   class Engine < ::Rails::Engine
     config.autoload_paths += Dir[root.join("app/models/**")] +
-                             Dir[root.join("app/controllers/entities")]
+      Dir[root.join("app/controllers/entities")]
 
     config.active_record.observers = %i[lead_observer opportunity_observer
                                         task_observer entity_observer]
 
     initializer "model_core.factories", after: "factory_bot.set_factory_paths" do
-      FactoryBot.definition_file_paths << File.expand_path('../../../spec/factories', __FILE__) if defined?(FactoryBot)
+      FactoryBot.definition_file_paths << File.expand_path("../../../spec/factories", __FILE__) if defined?(FactoryBot)
     end
 
     initializer :append_migrations do |app|

@@ -15,6 +15,6 @@ class Admin::SettingsController < Admin::ApplicationController
   end
 
   def setup_current_tab
-    set_current_tab('admin/settings')
+    set_current_tab("admin/settings")
   end
 end

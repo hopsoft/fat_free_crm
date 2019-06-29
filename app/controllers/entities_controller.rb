@@ -45,7 +45,7 @@ class EntitiesController < ApplicationController
     entity.save
 
     respond_with(@entity) do |format|
-      format.js { render 'subscription_update', entity: entity }
+      format.js { render "subscription_update", entity: entity }
     end
   end
 
@@ -56,7 +56,7 @@ class EntitiesController < ApplicationController
     entity.save
 
     respond_with(entity) do |format|
-      format.js { render 'subscription_update', entity: entity }
+      format.js { render "subscription_update", entity: entity }
     end
   end
 
@@ -85,10 +85,10 @@ class EntitiesController < ApplicationController
     if @tag = Tag.find_by_name(params[:tag].strip)
       if @field_group = FieldGroup.find_by_tag_id_and_klass_name(@tag.id, klass.to_s)
         @asset = klass.find_by_id(params[:asset_id]) || klass.new
-        render('fields/group') && return
+        render("fields/group") && return
       end
     end
-    render plain: ''
+    render plain: ""
   end
 
   protected
@@ -147,7 +147,7 @@ class EntitiesController < ApplicationController
 
     # Get filter from session, unless running an advanced search
     unless advanced_search
-      filter = session[:"#{controller_name}_filter"].to_s.split(',')
+      filter = session[:"#{controller_name}_filter"].to_s.split(",")
       scope = scope.state(filter) if filter.present?
     end
 
@@ -165,9 +165,9 @@ class EntitiesController < ApplicationController
     # Pagination is disabled for xls and csv requests
     unless wants.xls? || wants.csv?
       per_page = if options[:per_page]
-                   options[:per_page] == 'all' ? @search_results_count : options[:per_page]
-                 else
-                   current_user.pref[:"#{controller_name}_per_page"]
+        options[:per_page] == "all" ? @search_results_count : options[:per_page]
+      else
+        current_user.pref[:"#{controller_name}_per_page"]
       end
       scope = scope.paginate(page: current_page, per_page: per_page)
     end
@@ -193,7 +193,7 @@ class EntitiesController < ApplicationController
   # "#real Billy Bones #pirate" => [ "Billy Bones", "real, pirate" ]
   #----------------------------------------------------------------------------
   def parse_query_and_tags(search_string)
-    return ['', ''] if search_string.blank?
+    return ["", ""] if search_string.blank?
     query = []
     tags = []
     search_string.strip.split(/\s+/).each do |token|
@@ -214,10 +214,10 @@ class EntitiesController < ApplicationController
   # Sets the current template view for entities in this context
   #----------------------------------------------------------------------------
   def set_view
-    if params['view']
-      controller = params['controller']
-      action = params['action'] == 'show' ? 'show' : 'index' # create update redraw filter index actions all use index view
-      current_user.pref[:"#{controller}_#{action}_view"] = params['view']
+    if params["view"]
+      controller = params["controller"]
+      action = params["action"] == "show" ? "show" : "index" # create update redraw filter index actions all use index view
+      current_user.pref[:"#{controller}_#{action}_view"] = params["view"]
     end
   end
 

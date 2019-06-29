@@ -24,14 +24,14 @@ class DateTimeInput < SimpleForm::Inputs::DateTimeInput
   end
 
   def add_autocomplete!
-    input_html_options[:autocomplete] ||= 'off'
+    input_html_options[:autocomplete] ||= "off"
   end
 
   # Serialize into a value recognised by datepicker, also sorts out timezone conversion
   #------------------------------------------------------------------------------
   def value
     val = object.send(attribute_name)
-    val.present? ? val.strftime('%Y-%m-%d %H:%M') : nil
+    val.present? ? val.strftime("%Y-%m-%d %H:%M") : nil
   end
 
   ActiveSupport.run_load_hooks(:fat_free_crm_date_time_input, self)

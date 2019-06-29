@@ -15,14 +15,14 @@ class DatePairInput < SimpleForm::Inputs::Base
     field1, field2 = get_fields
 
     [field1, field2].compact.each do |field|
-      out << '<div>'.html_safe
-      label = field == field1 ? I18n.t('pair.start') : I18n.t('pair.end')
+      out << "<div>".html_safe
+      label = field == field1 ? I18n.t("pair.start") : I18n.t("pair.end")
       %i[required disabled].each { |k| input_html_options.delete(k) } # ensure these come from field not default options
       input_html_options.merge!(field.input_options)
       input_html_options[:value] = value(field)
       out << "<label#{' class="req"' if input_html_options[:required]}>#{label}</label>".html_safe
       text = @builder.text_field(field.name, merge_wrapper_options(input_html_options, wrapper_options))
-      out << text << '</div>'.html_safe
+      out << text << "</div>".html_safe
     end
 
     out
@@ -39,13 +39,13 @@ class DatePairInput < SimpleForm::Inputs::Base
   # Turns autocomplete off unless told otherwise.
   #------------------------------------------------------------------------------
   def add_autocomplete!
-    input_html_options[:autocomplete] ||= 'off'
+    input_html_options[:autocomplete] ||= "off"
   end
 
   # Datepicker latches onto the 'date' class.
   #------------------------------------------------------------------------------
   def input_html_classes
-    super.push('date')
+    super.push("date")
   end
 
   # Returns the pair as [field1, field2]
@@ -60,7 +60,7 @@ class DatePairInput < SimpleForm::Inputs::Base
   #------------------------------------------------------------------------------
   def value(field)
     val = object.send(field.name)
-    val.present? ? val.strftime('%Y-%m-%d') : nil
+    val.present? ? val.strftime("%Y-%m-%d") : nil
   end
 
   ActiveSupport.run_load_hooks(:fat_free_crm_date_pair_input, self)

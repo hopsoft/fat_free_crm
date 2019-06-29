@@ -14,7 +14,7 @@ class ContactsController < EntitiesController
     @contacts = get_contacts(page: page_param, per_page: per_page_param)
 
     respond_with @contacts do |format|
-      format.xls { render layout: 'header' }
+      format.xls { render layout: "header" }
       format.csv { render csv: @contacts }
     end
   end
@@ -32,11 +32,11 @@ class ContactsController < EntitiesController
   # GET /contacts/new
   #----------------------------------------------------------------------------
   def new
-    @contact.attributes = { user: current_user, access: Setting.default_access, assigned_to: nil }
+    @contact.attributes = {user: current_user, access: Setting.default_access, assigned_to: nil}
     @account = Account.new(user: current_user)
 
     if params[:related]
-      model, id = params[:related].split('_')
+      model, id = params[:related].split("_")
       if related = model.classify.constantize.my(current_user).find_by_id(id)
         instance_variable_set("@#{model}", related)
       else
@@ -69,14 +69,14 @@ class ContactsController < EntitiesController
       else
         if params[:account]
           @account = if params[:account][:id].blank?
-                       if request.referer =~ /\/accounts\/(\d+)\z/
-                         Account.find(Regexp.last_match[1]) # related account
-                       else
-                         Account.new(user: current_user)
-                                  end
-                     else
-                       Account.find(params[:account][:id])
-                     end
+            if request.referer =~ /\/accounts\/(\d+)\z/
+              Account.find(Regexp.last_match[1]) # related account
+            else
+              Account.new(user: current_user)
+            end
+          else
+            Account.find(params[:account][:id])
+          end
         end
         @opportunity = Opportunity.my(current_user).find(params[:opportunity]) unless params[:opportunity].blank?
       end
@@ -88,11 +88,7 @@ class ContactsController < EntitiesController
   def update
     respond_with(@contact) do |_format|
       unless @contact.update_with_account_and_permissions(params.permit!)
-        @account = if @contact.account
-                     @contact.account
-                   else
-                     Account.new(user: current_user)
-                   end
+        @account = @contact.account || Account.new(user: current_user)
       end
     end
   end
@@ -157,7 +153,7 @@ class ContactsController < EntitiesController
 
   #----------------------------------------------------------------------------
   def get_accounts
-    @accounts = Account.my(current_user).order('name')
+    @accounts = Account.my(current_user).order("name")
   end
 
   def set_options

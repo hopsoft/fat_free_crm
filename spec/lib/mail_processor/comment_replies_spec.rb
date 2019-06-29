@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 require "fat_free_crm/mail_processor/comment_replies"
 
@@ -35,10 +35,10 @@ describe FatFreeCRM::MailProcessor::CommentReplies do
       @contact = create(:contact)
       comment_reply = "This is a new comment reply via email"
 
-      mail = Mail.new from:    "Aaron Assembler <aaron@example.com>",
-                      to:      "FFCRM Comments <crm-commment@example.com>",
+      mail = Mail.new from: "Aaron Assembler <aaron@example.com>",
+                      to: "FFCRM Comments <crm-commment@example.com>",
                       subject: "[contact:#{@contact.id}] Test Contact",
-                      body:    comment_reply
+                      body: comment_reply
       mock_message mail.to_s
 
       expect(@crawler).to receive(:archive).once
@@ -53,10 +53,10 @@ describe FatFreeCRM::MailProcessor::CommentReplies do
       @opportunity = create(:opportunity)
       comment_reply = "This is a new comment reply via email"
 
-      mail = Mail.new from:    "Aaron Assembler <aaron@example.com>",
-                      to:      "FFCRM Comments <crm-commment@example.com>",
+      mail = Mail.new from: "Aaron Assembler <aaron@example.com>",
+                      to: "FFCRM Comments <crm-commment@example.com>",
                       subject: "[op:#{@opportunity.id}] Test Opportunity",
-                      body:    comment_reply
+                      body: comment_reply
       mock_message mail.to_s
 
       expect(@crawler).to receive(:archive).once

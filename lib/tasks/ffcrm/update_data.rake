@@ -203,7 +203,7 @@ in a console and continue. This is strongly discouraged. You have been warned!
         %w[Yemen YM YE],
         %w[Zambia ZA ZM],
         %w[Zimbabwe ZI ZW],
-        ["United States", "USA", "US"]
+        ["United States", "USA", "US"],
       ]
 
       addresses_to_update = []
@@ -223,15 +223,13 @@ in a console and continue. This is strongly discouraged. You have been warned!
       end
 
       Address.transaction do
-        begin
-          addresses_to_update.each do |address_arr|
-            address_arr.each(&:save!)
-          end
-          Setting.have_run_country_migration = true
-        rescue Exception => e
-          puts e
-          raise ActiveRecord::Rollback
+        addresses_to_update.each do |address_arr|
+          address_arr.each(&:save!)
         end
+        Setting.have_run_country_migration = true
+      rescue Exception => e
+        puts e
+        raise ActiveRecord::Rollback
       end
     end
   end

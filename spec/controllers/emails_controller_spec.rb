@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
 describe EmailsController, "handling GET /emails" do
   MEDIATOR = %i[account campaign contact lead opportunity].freeze
@@ -26,7 +26,7 @@ describe EmailsController, "handling GET /emails" do
             @email = create(:email, mediator: @asset, user: current_user)
             allow(Email).to receive(:new).and_return(@email)
 
-            delete :destroy, params: { id: @email.id }, xhr: true
+            delete :destroy, params: {id: @email.id}, xhr: true
             expect { Email.find(@email.id) }.to raise_error(ActiveRecord::RecordNotFound)
             expect(response).to render_template("emails/destroy")
           end

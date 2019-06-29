@@ -1,42 +1,42 @@
 # frozen_string_literal: true
 
-xml.Worksheet 'ss:Name' => I18n.t(:tab_contacts) do
+xml.Worksheet "ss:Name" => I18n.t(:tab_contacts) do
   xml.Table do
     unless @contacts.empty?
       # Header.
       xml.Row do
-        heads = [I18n.t('id'),
-                 I18n.t('lead'),
-                 I18n.t('job_title'),
-                 I18n.t('name'),
-                 I18n.t('first_name'),
-                 I18n.t('last_name'),
-                 I18n.t('email'),
-                 I18n.t('alt_email'),
-                 I18n.t('phone'),
-                 I18n.t('mobile'),
-                 I18n.t('fax'),
-                 I18n.t('born_on'),
-                 I18n.t('background_info'),
-                 I18n.t('blog'),
-                 I18n.t('linked_in'),
-                 I18n.t('facebook'),
-                 I18n.t('twitter'),
-                 I18n.t('skype'),
-                 I18n.t('date_created'),
-                 I18n.t('date_updated'),
-                 I18n.t('assigned_to'),
-                 I18n.t('access'),
-                 I18n.t('department'),
-                 I18n.t('source'),
-                 I18n.t('do_not_call'),
-                 I18n.t('street1'),
-                 I18n.t('street2'),
-                 I18n.t('city'),
-                 I18n.t('state'),
-                 I18n.t('zipcode'),
-                 I18n.t('country'),
-                 I18n.t('address')]
+        heads = [I18n.t("id"),
+                 I18n.t("lead"),
+                 I18n.t("job_title"),
+                 I18n.t("name"),
+                 I18n.t("first_name"),
+                 I18n.t("last_name"),
+                 I18n.t("email"),
+                 I18n.t("alt_email"),
+                 I18n.t("phone"),
+                 I18n.t("mobile"),
+                 I18n.t("fax"),
+                 I18n.t("born_on"),
+                 I18n.t("background_info"),
+                 I18n.t("blog"),
+                 I18n.t("linked_in"),
+                 I18n.t("facebook"),
+                 I18n.t("twitter"),
+                 I18n.t("skype"),
+                 I18n.t("date_created"),
+                 I18n.t("date_updated"),
+                 I18n.t("assigned_to"),
+                 I18n.t("access"),
+                 I18n.t("department"),
+                 I18n.t("source"),
+                 I18n.t("do_not_call"),
+                 I18n.t("street1"),
+                 I18n.t("street2"),
+                 I18n.t("city"),
+                 I18n.t("state"),
+                 I18n.t("zipcode"),
+                 I18n.t("country"),
+                 I18n.t("address"),]
 
         # Append custom field labels to header
         Contact.fields.each do |field|
@@ -46,7 +46,7 @@ xml.Worksheet 'ss:Name' => I18n.t(:tab_contacts) do
         heads.each do |head|
           xml.Cell do
             xml.Data head,
-                     'ss:Type' => 'String'
+              "ss:Type" => "String"
           end
         end
       end
@@ -86,7 +86,7 @@ xml.Worksheet 'ss:Name' => I18n.t(:tab_contacts) do
                      address.try(:state),
                      address.try(:zipcode),
                      address.try(:country),
-                     address.try(:full_address)]
+                     address.try(:full_address),]
 
           # Append custom field values.
           Contact.fields.each do |field|
@@ -96,7 +96,7 @@ xml.Worksheet 'ss:Name' => I18n.t(:tab_contacts) do
           data.each do |value|
             xml.Cell do
               xml.Data value,
-                       'ss:Type' => (value.respond_to?(:abs) ? 'Number' : 'String').to_s
+                "ss:Type" => (value.respond_to?(:abs) ? "Number" : "String").to_s
             end
           end
         end

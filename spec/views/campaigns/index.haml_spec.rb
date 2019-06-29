@@ -5,13 +5,13 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe "/campaigns/index" do
   include CampaignsHelper
 
   before do
-    view.lookup_context.prefixes << 'entities'
+    view.lookup_context.prefixes << "entities"
     assign :per_page, Campaign.per_page
     assign :sort_by,  Campaign.sort_by
     assign :ransack_search, Campaign.ransack

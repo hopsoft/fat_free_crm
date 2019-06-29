@@ -53,20 +53,20 @@ class Lead < ActiveRecord::Base
   accepts_nested_attributes_for :business_address, allow_destroy: true
 
   scope :state, ->(filters) {
-    where(['status IN (?)' + (filters.delete('other') ? ' OR status IS NULL' : ''), filters])
+    where(["status IN (?)" + (filters.delete("other") ? " OR status IS NULL" : ""), filters])
   }
-  scope :converted,    ->       { where(status: 'converted') }
+  scope :converted,    ->       { where(status: "converted") }
   scope :for_campaign, ->(id)   { where(campaign_id: id) }
   scope :created_by,   ->(user) { where(user_id: user.id) }
   scope :assigned_to,  ->(user) { where(assigned_to: user.id) }
 
-  scope :text_search, ->(query) { ransack('first_name_or_last_name_or_company_or_email_cont' => query).result }
+  scope :text_search, ->(query) { ransack("first_name_or_last_name_or_company_or_email_cont" => query).result }
 
   uses_user_permissions
   acts_as_commentable
   uses_comment_extensions
   acts_as_taggable_on :tags
-  has_paper_trail class_name: 'Version', ignore: [:subscribed_users]
+  has_paper_trail class_name: "Version", ignore: [:subscribed_users]
   has_fields
   exportable
   sortable by: ["first_name ASC", "last_name ASC", "company ASC", "rating DESC", "created_at DESC", "updated_at DESC"], default: "created_at DESC"
@@ -77,7 +77,7 @@ class Lead < ActiveRecord::Base
   validates_presence_of :first_name, message: :missing_first_name, if: -> { Setting.require_first_names }
   validates_presence_of :last_name,  message: :missing_last_name,  if: -> { Setting.require_last_names  }
   validate :users_for_shared_access
-  validates :status, inclusion: { in: proc { Setting.unroll(:lead_status).map { |s| s.last.to_s } } }, allow_blank: true
+  validates :status, inclusion: {in: proc { Setting.unroll(:lead_status).map { |s| s.last.to_s } }}, allow_blank: true
 
   after_create :increment_leads_count
   after_destroy :decrement_leads_count
@@ -123,8 +123,8 @@ class Lead < ActiveRecord::Base
   # successful promotion Lead status gets set to :converted.
   #----------------------------------------------------------------------------
   def promote(params)
-    account_params = params[:account] ? params[:account] : {}
-    opportunity_params = params[:opportunity] ? params[:opportunity] : {}
+    account_params = params[:account] || {}
+    opportunity_params = params[:opportunity] || {}
 
     account     = Account.create_or_select_for(self, account_params)
     opportunity = Opportunity.create_for(self, account, opportunity_params)

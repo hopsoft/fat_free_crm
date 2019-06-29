@@ -20,7 +20,7 @@
 #  updated_at         :datetime
 #
 
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe Avatar do
   before(:each) do
@@ -39,7 +39,7 @@ describe Avatar do
   it "user might have many avatars as owner" do
     avatars = [
       create(:avatar, user: @user, entity: create(:user)),
-      create(:avatar, user: @user, entity: create(:user))
+      create(:avatar, user: @user, entity: create(:user)),
     ]
     expect(@user.avatars).to eq(avatars)
   end

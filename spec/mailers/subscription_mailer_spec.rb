@@ -5,14 +5,14 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe SubscriptionMailer do
   describe "comment notification" do
-    let(:user) { build(:user, email: 'notify_me@example.com') }
+    let(:user) { build(:user, email: "notify_me@example.com") }
     let(:campaign) { build(:campaign, user: user) }
     let(:account) { build(:account, user: user) }
-    let(:commentable) { build_stubbed(:opportunity, id: 47, name: 'Opportunity name', account: account, campaign: campaign, user: user) }
+    let(:commentable) { build_stubbed(:opportunity, id: 47, name: "Opportunity name", account: account, campaign: campaign, user: user) }
     let(:comment) { build(:comment, commentable: commentable, user: user) }
     let(:mail) { SubscriptionMailer.comment_notification(user, comment) }
 
@@ -25,7 +25,7 @@ describe SubscriptionMailer do
     end
 
     it "includes link to opportunity in body" do
-      expect(mail.body.encoded).to match('http://www.example.com/opportunities/47')
+      expect(mail.body.encoded).to match("http://www.example.com/opportunities/47")
     end
 
     it "uses email defined in settings as the sender" do

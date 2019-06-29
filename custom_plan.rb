@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'zeus/rails'
+require "zeus/rails"
 
 class CustomPlan < Zeus::Rails
   # def my_custom_command

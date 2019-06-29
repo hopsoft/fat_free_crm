@@ -17,13 +17,13 @@
 #  updated_at :datetime
 #
 
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe Permission do
   before(:each) do
     @valid_attributes = {
       user: mock_model(User),
-      asset: mock_model(Account)
+      asset: mock_model(Account),
     }
   end
 
@@ -44,13 +44,13 @@ describe Permission do
   it "should validate not allow group_ids or user_ids to be blank" do
     p = Permission.new
     expect(p).not_to be_valid
-    expect(p.errors['user_id']).to eq(["can't be blank"])
-    expect(p.errors['group_id']).to eq(["can't be blank"])
+    expect(p.errors["user_id"]).to eq(["can't be blank"])
+    expect(p.errors["group_id"]).to eq(["can't be blank"])
   end
 
-  it 'should not allow duplicate records with (user_id, group_id, asset_type, asset_ids) the same' do
-    permission1 = Permission.create(user_id: 1, group_id: 1, asset_id: 1, asset_type: 'UserWithPermission')
-    permission2 = Permission.new(user_id: 1, group_id: 1, asset_id: 1, asset_type: 'UserWithPermission')
+  it "should not allow duplicate records with (user_id, group_id, asset_type, asset_ids) the same" do
+    permission1 = Permission.create(user_id: 1, group_id: 1, asset_id: 1, asset_type: "UserWithPermission")
+    permission2 = Permission.new(user_id: 1, group_id: 1, asset_id: 1, asset_type: "UserWithPermission")
 
     expect(permission1).to be_valid
     expect(permission2).not_to be_valid

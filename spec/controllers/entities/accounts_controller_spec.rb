@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe AccountsController do
   def get_data_for_sidebar
@@ -41,10 +41,10 @@ describe AccountsController do
 
     it "should filter out accounts by category" do
       categories = %w[customer vendor]
-      controller.session[:accounts_filter] = categories.join(',')
+      controller.session[:accounts_filter] = categories.join(",")
       @accounts = [
         create(:account, user: current_user, category: categories.first),
-        create(:account, user: current_user, category: categories.last)
+        create(:account, user: current_user, category: categories.last),
       ]
       # This one should be filtered out.
       create(:account, user: current_user, category: "competitor")
@@ -57,7 +57,7 @@ describe AccountsController do
       @first  = create(:account, user: current_user, name: "The first one")
       @second = create(:account, user: current_user, name: "The second one")
 
-      get :index, params: { query: "second" }
+      get :index, params: {query: "second"}
       expect(assigns[:accounts]).to eq([@second])
       expect(assigns[:current_query]).to eq("second")
       expect(session[:accounts_current_query]).to eq("second")
@@ -66,7 +66,7 @@ describe AccountsController do
     describe "AJAX pagination" do
       it "should pick up page number from params" do
         @accounts = [create(:account, user: current_user)]
-        get :index, params: { page: 42 }, xhr: true
+        get :index, params: {page: 42}, xhr: true
 
         expect(assigns[:current_page].to_i).to eq(42)
         expect(assigns[:accounts]).to eq([]) # page #42 should be empty if there's only one account ;-)
@@ -131,7 +131,7 @@ describe AccountsController do
       end
 
       it "should expose the requested account as @account and render [show] template" do
-        get :show, params: { id: @account.id }
+        get :show, params: {id: @account.id}
         expect(assigns[:account]).to eq(@account)
         expect(assigns[:stage]).to eq(@stage)
         expect(assigns[:comment].attributes).to eq(@comment.attributes)
@@ -139,8 +139,8 @@ describe AccountsController do
       end
 
       it "should update an activity when viewing the account" do
-        get :show, params: { id: @account.id }
-        expect(@account.versions.last.event).to eq('view')
+        get :show, params: {id: @account.id}
+        expect(@account.versions.last.event).to eq("view")
       end
     end
 
@@ -151,7 +151,7 @@ describe AccountsController do
         expect(@account).to receive(:to_json).and_return("generated JSON")
 
         request.env["HTTP_ACCEPT"] = "application/json"
-        get :show, params: { id: 42 }
+        get :show, params: {id: 42}
         expect(response.body).to eq("generated JSON")
       end
     end
@@ -163,7 +163,7 @@ describe AccountsController do
         expect(@account).to receive(:to_xml).and_return("generated XML")
 
         request.env["HTTP_ACCEPT"] = "application/xml"
-        get :show, params: { id: 42 }
+        get :show, params: {id: 42}
         expect(response.body).to eq("generated XML")
       end
     end
@@ -173,7 +173,7 @@ describe AccountsController do
         @account = create(:account, user: current_user)
         @account.destroy
 
-        get :show, params: { id: @account.id }
+        get :show, params: {id: @account.id}
         expect(flash[:warning]).not_to eq(nil)
         expect(response).to redirect_to(accounts_path)
       end
@@ -181,7 +181,7 @@ describe AccountsController do
       it "should redirect to account index if the account is protected" do
         @private = create(:account, user: create(:user), access: "Private")
 
-        get :show, params: { id: @private.id }
+        get :show, params: {id: @private.id}
         expect(flash[:warning]).not_to eq(nil)
         expect(response).to redirect_to(accounts_path)
       end
@@ -191,7 +191,7 @@ describe AccountsController do
         @account.destroy
         request.env["HTTP_ACCEPT"] = "application/json"
 
-        get :show, params: { id: @account.id }
+        get :show, params: {id: @account.id}
         expect(response.code).to eq("404") # :not_found
       end
 
@@ -200,7 +200,7 @@ describe AccountsController do
         @account.destroy
         request.env["HTTP_ACCEPT"] = "application/xml"
 
-        get :show, params: { id: @account.id }
+        get :show, params: {id: @account.id}
         expect(response.code).to eq("404") # :not_found
       end
     end
@@ -222,7 +222,7 @@ describe AccountsController do
     it "should created an instance of related object when necessary" do
       @contact = create(:contact, id: 42)
 
-      get :new, params: { related: "contact_42" }, xhr: true
+      get :new, params: {related: "contact_42"}, xhr: true
       expect(assigns[:contact]).to eq(@contact)
     end
   end
@@ -233,7 +233,7 @@ describe AccountsController do
     it "should expose the requested account as @account and render [edit] template" do
       @account = create(:account, id: 42, user: current_user)
 
-      get :edit, params: { id: 42 }, xhr: true
+      get :edit, params: {id: 42}, xhr: true
       expect(assigns[:account]).to eq(@account)
       expect(assigns[:previous]).to eq(nil)
       expect(response).to render_template("accounts/edit")
@@ -243,7 +243,7 @@ describe AccountsController do
       @account = create(:account, id: 42)
       @previous = create(:account, id: 41)
 
-      get :edit, params: { id: 42, previous: 41 }, xhr: true
+      get :edit, params: {id: 42, previous: 41}, xhr: true
       expect(assigns[:previous]).to eq(@previous)
     end
 
@@ -252,7 +252,7 @@ describe AccountsController do
         @account = create(:account, user: current_user)
         @account.destroy
 
-        get :edit, params: { id: @account.id }, xhr: true
+        get :edit, params: {id: @account.id}, xhr: true
         expect(flash[:warning]).not_to eq(nil)
         expect(response.body).to eq("window.location.reload();")
       end
@@ -260,7 +260,7 @@ describe AccountsController do
       it "should reload current page with the flash message if the account is protected" do
         @private = create(:account, user: create(:user), access: "Private")
 
-        get :edit, params: { id: @private.id }, xhr: true
+        get :edit, params: {id: @private.id}, xhr: true
         expect(flash[:warning]).not_to eq(nil)
         expect(response.body).to eq("window.location.reload();")
       end
@@ -275,7 +275,7 @@ describe AccountsController do
       it "should notify the view if previous account got deleted" do
         @previous.destroy
 
-        get :edit, params: { id: @account.id, previous: @previous.id }, xhr: true
+        get :edit, params: {id: @account.id, previous: @previous.id}, xhr: true
         expect(flash[:warning]).to eq(nil) # no warning, just silently remove the div
         expect(assigns[:previous]).to eq(@previous.id)
         expect(response).to render_template("accounts/edit")
@@ -284,7 +284,7 @@ describe AccountsController do
       it "should notify the view if previous account got protected" do
         @previous.update_attribute(:access, "Private")
 
-        get :edit, params: { id: @account.id, previous: @previous.id }, xhr: true
+        get :edit, params: {id: @account.id, previous: @previous.id}, xhr: true
         expect(flash[:warning]).to eq(nil)
         expect(assigns[:previous]).to eq(@previous.id)
         expect(response).to render_template("accounts/edit")
@@ -301,7 +301,7 @@ describe AccountsController do
         @account = build(:account, name: "Hello world", user: current_user)
         allow(Account).to receive(:new).and_return(@account)
 
-        post :create, params: { account: { name: "Hello world" } }, xhr: true
+        post :create, params: {account: {name: "Hello world"}}, xhr: true
         expect(assigns(:account)).to eq(@account)
         expect(response).to render_template("accounts/create")
       end
@@ -311,7 +311,7 @@ describe AccountsController do
         @account = build(:account, user: current_user)
         allow(Account).to receive(:new).and_return(@account)
 
-        post :create, params: { account: { name: "Hello" } }, xhr: true
+        post :create, params: {account: {name: "Hello"}}, xhr: true
         expect(assigns[:accounts]).to eq([@account])
       end
 
@@ -319,7 +319,7 @@ describe AccountsController do
         @account = build(:account, name: "Hello", user: current_user)
         allow(Campaign).to receive(:new).and_return(@account)
 
-        post :create, params: { account: { name: "Hello" } }, xhr: true
+        post :create, params: {account: {name: "Hello"}}, xhr: true
         expect(assigns[:account_category_total]).to be_instance_of(HashWithIndifferentAccess)
       end
 
@@ -327,7 +327,7 @@ describe AccountsController do
         @account = build(:account, name: "Hello world", user: current_user)
         allow(Account).to receive(:new).and_return(@account)
 
-        post :create, params: { account: { name: "Hello world" }, comment_body: "Awesome comment is awesome" }, xhr: true
+        post :create, params: {account: {name: "Hello world"}, comment_body: "Awesome comment is awesome"}, xhr: true
         expect(assigns[:account].comments.map(&:comment)).to include("Awesome comment is awesome")
       end
     end
@@ -337,7 +337,7 @@ describe AccountsController do
         @account = build(:account, name: nil, user: nil)
         allow(Account).to receive(:new).and_return(@account)
 
-        post :create, params: { account: {} }, xhr: true
+        post :create, params: {account: {}}, xhr: true
         expect(assigns(:account)).to eq(@account)
         expect(response).to render_template("accounts/create")
       end
@@ -352,7 +352,7 @@ describe AccountsController do
       it "should update the requested account, expose the requested account as @account, and render [update] template" do
         @account = create(:account, id: 42, name: "Hello people")
 
-        put :update, params: { id: 42, account: { name: "Hello world" } }, xhr: true
+        put :update, params: {id: 42, account: {name: "Hello world"}}, xhr: true
         expect(@account.reload.name).to eq("Hello world")
         expect(assigns(:account)).to eq(@account)
         expect(response).to render_template("accounts/update")
@@ -362,7 +362,7 @@ describe AccountsController do
         @account = create(:account, id: 42)
         request.env["HTTP_REFERER"] = "http://localhost/accounts"
 
-        put :update, params: { id: 42, account: { name: "Hello" } }, xhr: true
+        put :update, params: {id: 42, account: {name: "Hello"}}, xhr: true
         expect(assigns(:account)).to eq(@account)
         expect(assigns[:account_category_total]).to be_instance_of(HashWithIndifferentAccess)
       end
@@ -370,7 +370,7 @@ describe AccountsController do
       it "should update account permissions when sharing with specific users" do
         @account = create(:account, id: 42, access: "Public")
 
-        put :update, params: { id: 42, account: { name: "Hello", access: "Shared", user_ids: [7, 8] } }, xhr: true
+        put :update, params: {id: 42, account: {name: "Hello", access: "Shared", user_ids: [7, 8]}}, xhr: true
         expect(assigns[:account].access).to eq("Shared")
         expect(assigns[:account].user_ids.sort).to eq([7, 8])
       end
@@ -380,7 +380,7 @@ describe AccountsController do
           @account = create(:account, user: current_user)
           @account.destroy
 
-          put :update, params: { id: @account.id }, xhr: true
+          put :update, params: {id: @account.id}, xhr: true
           expect(flash[:warning]).not_to eq(nil)
           expect(response.body).to eq("window.location.reload();")
         end
@@ -388,7 +388,7 @@ describe AccountsController do
         it "should reload current page with the flash message if the account is protected" do
           @private = create(:account, user: create(:user), access: "Private")
 
-          put :update, params: { id: @private.id }, xhr: true
+          put :update, params: {id: @private.id}, xhr: true
           expect(flash[:warning]).not_to eq(nil)
           expect(response.body).to eq("window.location.reload();")
         end
@@ -399,7 +399,7 @@ describe AccountsController do
       it "should not update the requested account but still expose the requested account as @account, and render [update] template" do
         @account = create(:account, id: 42, name: "Hello people")
 
-        put :update, params: { id: 42, account: { name: nil } }, xhr: true
+        put :update, params: {id: 42, account: {name: nil}}, xhr: true
         expect(assigns(:account).reload.name).to eq("Hello people")
         expect(assigns(:account)).to eq(@account)
         expect(response).to render_template("accounts/update")
@@ -418,7 +418,7 @@ describe AccountsController do
     describe "AJAX request" do
       it "should destroy the requested account and render [destroy] template" do
         @another_account = create(:account, user: current_user)
-        delete :destroy, params: { id: @account.id }, xhr: true
+        delete :destroy, params: {id: @account.id}, xhr: true
 
         expect { Account.find(@account.id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(assigns[:accounts]).to eq([@another_account]) # @account got deleted
@@ -426,7 +426,7 @@ describe AccountsController do
       end
 
       it "should get data for accounts sidebar" do
-        delete :destroy, params: { id: @account.id }, xhr: true
+        delete :destroy, params: {id: @account.id}, xhr: true
 
         expect(assigns[:account_category_total]).to be_instance_of(HashWithIndifferentAccess)
       end
@@ -434,7 +434,7 @@ describe AccountsController do
       it "should try previous page and render index action if current page has no accounts" do
         session[:accounts_current_page] = 42
 
-        delete :destroy, params: { id: @account.id }, xhr: true
+        delete :destroy, params: {id: @account.id}, xhr: true
         expect(session[:accounts_current_page]).to eq(41)
         expect(response).to render_template("accounts/index")
       end
@@ -442,7 +442,7 @@ describe AccountsController do
       it "should render index action when deleting last account" do
         session[:accounts_current_page] = 1
 
-        delete :destroy, params: { id: @account.id }, xhr: true
+        delete :destroy, params: {id: @account.id}, xhr: true
         expect(session[:accounts_current_page]).to eq(1)
         expect(response).to render_template("accounts/index")
       end
@@ -452,7 +452,7 @@ describe AccountsController do
           @account = create(:account, user: current_user)
           @account.destroy
 
-          delete :destroy, params: { id: @account.id }, xhr: true
+          delete :destroy, params: {id: @account.id}, xhr: true
           expect(flash[:warning]).not_to eq(nil)
           expect(response.body).to eq("window.location.reload();")
         end
@@ -460,7 +460,7 @@ describe AccountsController do
         it "should reload current page with the flash message if the account is protected" do
           @private = create(:account, user: create(:user), access: "Private")
 
-          delete :destroy, params: { id: @private.id }, xhr: true
+          delete :destroy, params: {id: @private.id}, xhr: true
           expect(flash[:warning]).not_to eq(nil)
           expect(response.body).to eq("window.location.reload();")
         end
@@ -469,7 +469,7 @@ describe AccountsController do
 
     describe "HTML request" do
       it "should redirect to Accounts index when an account gets deleted from its landing page" do
-        delete :destroy, params: { id: @account.id }
+        delete :destroy, params: {id: @account.id}
 
         expect(flash[:notice]).not_to eq(nil)
         expect(response).to redirect_to(accounts_path)
@@ -479,7 +479,7 @@ describe AccountsController do
         @account = create(:account, user: current_user)
         @account.destroy
 
-        delete :destroy, params: { id: @account.id }
+        delete :destroy, params: {id: @account.id}
         expect(flash[:warning]).not_to eq(nil)
         expect(response).to redirect_to(accounts_path)
       end
@@ -487,7 +487,7 @@ describe AccountsController do
       it "should redirect to account index with the flash message if the account is protected" do
         @private = create(:account, user: create(:user), access: "Private")
 
-        delete :destroy, params: { id: @private.id }
+        delete :destroy, params: {id: @private.id}
         expect(flash[:warning]).not_to eq(nil)
         expect(response).to redirect_to(accounts_path)
       end
@@ -562,24 +562,24 @@ describe AccountsController do
   #----------------------------------------------------------------------------
   describe "responding to GET redraw" do
     it "should save user selected account preference" do
-      get :redraw, params: { per_page: 42, view: "brief", sort_by: "name" }, xhr: true
+      get :redraw, params: {per_page: 42, view: "brief", sort_by: "name"}, xhr: true
       expect(current_user.preference[:accounts_per_page]).to eq(42)
       expect(current_user.preference[:accounts_index_view]).to eq("brief")
       expect(current_user.preference[:accounts_sort_by]).to eq("accounts.name ASC")
     end
 
     it "should reset current page to 1" do
-      get :redraw, params: { per_page: 42, view: "brief", sort_by: "name" }, xhr: true
+      get :redraw, params: {per_page: 42, view: "brief", sort_by: "name"}, xhr: true
       expect(session[:accounts_current_page]).to eq(1)
     end
 
     it "should select @accounts and render [index] template" do
       @accounts = [
         create(:account, name: "A", user: current_user),
-        create(:account, name: "B", user: current_user)
+        create(:account, name: "B", user: current_user),
       ]
 
-      get :redraw, params: { per_page: 1, sort_by: "name" }, xhr: true
+      get :redraw, params: {per_page: 1, sort_by: "name"}, xhr: true
       expect(assigns(:accounts)).to eq([@accounts.first])
       expect(response).to render_template("accounts/index")
     end
@@ -592,14 +592,14 @@ describe AccountsController do
       session[:accounts_filter] = "customer,vendor"
       @accounts = [create(:account, category: "partner", user: current_user)]
 
-      post :filter, params: { category: "partner" }, xhr: true
+      post :filter, params: {category: "partner"}, xhr: true
       expect(assigns(:accounts)).to eq(@accounts)
       expect(response).to render_template("accounts/index")
     end
 
     it "should reset current page to 1" do
       @accounts = []
-      post :filter, params: { category: "partner" }, xhr: true
+      post :filter, params: {category: "partner"}, xhr: true
 
       expect(session[:accounts_current_page]).to eq(1)
     end

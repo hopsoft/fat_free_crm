@@ -27,20 +27,20 @@ module Admin::UsersHelper
     summary = []
     title_and_company = user_summary_title_and_company(user)
     summary << title_and_company unless title_and_company.blank?
-    summary << t('pluralize.login', user.sign_in_count) if user.last_sign_in_at && user.sign_in_count > 0
+    summary << t("pluralize.login", user.sign_in_count) if user.last_sign_in_at && user.sign_in_count > 0
     summary << user.email
     summary << "#{t :phone_small}: #{user.phone}" unless user.phone.blank?
     summary << "#{t :mobile_small}: #{user.mobile}" unless user.mobile.blank?
     summary << user_summary_created_at(user)
     summary << user_summary_status(user)
-    summary.join(', ')
+    summary.join(", ")
   end
 
   private
 
   # Formatted user title and company for user summary
   def user_summary_title_and_company(user)
-    str = user.title.blank? ? '' : h(user.title)
+    str = user.title.blank? ? "" : h(user.title)
     str += " #{t(:at)} #{user.company}" unless user.company.blank?
     str
   end

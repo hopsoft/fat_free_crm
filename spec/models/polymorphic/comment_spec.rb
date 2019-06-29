@@ -21,7 +21,7 @@
 #  state            :string(16)      default("Expanded"), not null
 #
 
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe Comment do
   it "should create a new instance given valid attributes" do
@@ -31,7 +31,7 @@ describe Comment do
   it "should subscribe users mentioned in the comment to the entity, and notify them via email" do
     expected_users = [
       create(:user, username: "test_user"),
-      create(:user, username: "another_user")
+      create(:user, username: "another_user"),
     ]
     entity = create(:lead)
     Comment.create!(comment: "Hey @test_user, take a look at this. Also show @another_user",

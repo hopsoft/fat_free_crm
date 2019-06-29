@@ -8,7 +8,7 @@
 namespace :ffcrm do
   desc "Prepare the database"
   task setup: :environment do
-    if ENV["PROCEED"] != 'true'
+    if ENV["PROCEED"] != "true"
       puts "\nFatFree CRM is about to run migrations on your database. Make sure you have a backup before proceeding.\n\n"
       proceed = false
       loop do
@@ -61,7 +61,7 @@ namespace :ffcrm do
 
           puts "\nThe admin user will be created with the following credentials:\n\n"
           puts "  Username: #{username}"
-          puts "  Password: #{'*' * password.length}"
+          puts "  Password: #{"*" * password.length}"
           puts "     Email: #{email}\n\n"
           loop do
             print "Continue [yes/no/exit]: "

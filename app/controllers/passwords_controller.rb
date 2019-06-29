@@ -7,5 +7,5 @@
 #------------------------------------------------------------------------------
 class PasswordsController < Devise::PasswordsController
   respond_to :html
-  append_view_path 'app/views/devise'
+  append_view_path "app/views/devise"
 end

@@ -15,11 +15,11 @@ atom_feed do |feed|
   end
 
   @activities.each do |activity|
-    feed.entry(activity, url: '') do |entry|
+    feed.entry(activity, url: "") do |entry|
       entry.title activity_title(activity)
 
       entry.author do |author|
-        author.name activity.user.try(:full_name) || I18n.t('version.anonymous')
+        author.name activity.user.try(:full_name) || I18n.t("version.anonymous")
       end
     end
   end

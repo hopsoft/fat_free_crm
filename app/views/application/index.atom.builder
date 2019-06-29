@@ -5,9 +5,9 @@ items  = controller.controller_name
 item   = items.singularize
 assets = controller.instance_variable_get("@#{items}")
 
-if item == 'task'
+if item == "task"
   assets = assets.values.flatten
-  title  = t(:"#{@view}_tab") + ' ' + t(items.to_sym)
+  title  = t(:"#{@view}_tab") + " " + t(items.to_sym)
 end
 
 atom_feed do |feed|

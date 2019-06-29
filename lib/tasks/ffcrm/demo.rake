@@ -10,34 +10,34 @@ namespace :ffcrm do
     desc "Load demo data"
     task load: :environment do
       # Load fixtures
-      require 'active_record/fixtures'
-      Dir.glob(FatFreeCRM.root.join('db', 'demo', '*.{yml,csv}')).each do |fixture_file|
-        ActiveRecord::FixtureSet.create_fixtures(FatFreeCRM.root.join('db/demo'), File.basename(fixture_file, '.*'))
+      require "active_record/fixtures"
+      Dir.glob(FatFreeCRM.root.join("db", "demo", "*.{yml,csv}")).each do |fixture_file|
+        ActiveRecord::FixtureSet.create_fixtures(FatFreeCRM.root.join("db/demo"), File.basename(fixture_file, ".*"))
       end
 
       def create_version(options)
         version = Version.new
-        options.each { |k, v| version.send(k.to_s + '=', v) }
+        options.each { |k, v| version.send(k.to_s + "=", v) }
         version.save!
       end
 
       # Simulate random user activities.
       $stdout.sync = true
       puts "Generating user activities..."
-      %w[Account Address Campaign Comment Contact Email Lead Opportunity Task].map do |model|
+      %w[Account Address Campaign Comment Contact Email Lead Opportunity Task].map { |model|
         model.constantize.all
-      end.flatten.each do |item|
+      }.flatten.each do |item|
         user = if item.respond_to?(:user)
-                 item.user
-               elsif item.respond_to?(:addressable)
-                 item.addressable.try(:user)
+          item.user
+        elsif item.respond_to?(:addressable)
+          item.addressable.try(:user)
         end
         related = if item.respond_to?(:addressable)
-                    item.addressable
-                  elsif item.respond_to?(:commentable)
-                    item.commentable
-                  elsif item.respond_to?(:mediator)
-                    item.mediator
+          item.addressable
+        elsif item.respond_to?(:commentable)
+          item.commentable
+        elsif item.respond_to?(:mediator)
+          item.mediator
         end
         # Backdate within the last 30 days
         created_at = item.created_at - rand(1..30).days + rand(12 * 60).minutes

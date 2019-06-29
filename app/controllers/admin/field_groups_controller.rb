@@ -6,7 +6,7 @@
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 class Admin::FieldGroupsController < Admin::ApplicationController
-  helper 'admin/fields'
+  helper "admin/fields"
 
   # GET /admin/field_groups/new
   # GET /admin/field_groups/new.xml                                        AJAX

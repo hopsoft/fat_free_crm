@@ -20,7 +20,7 @@ module VersionsHelper
     end
 
     # Find account and link to it.
-    if attr_name == 'account_id'
+    if attr_name == "account_id"
       if first.present? && (account = Account.find_by_id(first))
         first = link_to(h(account.name), account_path(account))
       end

@@ -6,5 +6,5 @@
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 class ConfirmationsController < Devise::ConfirmationsController
   respond_to :html
-  append_view_path 'app/views/devise'
+  append_view_path "app/views/devise"
 end

@@ -1,29 +1,29 @@
 # frozen_string_literal: true
 
-xml.Worksheet 'ss:Name' => I18n.t(:tab_campaigns) do
+xml.Worksheet "ss:Name" => I18n.t(:tab_campaigns) do
   xml.Table do
     unless @campaigns.empty?
       # Header.
       xml.Row do
-        heads = [I18n.t('id'),
-                 I18n.t('user'),
-                 I18n.t('assigned_to'),
-                 I18n.t('name'),
-                 I18n.t('access'),
-                 I18n.t('status'),
-                 I18n.t('budget'),
-                 I18n.t('option_target_leads'),
-                 I18n.t('target_conversion'),
-                 I18n.t('option_target_revenue'),
-                 I18n.t('number_of_leads'),
-                 I18n.t('total_opportunities'),
-                 I18n.t('revenue'),
-                 I18n.t('option_starts_on'),
-                 I18n.t('option_ends_on'),
-                 I18n.t('objectives'),
-                 I18n.t('background_info'),
-                 I18n.t('date_created'),
-                 I18n.t('date_updated')]
+        heads = [I18n.t("id"),
+                 I18n.t("user"),
+                 I18n.t("assigned_to"),
+                 I18n.t("name"),
+                 I18n.t("access"),
+                 I18n.t("status"),
+                 I18n.t("budget"),
+                 I18n.t("option_target_leads"),
+                 I18n.t("target_conversion"),
+                 I18n.t("option_target_revenue"),
+                 I18n.t("number_of_leads"),
+                 I18n.t("total_opportunities"),
+                 I18n.t("revenue"),
+                 I18n.t("option_starts_on"),
+                 I18n.t("option_ends_on"),
+                 I18n.t("objectives"),
+                 I18n.t("background_info"),
+                 I18n.t("date_created"),
+                 I18n.t("date_updated"),]
 
         # Append custom field labels to header
         Campaign.fields.each do |field|
@@ -33,7 +33,7 @@ xml.Worksheet 'ss:Name' => I18n.t(:tab_campaigns) do
         heads.each do |head|
           xml.Cell do
             xml.Data head,
-                     'ss:Type' => 'String'
+              "ss:Type" => "String"
           end
         end
       end
@@ -59,7 +59,7 @@ xml.Worksheet 'ss:Name' => I18n.t(:tab_campaigns) do
                   campaign.objectives,
                   campaign.background_info,
                   campaign.created_at,
-                  campaign.updated_at]
+                  campaign.updated_at,]
 
           # Append custom field values.
           Campaign.fields.each do |field|
@@ -69,7 +69,7 @@ xml.Worksheet 'ss:Name' => I18n.t(:tab_campaigns) do
           data.each do |value|
             xml.Cell do
               xml.Data value,
-                       'ss:Type' => (value.respond_to?(:abs) ? 'Number' : 'String').to_s
+                "ss:Type" => (value.respond_to?(:abs) ? "Number" : "String").to_s
             end
           end
         end

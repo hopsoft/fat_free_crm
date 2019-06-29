@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe DeviseMailer do
   describe "reset_password_instructions" do
@@ -29,7 +29,7 @@ describe DeviseMailer do
     end
 
     it "includes password reset link in body" do
-      expect(mail.body.encoded).to have_link('Change my password', href: "http://www.example.com/users/password/edit?reset_password_token=#{user.reset_password_token}")
+      expect(mail.body.encoded).to have_link("Change my password", href: "http://www.example.com/users/password/edit?reset_password_token=#{user.reset_password_token}")
     end
   end
 end

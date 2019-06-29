@@ -6,11 +6,11 @@
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 
-require 'spec_helper'
-require 'fat_free_crm/secret_token_generator'
+require "spec_helper"
+require "fat_free_crm/secret_token_generator"
 
 describe FatFreeCRM::SecretTokenGenerator do
-  let(:token) { 'e5a4b315c062dec4ecb40dabcde84fd6c067cb016a813702d2f4299ad16255c88ed1020bd47fb527e8e5f7052b04be1fbb8e63c043b8fb36f88d3c7d79a68681' }
+  let(:token) { "e5a4b315c062dec4ecb40dabcde84fd6c067cb016a813702d2f4299ad16255c88ed1020bd47fb527e8e5f7052b04be1fbb8e63c043b8fb36f88d3c7d79a68681" }
 
   describe "setup!" do
     it "should not generate a new token if one exists" do

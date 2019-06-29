@@ -27,11 +27,11 @@
 #  background_info :string(255)
 #
 
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe Opportunity do
   it "should create a new instance given valid attributes" do
-    Opportunity.create!(name: "Opportunity", stage: 'analysis')
+    Opportunity.create!(name: "Opportunity", stage: "analysis")
   end
 
   it "should be possible to create opportunity with the same name" do
@@ -40,12 +40,12 @@ describe Opportunity do
   end
 
   it "have a default stage" do
-    expect(Setting).to receive(:[]).with(:opportunity_default_stage).and_return('default')
-    expect(Opportunity.default_stage).to eql('default')
+    expect(Setting).to receive(:[]).with(:opportunity_default_stage).and_return("default")
+    expect(Opportunity.default_stage).to eql("default")
   end
 
   it "have a fallback default stage" do
-    expect(Opportunity.default_stage).to eql('prospecting')
+    expect(Opportunity.default_stage).to eql("prospecting")
   end
 
   describe "Update existing opportunity" do
@@ -55,72 +55,72 @@ describe Opportunity do
     end
 
     it "should create new account if requested so" do
-      expect do
+      expect {
         @opportunity.update_with_account_and_permissions(
-          account: { name: "New account" },
-          opportunity: { name: "Hello" }
+          account: {name: "New account"},
+          opportunity: {name: "Hello"}
         )
-      end.to change(Account, :count).by(1)
+      }.to change(Account, :count).by(1)
       expect(Account.last.name).to eq("New account")
-      expect(@opportunity.name.gsub(/#\d+ /, '')).to eq("Hello")
+      expect(@opportunity.name.gsub(/#\d+ /, "")).to eq("Hello")
     end
 
     it "should update the account another account was selected" do
       @another_account = create(:account)
-      expect do
+      expect {
         @opportunity.update_with_account_and_permissions(
-          account: { id: @another_account.id },
-          opportunity: { name: "Hello" }
+          account: {id: @another_account.id},
+          opportunity: {name: "Hello"}
         )
-      end.not_to change(Account, :count)
+      }.not_to change(Account, :count)
       expect(@opportunity.account).to eq(@another_account)
-      expect(@opportunity.name.gsub(/#\d+ /, '')).to eq("Hello")
+      expect(@opportunity.name.gsub(/#\d+ /, "")).to eq("Hello")
     end
 
     it "should drop existing Account if [create new account] is blank" do
-      expect do
+      expect {
         @opportunity.update_with_account_and_permissions(
-          account: { name: "" },
-          opportunity: { name: "Hello" }
+          account: {name: ""},
+          opportunity: {name: "Hello"}
         )
-      end.not_to change(Account, :count)
+      }.not_to change(Account, :count)
       expect(@opportunity.account).to be_nil
-      expect(@opportunity.name.gsub(/#\d+ /, '')).to eq("Hello")
+      expect(@opportunity.name.gsub(/#\d+ /, "")).to eq("Hello")
     end
 
     it "should drop existing Account if [-- None --] is selected from list of accounts" do
-      expect do
+      expect {
         @opportunity.update_with_account_and_permissions(
-          account: { id: "" },
-          opportunity: { name: "Hello" }
+          account: {id: ""},
+          opportunity: {name: "Hello"}
         )
-      end.not_to change(Account, :count)
+      }.not_to change(Account, :count)
       expect(@opportunity.account).to be_nil
-      expect(@opportunity.name.gsub(/#\d+ /, '')).to eq("Hello")
+      expect(@opportunity.name.gsub(/#\d+ /, "")).to eq("Hello")
     end
 
     it "should change account if entered name of another account was found" do
       @another_account = create(:account, name: "Another name")
-      expect do
+      expect {
         @opportunity.update_with_account_and_permissions(
-          account: { name: "Another name" },
-          opportunity: { name: "Hello" }
+          account: {name: "Another name"},
+          opportunity: {name: "Hello"}
         )
-      end.not_to change(Account, :count)
+      }.not_to change(Account, :count)
       expect(@opportunity.account).to eq(@another_account)
-      expect(@opportunity.name.gsub(/#\d+ /, '')).to eq("Hello")
+      expect(@opportunity.name.gsub(/#\d+ /, "")).to eq("Hello")
     end
 
     it "should set the probability to 0% if opportunity has been lost" do
       opportunity = create(:opportunity, stage: "prospecting", probability: 25)
-      opportunity.update_attributes(stage: 'lost')
+      opportunity.update_attributes(stage: "lost")
       opportunity.reload
       expect(opportunity.probability).to eq(0)
     end
 
     it "should set the probablility to 100% if opportunity has been won" do
       opportunity = create(:opportunity, stage: "prospecting", probability: 65)
-      opportunity.update_attributes(stage: 'won')
+      opportunity.update_attributes(stage: "won")
       opportunity.reload
       expect(opportunity.probability).to eq(100)
     end
@@ -135,7 +135,7 @@ describe Opportunity do
         create(:opportunity, stage: "won",      amount: 2),
         create(:opportunity, stage: "won",      amount: 2),
         create(:opportunity, stage: "lost",     amount: 3),
-        create(:opportunity, stage: "lost",     amount: 3)
+        create(:opportunity, stage: "lost",     amount: 3),
       ]
       expect(Opportunity.pipeline.sum(:amount)).to eq(2)
       expect(Opportunity.won.sum(:amount)).to eq(4)
@@ -231,13 +231,13 @@ describe Opportunity do
     context "visible_on_dashboard" do
       before :each do
         @user = create(:user)
-        @o1 = create(:opportunity_in_pipeline, user: @user, stage: 'prospecting')
-        @o2 = create(:opportunity_in_pipeline, user: @user, assignee: create(:user), stage: 'prospecting')
-        @o3 = create(:opportunity_in_pipeline, user: create(:user), assignee: @user, stage: 'prospecting')
-        @o4 = create(:opportunity_in_pipeline, user: create(:user), assignee: create(:user), stage: 'prospecting')
-        @o5 = create(:opportunity_in_pipeline, user: create(:user), assignee: @user, stage: 'prospecting')
-        @o6 = create(:opportunity, assignee: @user, stage: 'won')
-        @o7 = create(:opportunity, assignee: @user, stage: 'lost')
+        @o1 = create(:opportunity_in_pipeline, user: @user, stage: "prospecting")
+        @o2 = create(:opportunity_in_pipeline, user: @user, assignee: create(:user), stage: "prospecting")
+        @o3 = create(:opportunity_in_pipeline, user: create(:user), assignee: @user, stage: "prospecting")
+        @o4 = create(:opportunity_in_pipeline, user: create(:user), assignee: create(:user), stage: "prospecting")
+        @o5 = create(:opportunity_in_pipeline, user: create(:user), assignee: @user, stage: "prospecting")
+        @o6 = create(:opportunity, assignee: @user, stage: "won")
+        @o7 = create(:opportunity, assignee: @user, stage: "lost")
       end
 
       it "should show opportunities which have been created by the user and are unassigned" do
@@ -283,9 +283,9 @@ describe Opportunity do
     end
 
     context "not lost" do
-      let(:o1) { create(:opportunity, stage: 'won') }
-      let(:o2) { create(:opportunity, stage: 'lost') }
-      let(:o3) { create(:opportunity, stage: 'analysis') }
+      let(:o1) { create(:opportunity, stage: "won") }
+      let(:o2) { create(:opportunity, stage: "lost") }
+      let(:o3) { create(:opportunity, stage: "analysis") }
 
       it "should show opportunities which are not lost" do
         expect(Opportunity.not_lost).to include(o1, o3)

@@ -99,15 +99,15 @@ class Admin::FieldsController < Admin::ApplicationController
     as = field[:as]
 
     @field = if (id = field[:id]).present?
-               Field.find(id).tap { |f| f.as = as }
-             else
-               field_group_id = field[:field_group_id]
-               klass = find_class(Field.lookup_class(as))
-               klass.new(field_group_id: field_group_id, as: as)
-      end
+      Field.find(id).tap { |f| f.as = as }
+    else
+      field_group_id = field[:field_group_id]
+      klass = find_class(Field.lookup_class(as))
+      klass.new(field_group_id: field_group_id, as: as)
+    end
 
     respond_with(@field) do |format|
-      format.html { render partial: 'admin/fields/subform' }
+      format.html { render partial: "admin/fields/subform" }
     end
   end
 
@@ -118,6 +118,6 @@ class Admin::FieldsController < Admin::ApplicationController
   end
 
   def setup_current_tab
-    set_current_tab('admin/fields')
+    set_current_tab("admin/fields")
   end
 end

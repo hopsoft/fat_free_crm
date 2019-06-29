@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "/leads/update" do
   before do
@@ -93,7 +93,7 @@ describe "/leads/update" do
         render
         expect(rendered).to include("#edit_lead")
         expect(rendered).to include(%/$('#edit_lead').effect("shake"/)
-        expect(rendered).to include('focus()')
+        expect(rendered).to include("focus()")
       end
     end
 
@@ -106,7 +106,7 @@ describe "/leads/update" do
         render
         expect(rendered).to include("$('#lead_#{@lead.id}').html")
         expect(rendered).to include(%/$('#lead_#{@lead.id}').effect("shake"/)
-        expect(rendered).to include('focus()')
+        expect(rendered).to include("focus()")
       end
     end
 
@@ -119,7 +119,7 @@ describe "/leads/update" do
         render
         expect(rendered).to include("$('#lead_#{@lead.id}').html")
         expect(rendered).to include(%/$('#lead_#{@lead.id}').effect("shake"/)
-        expect(rendered).to include('focus()')
+        expect(rendered).to include("focus()")
       end
     end
   end

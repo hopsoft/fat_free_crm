@@ -18,7 +18,7 @@ unless Rails.env.test?
   end
 
   if (host = Setting.host).present?
-    (Rails.application.routes.default_url_options ||= {})[:host] = host.gsub('http://', '')
+    (Rails.application.routes.default_url_options ||= {})[:host] = host.gsub("http://", "")
   end
 
 end

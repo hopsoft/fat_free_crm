@@ -103,7 +103,7 @@ class Setting < ActiveRecord::Base
       # instead of crashing the entire application.
 
       table_exists?
-    rescue StandardError
+    rescue
       false
     end
 

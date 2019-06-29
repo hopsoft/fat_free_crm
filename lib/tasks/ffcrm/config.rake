@@ -9,10 +9,10 @@ namespace :ffcrm do
   namespace :config do
     desc "Setup database.yml"
     task :copy_database_yml do
-      require 'fileutils'
-      filename = "config/database.#{ENV['DB'] || 'postgres'}.yml"
+      require "fileutils"
+      filename = "config/database.#{ENV["DB"] || "postgres"}.yml"
       orig = FatFreeCRM.root.join(filename)
-      dest = Rails.root.join('config/database.yml')
+      dest = Rails.root.join("config/database.yml")
       unless File.exist?(dest)
         puts "Copying #{filename} to config/database.yml ..."
         FileUtils.cp orig, dest
@@ -27,16 +27,16 @@ namespace :ffcrm do
     #
     desc "Ensures all yaml files in the config folder are readable by Psych. If not, assumes file is in the Syck format and converts it for you [creates a new file]."
     task :syck_to_psych do
-      require 'fileutils'
-      require 'syck'
-      require 'psych'
-      Dir[File.join(Rails.root, 'config', '**', '*.yml')].each do |file_path|
-        YAML::ENGINE.yamler = 'syck'
+      require "fileutils"
+      require "syck"
+      require "psych"
+      Dir[File.join(Rails.root, "config", "**", "*.yml")].each do |file_path|
+        YAML::ENGINE.yamler = "syck"
         puts "Converting #{file_path}"
         yml = YAML.load(File.read(file_path))
         FileUtils.cp file_path, "#{file_path}.bak"
-        YAML::ENGINE.yamler = 'psych'
-        File.open(file_path, 'w') { |file| file.write(YAML.dump(yml)) }
+        YAML::ENGINE.yamler = "psych"
+        File.open(file_path, "w") { |file| file.write(YAML.dump(yml)) }
       end
     end
   end

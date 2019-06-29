@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
 describe ApplicationHelper do
   it "should be included in the object returned by #helper" do
@@ -30,7 +30,7 @@ describe ApplicationHelper do
     end
 
     it "should escape HTML entities" do
-      allow(Setting).to receive(:email_dropbox).and_return(address: 'dr&op@example.com')
+      allow(Setting).to receive(:email_dropbox).and_return(address: "dr&op@example.com")
       expect(helper.link_to_email("hell&o@example.com")).to eq('<a title="hell&amp;o@example.com" href="mailto:hell&amp;o@example.com?bcc=dr&amp;op@example.com">hell&amp;o@example.com</a>')
     end
   end
@@ -74,13 +74,13 @@ describe ApplicationHelper do
     before(:each) do
       @user = mock_model(User)
       allow(helper).to receive(:current_user).and_return(@user)
-      allow(controller).to receive(:action_name).and_return('show')
-      allow(controller).to receive(:controller_name).and_return('contacts')
+      allow(controller).to receive(:action_name).and_return("show")
+      allow(controller).to receive(:controller_name).and_return("contacts")
     end
 
     it "should return the contact 'show' outline stored in the user preferences" do
-      expect(@user).to receive(:pref).and_return(contacts_show_view: 'long')
-      expect(helper.send(:current_view_name)).to eq('long')
+      expect(@user).to receive(:pref).and_return(contacts_show_view: "long")
+      expect(helper.send(:current_view_name)).to eq("long")
     end
   end
 end

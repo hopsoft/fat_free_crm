@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "/leads/promote" do
   before do
@@ -137,7 +137,7 @@ describe "/leads/promote" do
     it "should handle new or existing account and set up calendar field" do
       render
       expect(rendered).to include("crm.create_or_select_account")
-      expect(rendered).to include('focus()')
+      expect(rendered).to include("focus()")
     end
   end
 end

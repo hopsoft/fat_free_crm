@@ -38,7 +38,7 @@
 #  skype           :string(128)
 #
 
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe Contact do
   let(:user) { create(:user) }
@@ -61,58 +61,58 @@ describe Contact do
     end
 
     it "should create new account if requested so" do
-      expect do
+      expect {
         @contact.update_with_account_and_permissions(
-          account: { name: "New account" },
-          contact: { first_name: "Billy" }
+          account: {name: "New account"},
+          contact: {first_name: "Billy"}
         )
-      end.to change(Account, :count).by(1)
+      }.to change(Account, :count).by(1)
       expect(Account.last.name).to eq("New account")
       expect(@contact.first_name).to eq("Billy")
     end
 
     it "should change account if another account was selected" do
       @another_account = create(:account)
-      expect do
+      expect {
         @contact.update_with_account_and_permissions(
-          account: { id: @another_account.id },
-          contact: { first_name: "Billy" }
+          account: {id: @another_account.id},
+          contact: {first_name: "Billy"}
         )
-      end.not_to change(Account, :count)
+      }.not_to change(Account, :count)
       expect(@contact.account).to eq(@another_account)
       expect(@contact.first_name).to eq("Billy")
     end
 
     it "should drop existing Account if [create new account] is blank" do
-      expect do
+      expect {
         @contact.update_with_account_and_permissions(
-          account: { name: "" },
-          contact: { first_name: "Billy" }
+          account: {name: ""},
+          contact: {first_name: "Billy"}
         )
-      end.not_to change(Account, :count)
+      }.not_to change(Account, :count)
       expect(@contact.account).to eq(nil)
       expect(@contact.first_name).to eq("Billy")
     end
 
     it "should drop existing Account if [-- None --] is selected from list of accounts" do
-      expect do
+      expect {
         @contact.update_with_account_and_permissions(
-          account: { id: "" },
-          contact: { first_name: "Billy" }
+          account: {id: ""},
+          contact: {first_name: "Billy"}
         )
-      end.not_to change(Account, :count)
+      }.not_to change(Account, :count)
       expect(@contact.account).to eq(nil)
       expect(@contact.first_name).to eq("Billy")
     end
 
     it "should change account if entered name of another account was found" do
       @another_account = create(:account, name: "Another name")
-      expect do
+      expect {
         @contact.update_with_account_and_permissions(
-          account: { name: "Another name" },
-          contact: { first_name: "Billy" }
+          account: {name: "Another name"},
+          contact: {first_name: "Billy"}
         )
-      end.not_to change(Account, :count)
+      }.not_to change(Account, :count)
       expect(@contact.account).to eq(@another_account)
       expect(@contact.first_name).to eq("Billy")
     end
@@ -190,40 +190,40 @@ describe Contact do
 
   describe "text_search" do
     before do
-      @contact = create(:contact, first_name: "Bob", last_name: "Dillion", email: 'bob_dillion@example.com', phone: '+1 123 456 789')
+      @contact = create(:contact, first_name: "Bob", last_name: "Dillion", email: "bob_dillion@example.com", phone: "+1 123 456 789")
     end
 
     it "should search first_name" do
-      expect(Contact.text_search('Bob')).to eq([@contact])
+      expect(Contact.text_search("Bob")).to eq([@contact])
     end
 
     it "should search last_name" do
-      expect(Contact.text_search('Dillion')).to eq([@contact])
+      expect(Contact.text_search("Dillion")).to eq([@contact])
     end
 
     it "should search whole name" do
-      expect(Contact.text_search('Bob Dillion')).to eq([@contact])
+      expect(Contact.text_search("Bob Dillion")).to eq([@contact])
     end
 
     it "should search whole name reversed" do
-      expect(Contact.text_search('Dillion Bob')).to eq([@contact])
+      expect(Contact.text_search("Dillion Bob")).to eq([@contact])
     end
 
     it "should search email" do
-      expect(Contact.text_search('example')).to eq([@contact])
+      expect(Contact.text_search("example")).to eq([@contact])
     end
 
     it "should search phone" do
-      expect(Contact.text_search('123')).to eq([@contact])
+      expect(Contact.text_search("123")).to eq([@contact])
     end
 
     it "should not break with a single quote" do
-      contact2 = create(:contact, first_name: "Shamus", last_name: "O'Connell", email: 'bob_dillion@example.com', phone: '+1 123 456 789')
+      contact2 = create(:contact, first_name: "Shamus", last_name: "O'Connell", email: "bob_dillion@example.com", phone: "+1 123 456 789")
       expect(Contact.text_search("O'Connell")).to eq([contact2])
     end
 
     it "should not break on special characters" do
-      expect(Contact.text_search('@$%#^@!')).to eq([])
+      expect(Contact.text_search("@$%#^@!")).to eq([])
     end
   end
 end
@@ -233,17 +233,17 @@ describe "field validations" do
     Contact.new(
       first_name: "ChristopherChristopherChristopherChristopherChristopherChristopherChristopher",
       last_name: "BonesBonesBonesBonesBonesBonesBonesBonesBonesBonesBonesBonesBonesBonesBonesBones",
-      title: 'This is a really long title for the contact and it should thow an error.',
-      department: 'This is a really long name for the department and it should thow an error.',
-      email: 'bob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillion@example.com',
-      alt_email: 'bob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillion@example.com',
-      phone: '+1 123 456 7891 123 456 7891 123 456 7891 123 456 7891 123 456 789',
-      mobile: '+1 123 456 7891 123 456 7891 123 456 7891 123 456 7891 123 456 789',
-      fax: '+1 123 456 7891 123 456 7891 123 456 789 123 456 7891 123 456 789',
-      blog: 'This is a test of how many characters before it throws an error message.This is a test of how many characters before it throws an error message.This is a test of how many characters before it throws an error message.',
-      linkedin: 'This is my linkedin name and it is way to long. This is my linkedin name and it is way to long. This is my linkedin name and it is way to long.',
-      twitter: 'This is my twitter name and it is way to long. This is my twitter name and it is way to long. This is my twitter name and it is way to long.',
-      skype: 'This is my skype name and it is way to long. This is my skype name and it is way to long. This is my skype name and it is way to long.'
+      title: "This is a really long title for the contact and it should thow an error.",
+      department: "This is a really long name for the department and it should thow an error.",
+      email: "bob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillion@example.com",
+      alt_email: "bob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillionbob_dillion@example.com",
+      phone: "+1 123 456 7891 123 456 7891 123 456 7891 123 456 7891 123 456 789",
+      mobile: "+1 123 456 7891 123 456 7891 123 456 7891 123 456 7891 123 456 789",
+      fax: "+1 123 456 7891 123 456 7891 123 456 789 123 456 7891 123 456 789",
+      blog: "This is a test of how many characters before it throws an error message.This is a test of how many characters before it throws an error message.This is a test of how many characters before it throws an error message.",
+      linkedin: "This is my linkedin name and it is way to long. This is my linkedin name and it is way to long. This is my linkedin name and it is way to long.",
+      twitter: "This is my twitter name and it is way to long. This is my twitter name and it is way to long. This is my twitter name and it is way to long.",
+      skype: "This is my skype name and it is way to long. This is my skype name and it is way to long. This is my skype name and it is way to long."
     )
   end
 

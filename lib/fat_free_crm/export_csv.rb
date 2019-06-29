@@ -13,21 +13,21 @@ module FatFreeCRM
     # https://github.com/arydjmal/to_csv
     #----------------------------------------------------------------------------
     def self.from_array(items = [])
-      return '' if items.empty?
+      return "" if items.empty?
       # Infer column types from the first item in the array
       klass = items.first.class
       columns = klass.columns.map(&:name).reject { |column| column =~ /password|token/ }
-      columns << 'tags' if klass.taggable?
+      columns << "tags" if klass.taggable?
       CSV.generate do |csv|
         csv << columns.map { |column| klass.human_attribute_name(column) }
         items.each do |item|
-          csv << columns.map do |column|
-            if column == 'tags'
-              item.tags.join(' ')
+          csv << columns.map { |column|
+            if column == "tags"
+              item.tags.join(" ")
             else
               item.send(column)
             end
-          end
+          }
         end
       end
     end

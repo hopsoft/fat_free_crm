@@ -15,7 +15,7 @@ describe "String" do
       ["Stephanie Man Chi", "Lo"],
       ["Lo", "Stephanie Man Chi"],
       ["Chi Lo", "Stephanie Man"],
-      ["Man Chi Lo", "Stephanie"]
+      ["Man Chi Lo", "Stephanie"],
     ]
     result = "Stephanie Man Chi Lo".name_permutations
     expect(result.sort).to eq(expected.sort)

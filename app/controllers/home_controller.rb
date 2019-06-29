@@ -71,8 +71,8 @@ class HomeController < ApplicationController
         end
       else
         comments, emails = params[:id].split("+")
-        Comment.where(id: comments.split(',')).update_all(state: state) unless comments.blank?
-        Email.where(id: emails.split(',')).update_all(state: state) unless emails.blank?
+        Comment.where(id: comments.split(",")).update_all(state: state) unless comments.blank?
+        Email.where(id: emails.split(",")).update_all(state: state) unless emails.blank?
       end
     end
 
@@ -137,19 +137,19 @@ class HomeController < ApplicationController
     is_email = current_user.pref[:activity_user].include?("@")
 
     user = if is_email
-             User.where(email: current_user.pref[:activity_user]).first
-           else # first_name middle_name last_name any_name
-             name_query(current_user.pref[:activity_user])
-           end
+      User.where(email: current_user.pref[:activity_user]).first
+    else # first_name middle_name last_name any_name
+      name_query(current_user.pref[:activity_user])
+    end
 
     user.is_a?(User) ? user.id : nil
   end
 
   def name_query(user)
     if user.include?(" ")
-      user.name_permutations.map do |first, last|
+      user.name_permutations.map { |first, last|
         User.where(first_name: first, last_name: last)
-      end.map(&:to_a).flatten.first
+      }.map(&:to_a).flatten.first
     else
       [User.where(first_name: user), User.where(last_name: user)].map(&:to_a).flatten.first
     end

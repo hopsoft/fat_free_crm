@@ -69,13 +69,13 @@ class Contact < ActiveRecord::Base
     # We can't always be sure that names are entered in the right order, so we must
     # split the query into all possible first/last name permutations.
     name_query = if query.include?(" ")
-                   scope, *rest = query.name_permutations.map do |first, last|
-                     t[:first_name].matches("%#{first}%").and(t[:last_name].matches("%#{last}%"))
-                   end
-                   rest.map { |r| scope = scope.or(r) } if scope
-                   scope
-                 else
-                   t[:first_name].matches("%#{query}%").or(t[:last_name].matches("%#{query}%"))
+      scope, *rest = query.name_permutations.map { |first, last|
+        t[:first_name].matches("%#{first}%").and(t[:last_name].matches("%#{last}%"))
+      }
+      rest.map { |r| scope = scope.or(r) } if scope
+      scope
+    else
+      t[:first_name].matches("%#{query}%").or(t[:last_name].matches("%#{query}%"))
     end
 
     other = t[:email].matches("%#{query}%").or(t[:alt_email].matches("%#{query}%"))
@@ -88,7 +88,7 @@ class Contact < ActiveRecord::Base
   acts_as_commentable
   uses_comment_extensions
   acts_as_taggable_on :tags
-  has_paper_trail class_name: 'Version', ignore: [:subscribed_users]
+  has_paper_trail class_name: "Version", ignore: [:subscribed_users]
 
   has_fields
   exportable
@@ -174,10 +174,10 @@ class Contact < ActiveRecord::Base
   #----------------------------------------------------------------------------
   def self.create_for(model, account, opportunity, params)
     attributes = {
-      lead_id:     model.id,
-      user_id:     params[:account][:user_id] || account.user_id,
+      lead_id: model.id,
+      user_id: params[:account][:user_id] || account.user_id,
       assigned_to: params[:account][:assigned_to],
-      access:      params[:access]
+      access: params[:access],
     }
     %w[first_name last_name title source email alt_email phone mobile blog linkedin facebook twitter skype do_not_call background_info].each do |name|
       attributes[name] = model.send(name.intern)
@@ -224,10 +224,8 @@ class Contact < ActiveRecord::Base
     account_params = params[:account]
     valid_account = account_params && (account_params[:id].present? || account_params[:name].present?)
     self.account = if valid_account
-                     Account.create_or_select_for(self, account_params)
-                   else
-                     nil
-                   end
+      Account.create_or_select_for(self, account_params)
+    end
   end
 
   ActiveSupport.run_load_hooks(:fat_free_crm_contact, self)

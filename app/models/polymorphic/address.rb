@@ -28,7 +28,7 @@
 class Address < ActiveRecord::Base
   belongs_to :addressable, polymorphic: true
 
-  has_paper_trail class_name: 'Version', meta: { related: :addressable }
+  has_paper_trail class_name: "Version", meta: {related: :addressable}
 
   scope :business, -> { where("address_type='Business'") }
   scope :billing,  -> { where("address_type='Billing'") }
@@ -51,7 +51,7 @@ class Address < ActiveRecord::Base
   # Intended to be called as follows:
   #   accepts_nested_attributes_for :business_address, :allow_destroy => true, :reject_if => proc {|attributes| Address.reject_address(attributes)}
   def self.reject_address(attributes)
-    exists = attributes['id'].present?
+    exists = attributes["id"].present?
     empty = %w[street1 street2 city state zipcode country full_address].map { |name| attributes[name].blank? }.all?
     attributes[:_destroy] = 1 if exists && empty
     (!exists && empty)

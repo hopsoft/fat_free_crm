@@ -6,7 +6,7 @@
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 if defined?(RSpec)
-  require 'rspec/core/rake_task'
+  require "rspec/core/rake_task"
 
   namespace :spec do
     desc "Preparing test env db"

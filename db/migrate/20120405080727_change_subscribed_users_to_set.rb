@@ -18,7 +18,7 @@ class ChangeSubscribedUsersToSet < ActiveRecord::Migration[4.2]
         connection.execute %(
           UPDATE contacts
           SET subscribed_users = '#{subscribed_users_set.to_yaml}'
-          WHERE id = #{contact['id']}
+          WHERE id = #{contact["id"]}
                 )
       end
     end

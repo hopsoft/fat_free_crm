@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe CommentsController do
   COMMENTABLE = %i[account campaign contact lead opportunity].freeze
@@ -25,12 +25,12 @@ describe CommentsController do
         end
 
         it "should redirect to the asset landing page if the asset is found" do
-          get :index, params: { :"#{asset}_id" => @asset.id }
+          get :index, params: {:"#{asset}_id" => @asset.id}
           expect(response).to redirect_to(controller: asset.to_s.pluralize, action: :show, id: @asset.id)
         end
 
         it "should redirect to root url with warning if the asset is not found" do
-          get :index, params: { :"#{asset}_id" => @asset.id + 42 }
+          get :index, params: {:"#{asset}_id" => @asset.id + 42}
           expect(flash[:warning]).not_to eq(nil)
           expect(response).to redirect_to(root_path)
         end
@@ -44,12 +44,12 @@ describe CommentsController do
         end
 
         it "should render all comments as JSON if the asset is found found" do
-          get :index, params: { :"#{asset}_id" => @asset.id }
+          get :index, params: {:"#{asset}_id" => @asset.id}
           expect(response.body).to eq(assigns[:comments].to_json)
         end
 
         it "JSON: should return 404 (Not Found) JSON error if the asset is not found" do
-          get :index, params: { :"#{asset}_id" => @asset.id + 42 }
+          get :index, params: {:"#{asset}_id" => @asset.id + 42}
           expect(flash[:warning]).not_to eq(nil)
           expect(response.code).to eq("404")
         end
@@ -63,12 +63,12 @@ describe CommentsController do
         end
 
         it "should render all comments as XML if the asset is found found" do
-          get :index, params: { :"#{asset}_id" => @asset.id }
+          get :index, params: {:"#{asset}_id" => @asset.id}
           expect(response.body).to eq(assigns[:comments].to_xml)
         end
 
         it "XML: should return 404 (Not Found) XML error if the asset is not found" do
-          get :index, params: { :"#{asset}_id" => @asset.id + 42 }
+          get :index, params: {:"#{asset}_id" => @asset.id + 42}
           expect(flash[:warning]).not_to eq(nil)
           expect(response.code).to eq("404")
         end
@@ -85,7 +85,7 @@ describe CommentsController do
         @comment = create(:comment, id: 42, commentable: @asset, user: current_user)
         allow(Comment).to receive(:new).and_return(@comment)
 
-        get :edit, params: { id: 42 }, xhr: true
+        get :edit, params: {id: 42}, xhr: true
         expect(assigns[:comment]).to eq(@comment)
         expect(response).to render_template("comments/edit")
       end
@@ -103,7 +103,7 @@ describe CommentsController do
           @comment = build(:comment, commentable: @asset, user: current_user)
           allow(Comment).to receive(:new).and_return(@comment)
 
-          post :create, params: { comment: { commentable_type: asset.to_s.classify, commentable_id: @asset.id, user_id: current_user.id, comment: "Hello" } }, xhr: true
+          post :create, params: {comment: {commentable_type: asset.to_s.classify, commentable_id: @asset.id, user_id: current_user.id, comment: "Hello"}}, xhr: true
           expect(assigns[:comment]).to eq(@comment)
           expect(response).to render_template("comments/create")
         end
@@ -117,7 +117,7 @@ describe CommentsController do
           @comment = build(:comment, commentable: @asset, user: current_user)
           allow(Comment).to receive(:new).and_return(@comment)
 
-          post :create, params: { comment: {} }, xhr: true
+          post :create, params: {comment: {}}, xhr: true
           expect(assigns[:comment]).to eq(@comment)
           expect(response).to render_template("comments/create")
         end
@@ -184,7 +184,7 @@ describe CommentsController do
             @comment = create(:comment, commentable: @asset, user: current_user)
             allow(Comment).to receive(:new).and_return(@comment)
 
-            delete :destroy, params: { id: @comment.id }, xhr: true
+            delete :destroy, params: {id: @comment.id}, xhr: true
             expect { Comment.find(@comment.id) }.to raise_error(ActiveRecord::RecordNotFound)
             expect(response).to render_template("comments/destroy")
           end

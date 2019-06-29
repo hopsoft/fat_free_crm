@@ -36,27 +36,27 @@ class Field < ActiveRecord::Base
 
   belongs_to :field_group
 
-  scope :core_fields,   -> { where(type: 'CoreField') }
+  scope :core_fields,   -> { where(type: "CoreField") }
   scope :custom_fields, -> { where("type != 'CoreField'") }
   scope :without_pairs, -> { where(pair_id: nil) }
 
   delegate :klass, :klass_name, :klass_name=, to: :field_group
 
   BASE_FIELD_TYPES = {
-    'string'      => { klass: 'CustomField', type: 'string' },
-    'text'        => { klass: 'CustomField', type: 'text' },
-    'email'       => { klass: 'CustomField', type: 'string' },
-    'url'         => { klass: 'CustomField', type: 'string' },
-    'tel'         => { klass: 'CustomField', type: 'string' },
-    'select'      => { klass: 'CustomField', type: 'string' },
-    'radio_buttons' => { klass: 'CustomField', type: 'string' },
-    'check_boxes' => { klass: 'CustomField', type: 'text' },
-    'boolean'     => { klass: 'CustomField', type: 'boolean' },
-    'date'        => { klass: 'CustomField', type: 'date' },
-    'datetime'    => { klass: 'CustomField', type: 'timestamp' },
-    'decimal'     => { klass: 'CustomField', type: 'decimal', column_options: { precision: 15, scale: 2 } },
-    'integer'     => { klass: 'CustomField', type: 'integer' },
-    'float'       => { klass: 'CustomField', type: 'float' }
+    "string" => {klass: "CustomField", type: "string"},
+    "text" => {klass: "CustomField", type: "text"},
+    "email" => {klass: "CustomField", type: "string"},
+    "url" => {klass: "CustomField", type: "string"},
+    "tel" => {klass: "CustomField", type: "string"},
+    "select" => {klass: "CustomField", type: "string"},
+    "radio_buttons" => {klass: "CustomField", type: "string"},
+    "check_boxes" => {klass: "CustomField", type: "text"},
+    "boolean" => {klass: "CustomField", type: "boolean"},
+    "date" => {klass: "CustomField", type: "date"},
+    "datetime" => {klass: "CustomField", type: "timestamp"},
+    "decimal" => {klass: "CustomField", type: "decimal", column_options: {precision: 15, scale: 2}},
+    "integer" => {klass: "CustomField", type: "integer"},
+    "float" => {klass: "CustomField", type: "float"},
   }.with_indifferent_access
 
   validates_presence_of :label, message: "^Please enter a field label."
@@ -73,9 +73,9 @@ class Field < ActiveRecord::Base
 
   def input_options
     input_html = {}
-    attributes.reject do |k, v|
+    attributes.reject { |k, v|
       !%w[as collection disabled label placeholder required minlength maxlength].include?(k) || v.blank?
-    end.symbolize_keys.merge(input_html)
+    }.symbolize_keys.merge(input_html)
   end
 
   def collection_string=(value)
@@ -92,14 +92,14 @@ class Field < ActiveRecord::Base
 
   def render(value)
     case as
-    when 'checkbox'
-      value.to_s == '0' ? "no" : "yes"
-    when 'date'
+    when "checkbox"
+      value.to_s == "0" ? "no" : "yes"
+    when "date"
       value&.strftime(I18n.t("date.formats.mmddyy"))
-    when 'datetime'
+    when "datetime"
       value&.in_time_zone&.strftime(I18n.t("time.formats.mmddyyyy_hhmm"))
-    when 'check_boxes'
-      value.select(&:present?).in_groups_of(2, false).map { |g| g.join(', ') }.join("<br />".html_safe) if Array === value
+    when "check_boxes"
+      value.select(&:present?).in_groups_of(2, false).map { |g| g.join(", ") }.join("<br />".html_safe) if Array === value
     else
       value.to_s
     end

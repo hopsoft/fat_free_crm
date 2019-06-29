@@ -6,7 +6,7 @@
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 
-require 'securerandom'
+require "securerandom"
 
 module FatFreeCRM
   class SecretTokenGenerator

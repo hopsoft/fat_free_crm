@@ -18,9 +18,9 @@ module FatFreeCRM
       #   sortable :by => [ "first_name ASC", "last_name ASC" ], :default => "last_name ASC"
       #--------------------------------------------------------------------------
       def sortable(options = {})
-        cattr_accessor :sort_by,            # Default sort order with prepended table name.
-                       :sort_by_fields,     # Array of fields to sort by without ASC/DESC.
-                       :sort_by_clauses     # A copy of sortable :by => ... stored as array.
+        cattr_accessor :sort_by, # Default sort order with prepended table name.
+          :sort_by_fields,     # Array of fields to sort by without ASC/DESC.
+          :sort_by_clauses     # A copy of sortable :by => ... stored as array.
 
         self.sort_by_clauses = [options[:by]].flatten
         self.sort_by_fields = sort_by_clauses.map(&:split).map(&:first)
@@ -33,9 +33,9 @@ module FatFreeCRM
       #--------------------------------------------------------------------------
       def sort_by_map
         Hash[
-          sort_by_fields.zip(sort_by_clauses).map do |field, clause|
+          sort_by_fields.zip(sort_by_clauses).map { |field, clause|
             [field, name.tableize + "." + clause]
-          end
+          }
         ]
       end
     end

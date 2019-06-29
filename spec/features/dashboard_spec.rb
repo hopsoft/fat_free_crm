@@ -7,7 +7,7 @@
 #------------------------------------------------------------------------------
 require File.expand_path("../acceptance_helper.rb", __FILE__)
 
-feature 'Dashboard', '
+feature "Dashboard", '
   In order to monitor activity
   As a user
   I want to see a dashboard
@@ -16,9 +16,9 @@ feature 'Dashboard', '
     @me = create(:user)
     login_as_user(@me)
 
-    create(:task, name: 'Do your homework!', assignee: @me)
-    create(:opportunity, name: 'Work with the Dolphins', assignee: @me, stage: 'proposal')
-    create(:account, name: 'Dolphin Manufacturer', assignee: @me)
+    create(:task, name: "Do your homework!", assignee: @me)
+    create(:opportunity, name: "Work with the Dolphins", assignee: @me, stage: "proposal")
+    create(:account, name: "Dolphin Manufacturer", assignee: @me)
   end
 
   scenario "Viewing my dashboard" do
@@ -43,7 +43,7 @@ feature 'Dashboard', '
   scenario "Only show a maximum of 10 entities" do
     10.times do
       create(:task, assignee: @me)
-      create(:opportunity, assignee: @me, stage: 'proposal')
+      create(:opportunity, assignee: @me, stage: "proposal")
       create(:account, assignee: @me)
     end
 

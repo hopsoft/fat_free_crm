@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "/comments/edit" do
   include CommentsHelper
@@ -13,12 +13,12 @@ describe "/comments/edit" do
   before do
     login
     assign(:comment, stub_model(Comment,
-                                id: 321,
-                                new_record?: false,
-                                commentable: stub_model(Contact, id: '123')))
+      id: 321,
+      new_record?: false,
+      commentable: stub_model(Contact, id: "123")))
     # params["contact_id"] = "123"
     assign(:current_user, stub_model(User,
-                                     email: 'test@example.com'))
+      email: "test@example.com"))
   end
 
   it "should render edit form" do

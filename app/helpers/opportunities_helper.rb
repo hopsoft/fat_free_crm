@@ -22,15 +22,15 @@ module OpportunitiesHelper
     unless %w[won lost].include?(opportunity.stage)
       amount << number_to_currency(opportunity.amount.to_f, precision: 0)
       amount << (opportunity.discount ? t(:discount_number, number_to_currency(opportunity.discount, precision: 0)) : t(:no_discount))
-      amount << t(:probability_number, opportunity.probability.to_i.to_s + '%')
-      summary << amount.join(' ')
+      amount << t(:probability_number, opportunity.probability.to_i.to_s + "%")
+      summary << amount.join(" ")
     end
     summary << if opportunity.closes_on
-                 t(:closing_date, l(opportunity.closes_on, format: :mmddyy))
-               else
-                 t(:no_closing_date)
-               end
-    summary.compact.join(', ')
+      t(:closing_date, l(opportunity.closes_on, format: :mmddyy))
+    else
+      t(:no_closing_date)
+    end
+    summary.compact.join(", ")
   end
 
   # Generates a select list with the first 25 campaigns
@@ -41,8 +41,8 @@ module OpportunitiesHelper
     selected_campaign = Campaign.find_by_id(options[:selected])
     campaigns = ([selected_campaign] + Campaign.my(current_user).order(:name).limit(25)).compact.uniq
     collection_select :opportunity, :campaign_id, campaigns, :id, :name,
-                      { selected: options[:selected], prompt: t(:select_a_campaign) },
-                      style: 'width:330px;', class: 'select2'
+      {selected: options[:selected], prompt: t(:select_a_campaign)},
+      style: "width:330px;", class: "select2"
   end
 
   # Generates the inline revenue message for the opportunity list table.
@@ -62,18 +62,18 @@ module OpportunitiesHelper
         end
 
         if opportunity.discount.to_f != 0
-          msg << t(:discount) + ' ' + number_to_currency(opportunity.discount, precision: 0)
+          msg << t(:discount) + " " + number_to_currency(opportunity.discount, precision: 0)
         end
       end
 
       if opportunity.probability.to_i != 0
-        msg << t(:probability) + ' ' + opportunity.probability.to_s + '%'
+        msg << t(:probability) + " " + opportunity.probability.to_s + "%"
       end
     end
 
     msg << opportunity_closes_on_message(opportunity, won_or_lost)
 
-    msg.join(' | ').html_safe
+    msg.join(" | ").html_safe
   end
 
   private
@@ -89,9 +89,9 @@ module OpportunitiesHelper
       elsif opportunity.closes_on > Date.today
         t(:expected_to_close, time: distance_of_time_in_words(Date.today, opportunity.closes_on), date: l(opportunity.closes_on, format: :mmddyy))
       elsif opportunity.closes_on == Date.today
-        content_tag(:span, t(:closes_today), class: 'warn')
+        content_tag(:span, t(:closes_today), class: "warn")
       else
-        content_tag(:span, t(:past_due, distance_of_time_in_words(opportunity.closes_on, Date.today)), class: 'warn')
+        content_tag(:span, t(:past_due, distance_of_time_in_words(opportunity.closes_on, Date.today)), class: "warn")
       end
     else
       t(:no_closing_date)

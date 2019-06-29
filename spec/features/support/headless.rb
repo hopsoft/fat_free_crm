@@ -10,8 +10,8 @@
 # Useful for CI and travis tests
 #
 
-if ENV['HEADLESS'] == 'true' || ENV["CI"] == "true"
-  require 'headless'
+if ENV["HEADLESS"] == "true" || ENV["CI"] == "true"
+  require "headless"
   headless = Headless.new
   headless.start
   HEADLESS_DISPLAY = ":#{headless.display}"

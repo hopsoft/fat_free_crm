@@ -1,90 +1,90 @@
 # frozen_string_literal: true
 
 {
-  'Account' => [
+  "Account" => [
     {
-      params: { label: 'General Information', tooltip: '' },
+      params: {label: "General Information", tooltip: ""},
       fields: [
-        { field_type: '', name: '', label: '', required: '' },
-        { field_type: '', name: '', label: '', required: '' },
-        { field_type: '', name: '', label: '', required: '' }
-      ]
+        {field_type: "", name: "", label: "", required: ""},
+        {field_type: "", name: "", label: "", required: ""},
+        {field_type: "", name: "", label: "", required: ""},
+      ],
     },
     {
-      params: { label: 'Contact Information', tooltip: '' },
+      params: {label: "Contact Information", tooltip: ""},
       fields: [
 
-      ]
-    }
+      ],
+    },
   ],
-  'Campaign' => [
+  "Campaign" => [
     {
-      params: { label: 'General Information', tooltip: '' },
+      params: {label: "General Information", tooltip: ""},
       fields: [
-        { field_type: '', name: '', label: '', required: '' },
-        { field_type: '', name: '', label: '', required: '' },
-        { field_type: '', name: '', label: '', required: '' }
-      ]
+        {field_type: "", name: "", label: "", required: ""},
+        {field_type: "", name: "", label: "", required: ""},
+        {field_type: "", name: "", label: "", required: ""},
+      ],
     },
     {
-      params: { label: 'Contact Information', tooltip: '' },
+      params: {label: "Contact Information", tooltip: ""},
       fields: [
 
-      ]
-    }
+      ],
+    },
   ],
-  'Contact' => [
+  "Contact" => [
     {
-      params: { label: 'General Information', tooltip: '' },
+      params: {label: "General Information", tooltip: ""},
       fields: [
 
-      ]
+      ],
     },
     {
-      params: { label: 'Extra Information', tooltip: '' },
+      params: {label: "Extra Information", tooltip: ""},
       fields: [
 
-      ]
+      ],
     },
     {
-      params: { label: 'Web presence', tooltip: '' },
+      params: {label: "Web presence", tooltip: ""},
       fields: [
 
-      ]
-    }
+      ],
+    },
   ],
-  'Lead' => [
+  "Lead" => [
     {
-      params: { label: 'General Information', tooltip: '' },
+      params: {label: "General Information", tooltip: ""},
       fields: [
-        { field_type: '', name: '', label: '', required: '' },
-        { field_type: '', name: '', label: '', required: '' },
-        { field_type: '', name: '', label: '', required: '' }
-      ]
+        {field_type: "", name: "", label: "", required: ""},
+        {field_type: "", name: "", label: "", required: ""},
+        {field_type: "", name: "", label: "", required: ""},
+      ],
     },
     {
-      params: { label: 'Contact Information', tooltip: '' },
+      params: {label: "Contact Information", tooltip: ""},
       fields: [
 
-      ]
-    }
+      ],
+    },
   ],
-  'Opportunity' => [
+  "Opportunity" => [
     {
-      params: { label: 'General Information', tooltip: '' },
+      params: {label: "General Information", tooltip: ""},
       fields: [
-        { field_type: '', name: '', label: '', required: '' },
-        { field_type: '', name: '', label: '', required: '' },
-        { field_type: '', name: '', label: '', required: '' }
-      ]
+        {field_type: "", name: "", label: "", required: ""},
+        {field_type: "", name: "", label: "", required: ""},
+        {field_type: "", name: "", label: "", required: ""},
+      ],
     },
     {
-      params: { label: 'Contact Information', tooltip: '' },
+      params: {label: "Contact Information", tooltip: ""},
       fields: [
 
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 }.each_with_index do |(klass_name, groups), group_position|
   groups.each do |group|
     field_group = FieldGroup.create group[:params].merge(klass_name: klass_name, position: group_position)

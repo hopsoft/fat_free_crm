@@ -9,7 +9,7 @@ module ContactsHelper
   # Contact summary for RSS/ATOM feeds.
   #----------------------------------------------------------------------------
   def contact_summary(contact)
-    summary = ['']
+    summary = [""]
     summary << contact.title.titleize if contact.title?
     summary << contact.department if contact.department?
     if contact.account&.name?
@@ -18,6 +18,6 @@ module ContactsHelper
     summary << contact.email if contact.email.present?
     summary << "#{t(:phone_small)}: #{contact.phone}" if contact.phone.present?
     summary << "#{t(:mobile_small)}: #{contact.mobile}" if contact.mobile.present?
-    summary.join(', ')
+    summary.join(", ")
   end
 end

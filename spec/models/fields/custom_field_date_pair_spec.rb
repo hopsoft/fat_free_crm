@@ -5,13 +5,13 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe CustomFieldDatePair do
   describe "render_value" do
     before(:each) do
-      @from = CustomFieldDatePair.new(name: 'cf_event_from')
-      @to = CustomFieldDatePair.new(name: 'cf_event_to')
+      @from = CustomFieldDatePair.new(name: "cf_event_from")
+      @to = CustomFieldDatePair.new(name: "cf_event_to")
       allow(@from).to receive(:paired_with).and_return(@to)
       @today = Date.today
       @today_str = @today.strftime(I18n.t("date.formats.mmddyy"))
@@ -40,8 +40,8 @@ describe CustomFieldDatePair do
 
   describe "custom_validator" do
     before(:each) do
-      @from = CustomFieldDatePair.new(name: 'cf_event_from')
-      @to = CustomFieldDatePair.new(name: 'cf_event_to', pair_id: 1)
+      @from = CustomFieldDatePair.new(name: "cf_event_from")
+      @to = CustomFieldDatePair.new(name: "cf_event_to", pair_id: 1)
       allow(CustomFieldPair).to receive(:find).and_return(@from)
       @today = Date.today
       @today_str = @today.strftime(I18n.t("date.formats.mmddyy"))
@@ -80,7 +80,7 @@ describe CustomFieldDatePair do
     end
 
     it "should call custom field validation on super class" do
-      from = CustomFieldDatePair.new(name: 'cf_event_from', required: true)
+      from = CustomFieldDatePair.new(name: "cf_event_from", required: true)
       foo = double(cf_event_from: nil)
       err = double(:errors); allow(err).to receive(:add)
       expect(foo).to receive(:errors).and_return(err)

@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe "/campaigns/show" do
   include CampaignsHelper
@@ -19,7 +19,7 @@ describe "/campaigns/show" do
     assign(:users, [current_user])
     assign(:comment, Comment.new)
     assign(:timeline, [build_stubbed(:comment, commentable: @campaign)])
-    allow(view).to receive(:params) { { id: 123 } }
+    allow(view).to receive(:params) { {id: 123} }
 
     # controller#controller_name and controller#action_name are not set in view specs
     allow(view).to receive(:template_for_current_view).and_return(nil)

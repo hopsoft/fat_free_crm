@@ -20,12 +20,12 @@ shared_examples_for "exportable" do
       if exported[0].assigned_to?
         expect(exported[0].assigned_to_full_name).to eq(exported[0].assignee.full_name)
       else
-        expect(exported[0].assigned_to_full_name).to eq('')
+        expect(exported[0].assigned_to_full_name).to eq("")
       end
       if exported[1].assigned_to?
         expect(exported[1].assigned_to_full_name).to eq(exported[1].assignee.email)
       else
-        expect(exported[1].assigned_to_full_name).to eq('')
+        expect(exported[1].assigned_to_full_name).to eq("")
       end
     end
 
@@ -33,12 +33,12 @@ shared_examples_for "exportable" do
       if exported[0].completed_by?
         expect(exported[0].completed_by_full_name).to eq(exported[0].completor.full_name)
       else
-        expect(exported[0].completed_by_full_name).to eq('')
+        expect(exported[0].completed_by_full_name).to eq("")
       end
       if exported[1].completed_by?
         expect(exported[1].completed_by_full_name).to eq(exported[1].completor.email)
       else
-        expect(exported[1].completed_by_full_name).to eq('')
+        expect(exported[1].completed_by_full_name).to eq("")
       end
     end
   end
@@ -55,52 +55,52 @@ shared_examples Ability do |klass|
   end
 
   context "when public access" do
-    let!(:asset) { create(factory, access: 'Public') }
+    let!(:asset) { create(factory, access: "Public") }
 
     it { is_expected.to be_able_to(:manage, asset) }
   end
 
   context "when private access owner" do
-    let!(:asset) { create(factory, access: 'Private', user_id: user.id) }
+    let!(:asset) { create(factory, access: "Private", user_id: user.id) }
 
     it { is_expected.to be_able_to(:manage, asset) }
   end
 
   context "when private access administrator" do
-    let!(:asset) { create(factory, access: 'Private') }
+    let!(:asset) { create(factory, access: "Private") }
     let(:user) { create(:user, admin: true) }
 
     it { is_expected.to be_able_to(:manage, asset) }
   end
 
   context "when private access not owner" do
-    let!(:asset) { create(factory, access: 'Private') }
+    let!(:asset) { create(factory, access: "Private") }
 
     it { is_expected.not_to be_able_to(:manage, asset) }
   end
 
   context "when private access not owner but is assigned" do
-    let!(:asset) { create(factory, access: 'Private', assigned_to: user.id) }
+    let!(:asset) { create(factory, access: "Private", assigned_to: user.id) }
 
     it { is_expected.to be_able_to(:manage, asset) }
   end
 
   context "when shared access with permission" do
-    let!(:asset) { create(factory, access: 'Shared', permissions: [permission]) }
+    let!(:asset) { create(factory, access: "Shared", permissions: [permission]) }
     let(:permission) { Permission.new(user: user) }
 
     it { is_expected.to be_able_to(:manage, asset) }
   end
 
   context "when shared access with no permission" do
-    let!(:asset) { create(factory, access: 'Shared', permissions: [permission]) }
+    let!(:asset) { create(factory, access: "Shared", permissions: [permission]) }
     let(:permission) { Permission.new(user: create(:user)) }
 
     it { is_expected.not_to be_able_to(:manage, asset) }
   end
 
   context "when shared access with no permission but administrator" do
-    let!(:asset) { create(factory, access: 'Shared', permissions: [permission]) }
+    let!(:asset) { create(factory, access: "Shared", permissions: [permission]) }
     let(:permission) { Permission.new(user: create(:user)) }
     let(:user) { create(:user, admin: true) }
 
@@ -108,14 +108,14 @@ shared_examples Ability do |klass|
   end
 
   context "when shared access with no permission but assigned" do
-    let!(:asset) { create(factory, access: 'Shared', permissions: [permission], assigned_to: user.id) }
+    let!(:asset) { create(factory, access: "Shared", permissions: [permission], assigned_to: user.id) }
     let(:permission) { Permission.new(user: create(:user)) }
 
     it { is_expected.to be_able_to(:manage, asset) }
   end
 
   context "when shared access with group permission" do
-    let!(:asset) { create(factory, access: 'Shared', permissions: [permission]) }
+    let!(:asset) { create(factory, access: "Shared", permissions: [permission]) }
     let(:permission) { Permission.new(group: group) }
     let(:group) { create(:group, users: [user]) }
 
@@ -123,7 +123,7 @@ shared_examples Ability do |klass|
   end
 
   context "when shared access with several group permissions" do
-    let!(:asset) { create(factory, access: 'Shared', permissions: permissions) }
+    let!(:asset) { create(factory, access: "Shared", permissions: permissions) }
     let(:permissions) { [Permission.new(group: group1), Permission.new(group: group2)] }
     let(:group1) { create(:group, users: [user]) }
     let(:group2) { create(:group, users: [user]) }
@@ -132,7 +132,7 @@ shared_examples Ability do |klass|
   end
 
   context "when shared access with no group permission" do
-    let!(:asset) { create(factory, access: 'Shared', permissions: [permission]) }
+    let!(:asset) { create(factory, access: "Shared", permissions: [permission]) }
     let(:permission) { Permission.new(group: group) }
     let(:group) { create(:group) }
 

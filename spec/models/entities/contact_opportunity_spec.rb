@@ -18,13 +18,13 @@
 #  updated_at     :datetime
 #
 
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe ContactOpportunity do
   before(:each) do
     @valid_attributes = {
       contact: mock_model(Contact),
-      opportunity: mock_model(Opportunity)
+      opportunity: mock_model(Opportunity),
     }
   end
 

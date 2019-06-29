@@ -150,6 +150,6 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def setup_current_tab
-    set_current_tab('admin/users')
+    set_current_tab("admin/users")
   end
 end

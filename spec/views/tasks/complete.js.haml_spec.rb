@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "/tasks/complete" do
   include TasksHelper
@@ -53,7 +53,7 @@ describe "/tasks/complete" do
 
       render
       expect(rendered).to include("$('#task_#{@task.id}').html('<li class=\\'highlight task\\' id=\\'task_#{@task.id}\\'")
-      expect(rendered).to include('<strike>')
+      expect(rendered).to include("<strike>")
     end
 
     it "should update recently viewed items" do

@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "/contacts/index" do
   include ContactsHelper
@@ -17,7 +17,7 @@ describe "/contacts/index" do
   it "should render [contact] template with @contacts collection if there are contacts" do
     assign(:contacts, [build_stubbed(:contact, id: 42)].paginate)
 
-    render template: 'contacts/index', formats: [:js]
+    render template: "contacts/index", formats: [:js]
 
     expect(rendered).to include("$('#contacts').html('<li class=\\'contact highlight\\' id=\\'contact_42\\'")
     expect(rendered).to include("#paginate")
@@ -26,7 +26,7 @@ describe "/contacts/index" do
   it "should render [empty] template if @contacts collection if there are no contacts" do
     assign(:contacts, [].paginate)
 
-    render template: 'contacts/index', formats: [:js]
+    render template: "contacts/index", formats: [:js]
 
     expect(rendered).to include("$('#contacts').html('<div id=\\'empty\\'>")
     expect(rendered).to include("#paginate")

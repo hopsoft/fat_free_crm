@@ -66,6 +66,6 @@ class Admin::GroupsController < Admin::ApplicationController
   end
 
   def setup_current_tab
-    set_current_tab('admin/groups')
+    set_current_tab("admin/groups")
   end
 end

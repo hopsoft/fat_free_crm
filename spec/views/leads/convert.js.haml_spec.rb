@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "/leads/convert" do
   include LeadsHelper
@@ -74,6 +74,6 @@ describe "/leads/convert" do
 
     render
     expect(rendered).to include("crm.create_or_select_account")
-    expect(rendered).to include('focus()')
+    expect(rendered).to include("focus()")
   end
 end

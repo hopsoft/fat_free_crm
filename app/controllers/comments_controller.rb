@@ -98,6 +98,6 @@ class CommentsController < ApplicationController
 
   #----------------------------------------------------------------------------
   def extract_commentable_name(params)
-    params.keys.detect { |x| x =~ /_id$/ }.try(:sub, /_id$/, '')
+    params.keys.detect { |x| x =~ /_id$/ }.try(:sub, /_id$/, "")
   end
 end

@@ -80,8 +80,8 @@ module FatFreeCRM
         attr_accessor :view_hooks
 
         def add_view_hook(hook, proc, position)
-          @view_hooks[hook] += [{ proc: proc,
-                                  position: position }]
+          @view_hooks[hook] += [{proc: proc,
+                                 position: position,}]
         end
 
         def insert_before(hook, &block)
@@ -122,11 +122,11 @@ module FatFreeCRM
           # Only render the original view block if there are no pending :replace operations
           if hooks[:replace].empty?
             view_data << if block_given?
-                           capture(&block)
-                         else
-                           # legacy view hooks
-                           FatFreeCRM::Callback.hook(method, caller, context)
-              end
+              capture(&block)
+            else
+              # legacy view hooks
+              FatFreeCRM::Callback.hook(method, caller, context)
+            end
           else
             hooks[:replace].each { |data| view_data << data }
           end

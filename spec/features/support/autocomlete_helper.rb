@@ -12,6 +12,6 @@ def fill_autocomplete(field, options = {})
 
   selector = %{ul.ui-autocomplete li.ui-menu-item a:contains("#{options[:select]}")}
   sleep(1)
-  expect(page).to have_selector('ul.ui-autocomplete li.ui-menu-item a')
+  expect(page).to have_selector("ul.ui-autocomplete li.ui-menu-item a")
   page.execute_script %{ $('#{selector}').trigger('mouseenter').click() }
 end

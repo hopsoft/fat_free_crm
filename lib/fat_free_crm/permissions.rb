@@ -59,7 +59,7 @@ module FatFreeCRM
       # Remove all shared permissions if no longer shared
       #--------------------------------------------------------------------------
       def access=(value)
-        remove_permissions unless value == 'Shared'
+        remove_permissions unless value == "Shared"
         super(value)
       end
 
@@ -68,10 +68,10 @@ module FatFreeCRM
       def remove_permissions
         # we don't use dependent => :destroy so must manually remove
         permissions_to_remove = if id && self.class
-                                  Permission.where(asset_id: id, asset_type: self.class.name).to_a
-                                else
-                                  []
-                                end
+          Permission.where(asset_id: id, asset_type: self.class.name).to_a
+        else
+          []
+        end
 
         permissions_to_remove.each { |p| permissions.delete(p); p.destroy }
       end

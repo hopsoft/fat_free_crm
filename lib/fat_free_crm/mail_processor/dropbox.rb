@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'fat_free_crm/mail_processor/base'
+require "fat_free_crm/mail_processor/base"
 
 module FatFreeCRM
   module MailProcessor
@@ -29,7 +29,7 @@ module FatFreeCRM
       #--------------------------------------------------------------------------------------
       def process(_uid, email)
         with_explicit_keyword(email) do |keyword, name|
-          data = { "Type" => keyword, "Name" => name }
+          data = {"Type" => keyword, "Name" => name}
           find_or_create_and_attach(email, data)
         end && return
 
@@ -97,17 +97,17 @@ module FatFreeCRM
           conditions = [
             "(lower(email) = ? OR lower(alt_email) = ?)",
             data["Email"].downcase,
-            data["Email"].downcase
+            data["Email"].downcase,
           ]
         elsif klass.new.respond_to?(:first_name)
           first_name, *last_name = data["Name"].split
           conditions = if last_name.empty? # Treat single name as last name.
-                         ['last_name LIKE ?', "%#{first_name}"]
-                       else
-                         ['first_name LIKE ? AND last_name LIKE ?', "%#{first_name}", "%#{last_name.join(' ')}"]
+            ["last_name LIKE ?", "%#{first_name}"]
+          else
+            ["first_name LIKE ? AND last_name LIKE ?", "%#{first_name}", "%#{last_name.join(" ")}"]
           end
         else
-          conditions = ['name LIKE ?', "%#{data['Name']}%"]
+          conditions = ["name LIKE ?", "%#{data["Name"]}%"]
         end
 
         # Find the asset from deduced conditions
@@ -115,10 +115,10 @@ module FatFreeCRM
           if sender_has_permissions_for?(asset)
             attach(email, asset, :strip_first_line)
           else
-            log "Sender does not have permissions to attach email to #{data['Type']} #{data['Email']} <#{data['Name']}>"
+            log "Sender does not have permissions to attach email to #{data["Type"]} #{data["Email"]} <#{data["Name"]}>"
           end
         else
-          log "#{data['Type']} #{data['Email']} <#{data['Name']}> not found, creating new one..."
+          log "#{data["Type"]} #{data["Email"]} <#{data["Name"]}> not found, creating new one..."
           asset = klass.create!(default_values(klass, data))
           attach(email, asset, :strip_first_line)
         end
@@ -157,22 +157,22 @@ module FatFreeCRM
         cc = email.cc.blank? ? nil : email.cc.join(", ")
 
         email_body = if strip_first_line
-                       plain_text_body(email).split("\n")[1..-1].join("\n").strip
-                     else
-                       plain_text_body(email)
+          plain_text_body(email).split("\n")[1..-1].join("\n").strip
+        else
+          plain_text_body(email)
         end
 
         Email.create(
           imap_message_id: email.message_id,
-          user:            @sender,
-          mediator:        asset,
-          sent_from:       email.from.first,
-          sent_to:         to,
-          cc:              cc,
-          subject:         email.subject,
-          body:            email_body,
-          received_at:     email.date,
-          sent_at:         email.date
+          user: @sender,
+          mediator: asset,
+          sent_from: email.from.first,
+          sent_to: to,
+          cc: cc,
+          subject: email.subject,
+          body: email_body,
+          received_at: email.date,
+          sent_at: email.date
         )
         asset.touch
 
@@ -183,15 +183,15 @@ module FatFreeCRM
         if @settings[:attach_to_account] && asset.respond_to?(:account) && asset.account
           Email.create(
             imap_message_id: email.message_id,
-            user:            @sender,
-            mediator:        asset.account,
-            sent_from:       email.from.first,
-            sent_to:         to,
-            cc:              cc,
-            subject:         email.subject,
-            body:            email_body,
-            received_at:     email.date,
-            sent_at:         email.date
+            user: @sender,
+            mediator: asset.account,
+            sent_from: email.from.first,
+            sent_to: to,
+            cc: cc,
+            subject: email.subject,
+            body: email_body,
+            received_at: email.date,
+            sent_at: email.date
           )
           asset.account.touch
         end
@@ -203,8 +203,8 @@ module FatFreeCRM
         keyword = data.delete("Type").capitalize
 
         defaults = {
-          user:   @sender,
-          access: default_access
+          user: @sender,
+          access: default_access,
         }
 
         case keyword
@@ -213,7 +213,7 @@ module FatFreeCRM
           defaults[:stage] = Opportunity.default_stage if keyword == "Opportunity" # TODO: I18n
 
         when "Contact", "Lead"
-          first_name, *last_name = data.delete("Name").split(' ')
+          first_name, *last_name = data.delete("Name").split(" ")
           defaults[:first_name] = first_name
           defaults[:last_name] = (last_name.any? ? last_name.join(" ") : "(unknown)")
           defaults[:status] = "contacted" if keyword == "Lead" # TODO: I18n
@@ -221,7 +221,7 @@ module FatFreeCRM
 
         data.each do |key, value|
           key = key.downcase
-          defaults[key.to_sym] = value if klass.new.respond_to?(key + '=')
+          defaults[key.to_sym] = value if klass.new.respond_to?(key + "=")
         end
 
         defaults
@@ -229,27 +229,27 @@ module FatFreeCRM
 
       #----------------------------------------------------------------------------------------
       def default_values_for_contact(_email, recipient)
-        recipient_local, recipient_domain = recipient.split('@')
+        recipient_local, recipient_domain = recipient.split("@")
 
         defaults = {
-          user:       @sender,
+          user: @sender,
           first_name: recipient_local.capitalize,
-          last_name:  "(unknown)",
-          email:      recipient,
-          access:     default_access
+          last_name: "(unknown)",
+          email: recipient,
+          access: default_access,
         }
 
         # Search for domain name in Accounts.
-        account = Account.where('(lower(email) like ? OR lower(website) like ?)', "%#{recipient_domain.downcase}", "%#{recipient_domain.downcase}%").first
+        account = Account.where("(lower(email) like ? OR lower(website) like ?)", "%#{recipient_domain.downcase}", "%#{recipient_domain.downcase}%").first
         if account
           log "asociating new contact #{recipient} with the account #{account.name}"
           defaults[:account] = account
         else
           log "creating new account #{recipient_domain.capitalize} for the contact #{recipient}"
           defaults[:account] = Account.create!(
-            user:   @sender,
-            email:  recipient,
-            name:   recipient_domain.capitalize,
+            user: @sender,
+            email: recipient,
+            name: recipient_domain.capitalize,
             access: default_access
           )
         end
@@ -260,7 +260,7 @@ module FatFreeCRM
       # to choose anyone to share it with here.
       #--------------------------------------------------------------------------------------
       def default_access
-        Setting.default_access == "Shared" ? 'Private' : Setting.default_access
+        Setting.default_access == "Shared" ? "Private" : Setting.default_access
       end
 
       # Notify users with the results of the operations

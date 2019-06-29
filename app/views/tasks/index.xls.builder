@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-xml.Worksheet 'ss:Name' => I18n.t(:tab_tasks) do
+xml.Worksheet "ss:Name" => I18n.t(:tab_tasks) do
   xml.Table do
     unless @tasks.empty?
       # Header.
@@ -19,7 +19,7 @@ xml.Worksheet 'ss:Name' => I18n.t(:tab_tasks) do
         heads.each do |head|
           xml.Cell do
             xml.Data I18n.t(head),
-                     'ss:Type' => 'String'
+              "ss:Type" => "String"
           end
         end
       end
@@ -36,12 +36,12 @@ xml.Worksheet 'ss:Name' => I18n.t(:tab_tasks) do
                   task.user.try(:name),
                   task.assignee.try(:name),
                   task.category,
-                  task.background_info]
+                  task.background_info,]
 
           data.each do |value|
             xml.Cell do
               xml.Data value,
-                       'ss:Type' => (value.respond_to?(:abs) ? 'Number' : 'String').to_s
+                "ss:Type" => (value.respond_to?(:abs) ? "Number" : "String").to_s
             end
           end
         end

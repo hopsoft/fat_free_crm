@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe LeadsController do
   before(:each) do
@@ -37,7 +37,7 @@ describe LeadsController do
       controller.session[:leads_filter] = "new,contacted"
       @leads = [
         create(:lead, status: "new", user: current_user),
-        create(:lead, status: "contacted", user: current_user)
+        create(:lead, status: "contacted", user: current_user),
       ]
 
       # This one should be filtered out.
@@ -53,7 +53,7 @@ describe LeadsController do
       @billy_bones   = create(:lead, user: current_user, first_name: "Billy",   last_name: "Bones")
       @captain_flint = create(:lead, user: current_user, first_name: "Captain", last_name: "Flint")
 
-      get :index, params: { query: "bill" }
+      get :index, params: {query: "bill"}
       expect(assigns[:leads]).to eq([@billy_bones])
       expect(assigns[:current_query]).to eq("bill")
       expect(session[:leads_current_query]).to eq("bill")
@@ -62,7 +62,7 @@ describe LeadsController do
     describe "AJAX pagination" do
       it "should pick up page number from params" do
         @leads = [create(:lead, user: current_user)]
-        get :index, params: { page: 42 }, xhr: true
+        get :index, params: {page: 42}, xhr: true
 
         expect(assigns[:current_page].to_i).to eq(42)
         expect(assigns[:leads]).to eq([]) # page #42 should be empty if there's only one lead ;-)
@@ -74,7 +74,7 @@ describe LeadsController do
         session[:leads_current_page] = 42
         session[:leads_current_query] = "bill"
         @leads = [create(:lead, user: current_user)]
-        get :index, params: { query: "bill" }, xhr: true
+        get :index, params: {query: "bill"}, xhr: true
 
         expect(assigns[:current_page]).to eq(42)
         expect(assigns[:leads]).to eq([])
@@ -127,15 +127,15 @@ describe LeadsController do
       end
 
       it "should expose the requested lead as @lead and render [show] template" do
-        get :show, params: { id: 42 }
+        get :show, params: {id: 42}
         expect(assigns[:lead]).to eq(@lead)
         expect(assigns[:comment].attributes).to eq(@comment.attributes)
         expect(response).to render_template("leads/show")
       end
 
       it "should update an activity when viewing the lead" do
-        get :show, params: { id: @lead.id }
-        expect(@lead.versions.last.event).to eq('view')
+        get :show, params: {id: @lead.id}
+        expect(@lead.versions.last.event).to eq("view")
       end
     end
 
@@ -146,7 +146,7 @@ describe LeadsController do
         expect(@lead).to receive(:to_json).and_return("generated JSON")
 
         request.env["HTTP_ACCEPT"] = "application/json"
-        get :show, params: { id: 42 }
+        get :show, params: {id: 42}
         expect(response.body).to eq("generated JSON")
       end
     end
@@ -158,7 +158,7 @@ describe LeadsController do
         expect(@lead).to receive(:to_xml).and_return("generated XML")
 
         request.env["HTTP_ACCEPT"] = "application/xml"
-        get :show, params: { id: 42 }
+        get :show, params: {id: 42}
         expect(response.body).to eq("generated XML")
       end
     end
@@ -168,7 +168,7 @@ describe LeadsController do
         @lead = create(:lead, user: current_user)
         @lead.destroy
 
-        get :show, params: { id: @lead.id }
+        get :show, params: {id: @lead.id}
         expect(flash[:warning]).not_to eq(nil)
         expect(response).to redirect_to(leads_path)
       end
@@ -176,7 +176,7 @@ describe LeadsController do
       it "should redirect to lead index if the lead is protected" do
         @private = create(:lead, user: create(:user), access: "Private")
 
-        get :show, params: { id: @private.id }
+        get :show, params: {id: @private.id}
         expect(flash[:warning]).not_to eq(nil)
         expect(response).to redirect_to(leads_path)
       end
@@ -186,7 +186,7 @@ describe LeadsController do
         @lead.destroy
         request.env["HTTP_ACCEPT"] = "application/json"
 
-        get :show, params: { id: @lead.id }
+        get :show, params: {id: @lead.id}
         expect(response.code).to eq("404") # :not_found
       end
 
@@ -195,7 +195,7 @@ describe LeadsController do
         @lead.destroy
         request.env["HTTP_ACCEPT"] = "application/xml"
 
-        get :show, params: { id: @lead.id }
+        get :show, params: {id: @lead.id}
         expect(response.code).to eq("404") # :not_found
       end
     end
@@ -219,7 +219,7 @@ describe LeadsController do
     it "should create related object when necessary" do
       @campaign = create(:campaign, id: 123)
 
-      get :new, params: { related: "campaign_123" }, xhr: true
+      get :new, params: {related: "campaign_123"}, xhr: true
       expect(assigns[:campaign]).to eq(@campaign)
     end
 
@@ -228,7 +228,7 @@ describe LeadsController do
         @campaign = create(:campaign)
         @campaign.destroy
 
-        get :new, params: { related: "campaign_#{@campaign.id}" }, xhr: true
+        get :new, params: {related: "campaign_#{@campaign.id}"}, xhr: true
         expect(flash[:warning]).not_to eq(nil)
         expect(response.body).to eq('window.location.href = "/campaigns";')
       end
@@ -236,7 +236,7 @@ describe LeadsController do
       it "should redirect to parent asset's index page with the message if parent asset got protected" do
         @campaign = create(:campaign, access: "Private")
 
-        get :new, params: { related: "campaign_#{@campaign.id}" }, xhr: true
+        get :new, params: {related: "campaign_#{@campaign.id}"}, xhr: true
         expect(flash[:warning]).not_to eq(nil)
         expect(response.body).to eq('window.location.href = "/campaigns";')
       end
@@ -250,7 +250,7 @@ describe LeadsController do
       @lead = create(:lead, id: 42, user: current_user, campaign: nil)
       @campaigns = [create(:campaign, user: current_user)]
 
-      get :edit, params: { id: 42 }, xhr: true
+      get :edit, params: {id: 42}, xhr: true
       expect(assigns[:lead]).to eq(@lead)
       expect(assigns[:campaigns]).to eq(@campaigns)
       expect(response).to render_template("leads/edit")
@@ -260,7 +260,7 @@ describe LeadsController do
       @lead = create(:lead, id: 42)
       @previous = create(:lead, id: 321)
 
-      get :edit, params: { id: 42, previous: 321 }, xhr: true
+      get :edit, params: {id: 42, previous: 321}, xhr: true
       expect(assigns[:previous]).to eq(@previous)
     end
 
@@ -269,7 +269,7 @@ describe LeadsController do
         @lead = create(:lead, user: current_user)
         @lead.destroy
 
-        get :edit, params: { id: @lead.id }, xhr: true
+        get :edit, params: {id: @lead.id}, xhr: true
         expect(flash[:warning]).not_to eq(nil)
         expect(response.body).to eq("window.location.reload();")
       end
@@ -277,7 +277,7 @@ describe LeadsController do
       it "should reload current page with the flash message if the lead is protected" do
         @private = create(:lead, user: create(:user), access: "Private")
 
-        get :edit, params: { id: @private.id }, xhr: true
+        get :edit, params: {id: @private.id}, xhr: true
         expect(flash[:warning]).not_to eq(nil)
         expect(response.body).to eq("window.location.reload();")
       end
@@ -292,7 +292,7 @@ describe LeadsController do
       it "should notify the view if previous lead got deleted" do
         @previous.destroy
 
-        get :edit, params: { id: @lead.id, previous: @previous.id }, xhr: true
+        get :edit, params: {id: @lead.id, previous: @previous.id}, xhr: true
         expect(flash[:warning]).to eq(nil) # no warning, just silently remove the div
         expect(assigns[:previous]).to eq(@previous.id)
         expect(response).to render_template("leads/edit")
@@ -301,7 +301,7 @@ describe LeadsController do
       it "should notify the view if previous lead got protected" do
         @previous.update_attribute(:access, "Private")
 
-        get :edit, params: { id: @lead.id, previous: @previous.id }, xhr: true
+        get :edit, params: {id: @lead.id, previous: @previous.id}, xhr: true
         expect(flash[:warning]).to eq(nil)
         expect(assigns[:previous]).to eq(@previous.id)
         expect(response).to render_template("leads/edit")
@@ -319,7 +319,7 @@ describe LeadsController do
         allow(Lead).to receive(:new).and_return(@lead)
         @campaigns = [create(:campaign, user: current_user)]
 
-        post :create, params: { lead: { first_name: "Billy", last_name: "Bones" } }, xhr: true
+        post :create, params: {lead: {first_name: "Billy", last_name: "Bones"}}, xhr: true
         expect(assigns(:lead)).to eq(@lead)
         expect(assigns(:campaigns)).to eq(@campaigns)
         expect(assigns[:lead_status_total]).to be_nil
@@ -337,7 +337,7 @@ describe LeadsController do
         @lead = build(:lead, campaign: @campaign, user: current_user, access: "Shared")
         allow(Lead).to receive(:new).and_return(@lead)
 
-        post :create, params: { lead: { first_name: "Billy", last_name: "Bones", access: "Campaign", user_ids: %w[7 8] }, campaign: @campaign.id }, xhr: true
+        post :create, params: {lead: {first_name: "Billy", last_name: "Bones", access: "Campaign", user_ids: %w[7 8]}, campaign: @campaign.id}, xhr: true
         expect(assigns(:lead)).to eq(@lead)
         expect(@lead.reload.access).to eq("Shared")
         expect(@lead.permissions.map(&:user_id).sort).to eq([7, 8])
@@ -350,7 +350,7 @@ describe LeadsController do
         allow(Lead).to receive(:new).and_return(@lead)
 
         request.env["HTTP_REFERER"] = "http://localhost/leads"
-        post :create, params: { lead: { first_name: "Billy", last_name: "Bones" } }, xhr: true
+        post :create, params: {lead: {first_name: "Billy", last_name: "Bones"}}, xhr: true
         expect(assigns[:lead_status_total]).to be_an_instance_of(HashWithIndifferentAccess)
       end
 
@@ -359,7 +359,7 @@ describe LeadsController do
         allow(Lead).to receive(:new).and_return(@lead)
 
         request.env["HTTP_REFERER"] = "http://localhost/leads"
-        post :create, params: { lead: { first_name: "Billy", last_name: "Bones" } }, xhr: true
+        post :create, params: {lead: {first_name: "Billy", last_name: "Bones"}}, xhr: true
         expect(assigns[:leads]).to eq([@lead])
       end
 
@@ -368,14 +368,14 @@ describe LeadsController do
         @lead = build(:lead, user: current_user, campaign: @campaign)
 
         request.env["HTTP_REFERER"] = "http://localhost/campaigns/#{@campaign.id}"
-        put :create, params: { lead: { first_name: "Billy", last_name: "Bones" }, campaign: @campaign.id }, xhr: true
+        put :create, params: {lead: {first_name: "Billy", last_name: "Bones"}, campaign: @campaign.id}, xhr: true
         expect(assigns[:campaign]).to eq(@campaign)
       end
 
       it "should add a new comment to the newly created lead when specified" do
         @lead = create(:lead)
         allow(Lead).to receive(:new).and_return(@lead)
-        post :create, params: { lead: { first_name: "Test", last_name: "Lead" }, comment_body: "This is an important lead." }, xhr: true
+        post :create, params: {lead: {first_name: "Test", last_name: "Lead"}, comment_body: "This is an important lead."}, xhr: true
         expect(@lead.reload.comments.map(&:comment)).to include("This is an important lead.")
       end
     end
@@ -386,7 +386,7 @@ describe LeadsController do
         allow(Lead).to receive(:new).and_return(@lead)
         @campaigns = [create(:campaign, user: current_user)]
 
-        post :create, params: { lead: { first_name: nil } }, xhr: true
+        post :create, params: {lead: {first_name: nil}}, xhr: true
         expect(assigns(:lead)).to eq(@lead)
         expect(assigns(:campaigns)).to eq(@campaigns)
         expect(assigns[:lead_status_total]).to eq(nil)
@@ -403,7 +403,7 @@ describe LeadsController do
       it "should update the requested lead, expose it as @lead, and render [update] template" do
         @lead = create(:lead, first_name: "Billy", user: current_user)
 
-        put :update, params: { id: @lead.id, lead: { first_name: "Bones" } }, xhr: true
+        put :update, params: {id: @lead.id, lead: {first_name: "Bones"}}, xhr: true
         expect(@lead.reload.first_name).to eq("Bones")
         expect(assigns[:lead]).to eq(@lead)
         expect(assigns[:lead_status_total]).to eq(nil)
@@ -413,22 +413,22 @@ describe LeadsController do
       it "should update lead status" do
         @lead = create(:lead, status: "new", user: current_user)
 
-        put :update, params: { id: @lead.id, lead: { status: "rejected" } }, xhr: true
+        put :update, params: {id: @lead.id, lead: {status: "rejected"}}, xhr: true
         expect(@lead.reload.status).to eq("rejected")
       end
 
       it "should update lead source" do
         @lead = create(:lead, source: "campaign", user: current_user)
 
-        put :update, params: { id: @lead.id, lead: { source: "cald_call" } }, xhr: true
+        put :update, params: {id: @lead.id, lead: {source: "cald_call"}}, xhr: true
         expect(@lead.reload.source).to eq("cald_call")
       end
 
       it "should update lead campaign" do
-        @campaigns = { old: create(:campaign), new: create(:campaign) }
+        @campaigns = {old: create(:campaign), new: create(:campaign)}
         @lead = create(:lead, campaign: @campaigns[:old])
 
-        put :update, params: { id: @lead.id, lead: { campaign_id: @campaigns[:new].id } }, xhr: true
+        put :update, params: {id: @lead.id, lead: {campaign_id: @campaigns[:new].id}}, xhr: true
         expect(@lead.reload.campaign).to eq(@campaigns[:new])
       end
 
@@ -437,7 +437,7 @@ describe LeadsController do
         @lead = create(:lead, campaign: @campaign)
         @count = @campaign.reload.leads_count
 
-        put :update, params: { id: @lead, lead: { campaign_id: nil } }, xhr: true
+        put :update, params: {id: @lead, lead: {campaign_id: nil}}, xhr: true
         expect(@lead.reload.campaign).to eq(nil)
         expect(@campaign.reload.leads_count).to eq(@count - 1)
       end
@@ -447,17 +447,17 @@ describe LeadsController do
         @lead = create(:lead, campaign: nil)
         @count = @campaign.leads_count
 
-        put :update, params: { id: @lead, lead: { campaign_id: @campaign.id } }, xhr: true
+        put :update, params: {id: @lead, lead: {campaign_id: @campaign.id}}, xhr: true
         expect(@lead.reload.campaign).to eq(@campaign)
         expect(@campaign.reload.leads_count).to eq(@count + 1)
       end
 
       it "should update both campaign leads counts if reassigned to a new campaign" do
-        @campaigns = { old: create(:campaign), new: create(:campaign) }
+        @campaigns = {old: create(:campaign), new: create(:campaign)}
         @lead = create(:lead, campaign: @campaigns[:old])
-        @counts = { old: @campaigns[:old].reload.leads_count, new: @campaigns[:new].leads_count }
+        @counts = {old: @campaigns[:old].reload.leads_count, new: @campaigns[:new].leads_count}
 
-        put :update, params: { id: @lead, lead: { campaign_id: @campaigns[:new].id } }, xhr: true
+        put :update, params: {id: @lead, lead: {campaign_id: @campaigns[:new].id}}, xhr: true
         expect(@lead.reload.campaign).to eq(@campaigns[:new])
         expect(@campaigns[:old].reload.leads_count).to eq(@counts[:old] - 1)
         expect(@campaigns[:new].reload.leads_count).to eq(@counts[:new] + 1)
@@ -468,7 +468,7 @@ describe LeadsController do
         he  = create(:user, id: 7)
         she = create(:user, id: 8)
 
-        put :update, params: { id: @lead.id, lead: { access: "Shared", user_ids: %w[7 8] } }, xhr: true
+        put :update, params: {id: @lead.id, lead: {access: "Shared", user_ids: %w[7 8]}}, xhr: true
         expect(@lead.user_ids.sort).to eq([he.id, she.id])
       end
 
@@ -476,7 +476,7 @@ describe LeadsController do
         @lead = create(:lead)
 
         request.env["HTTP_REFERER"] = "http://localhost/leads"
-        put :update, params: { id: @lead.id, lead: { first_name: "Billy" } }, xhr: true
+        put :update, params: {id: @lead.id, lead: {first_name: "Billy"}}, xhr: true
         expect(assigns[:lead_status_total]).not_to be_nil
         expect(assigns[:lead_status_total]).to be_an_instance_of(HashWithIndifferentAccess)
       end
@@ -486,7 +486,7 @@ describe LeadsController do
         @lead = create(:lead, campaign: @campaign)
 
         request.env["HTTP_REFERER"] = "http://localhost/campaigns/#{@campaign.id}"
-        put :update, params: { id: @lead.id, lead: { first_name: "Hello" } }, xhr: true
+        put :update, params: {id: @lead.id, lead: {first_name: "Hello"}}, xhr: true
         expect(assigns[:campaign]).to eq(@campaign)
       end
 
@@ -495,7 +495,7 @@ describe LeadsController do
           @lead = create(:lead, user: current_user)
           @lead.destroy
 
-          put :update, params: { id: @lead.id }, xhr: true
+          put :update, params: {id: @lead.id}, xhr: true
           expect(flash[:warning]).not_to eq(nil)
           expect(response.body).to eq("window.location.reload();")
         end
@@ -503,7 +503,7 @@ describe LeadsController do
         it "should reload current page with the flash message if the lead is protected" do
           @private = create(:lead, user: create(:user), access: "Private")
 
-          put :update, params: { id: @private.id }, xhr: true
+          put :update, params: {id: @private.id}, xhr: true
           expect(flash[:warning]).not_to eq(nil)
           expect(response.body).to eq("window.location.reload();")
         end
@@ -515,7 +515,7 @@ describe LeadsController do
         @lead = create(:lead, id: 42, user: current_user, campaign: nil)
         @campaigns = [create(:campaign, user: current_user)]
 
-        put :update, params: { id: 42, lead: { first_name: nil } }, xhr: true
+        put :update, params: {id: 42, lead: {first_name: nil}}, xhr: true
         expect(assigns[:lead]).to eq(@lead)
         expect(assigns[:campaigns]).to eq(@campaigns)
         expect(response).to render_template("leads/update")
@@ -533,7 +533,7 @@ describe LeadsController do
 
     describe "AJAX request" do
       it "should destroy the requested lead and render [destroy] template" do
-        delete :destroy, params: { id: @lead.id }, xhr: true
+        delete :destroy, params: {id: @lead.id}, xhr: true
 
         expect(assigns[:leads]).to eq(nil) # @lead got deleted
         expect { Lead.find(@lead.id) }.to raise_error(ActiveRecord::RecordNotFound)
@@ -548,7 +548,7 @@ describe LeadsController do
         it "should get data for the sidebar" do
           @another_lead = create(:lead, user: current_user)
 
-          delete :destroy, params: { id: @lead.id }, xhr: true
+          delete :destroy, params: {id: @lead.id}, xhr: true
           expect(assigns[:leads]).to eq([@another_lead]) # @lead got deleted
           expect(assigns[:lead_status_total]).not_to be_nil
           expect(assigns[:lead_status_total]).to be_an_instance_of(HashWithIndifferentAccess)
@@ -558,7 +558,7 @@ describe LeadsController do
         it "should try previous page and render index action if current page has no leads" do
           session[:leads_current_page] = 42
 
-          delete :destroy, params: { id: @lead.id }, xhr: true
+          delete :destroy, params: {id: @lead.id}, xhr: true
           expect(session[:leads_current_page]).to eq(41)
           expect(response).to render_template("leads/index")
         end
@@ -566,7 +566,7 @@ describe LeadsController do
         it "should render index action when deleting last lead" do
           session[:leads_current_page] = 1
 
-          delete :destroy, params: { id: @lead.id }, xhr: true
+          delete :destroy, params: {id: @lead.id}, xhr: true
           expect(session[:leads_current_page]).to eq(1)
           expect(response).to render_template("leads/index")
         end
@@ -580,13 +580,13 @@ describe LeadsController do
         end
 
         it "should reset current page to 1" do
-          delete :destroy, params: { id: @lead.id }, xhr: true
+          delete :destroy, params: {id: @lead.id}, xhr: true
           expect(session[:leads_current_page]).to eq(1)
           expect(response).to render_template("leads/destroy")
         end
 
         it "should reload campaiign to be able to refresh its summary" do
-          delete :destroy, params: { id: @lead.id }, xhr: true
+          delete :destroy, params: {id: @lead.id}, xhr: true
           expect(assigns[:campaign]).to eq(@campaign)
           expect(response).to render_template("leads/destroy")
         end
@@ -597,7 +597,7 @@ describe LeadsController do
           @lead = create(:lead, user: current_user)
           @lead.destroy
 
-          delete :destroy, params: { id: @lead.id }, xhr: true
+          delete :destroy, params: {id: @lead.id}, xhr: true
           expect(flash[:warning]).not_to eq(nil)
           expect(response.body).to eq("window.location.reload();")
         end
@@ -605,7 +605,7 @@ describe LeadsController do
         it "should reload current page with the flash message if the lead is protected" do
           @private = create(:lead, user: create(:user), access: "Private")
 
-          delete :destroy, params: { id: @private.id }, xhr: true
+          delete :destroy, params: {id: @private.id}, xhr: true
           expect(flash[:warning]).not_to eq(nil)
           expect(response.body).to eq("window.location.reload();")
         end
@@ -614,7 +614,7 @@ describe LeadsController do
 
     describe "HTML request" do
       it "should redirect to Leads index when a lead gets deleted from its landing page" do
-        delete :destroy, params: { id: @lead.id }
+        delete :destroy, params: {id: @lead.id}
         expect(flash[:notice]).not_to eq(nil)
         expect(session[:leads_current_page]).to eq(1)
         expect(response).to redirect_to(leads_path)
@@ -624,7 +624,7 @@ describe LeadsController do
         @lead = create(:lead, user: current_user)
         @lead.destroy
 
-        delete :destroy, params: { id: @lead.id }
+        delete :destroy, params: {id: @lead.id}
         expect(flash[:warning]).not_to eq(nil)
         expect(response).to redirect_to(leads_path)
       end
@@ -632,7 +632,7 @@ describe LeadsController do
       it "should redirect to lead index with the flash message if the lead is protected" do
         @private = create(:lead, user: create(:user), access: "Private")
 
-        delete :destroy, params: { id: @private.id }
+        delete :destroy, params: {id: @private.id}
         expect(flash[:warning]).not_to eq(nil)
         expect(response).to redirect_to(leads_path)
       end
@@ -650,7 +650,7 @@ describe LeadsController do
       @account = Account.new(user: current_user, name: @lead.company, access: "Lead")
       @opportunity = Opportunity.new(user: current_user, access: "Lead", stage: "prospecting", campaign: @lead.campaign, source: @lead.source)
 
-      get :convert, params: { id: @lead.id }, xhr: true
+      get :convert, params: {id: @lead.id}, xhr: true
       expect(assigns[:lead]).to eq(@lead)
       expect(assigns[:accounts]).to eq(@accounts)
       expect(assigns[:account].attributes).to eq(@account.attributes)
@@ -664,7 +664,7 @@ describe LeadsController do
         @lead = create(:lead, user: current_user)
         @lead.destroy
 
-        get :convert, params: { id: @lead.id }, xhr: true
+        get :convert, params: {id: @lead.id}, xhr: true
         expect(flash[:warning]).not_to eq(nil)
         expect(response.body).to eq("window.location.reload();")
       end
@@ -672,7 +672,7 @@ describe LeadsController do
       it "should reload current page with the flash message if the lead is protected" do
         @private = create(:lead, user: create(:user), access: "Private")
 
-        get :convert, params: { id: @private.id }, xhr: true
+        get :convert, params: {id: @private.id}, xhr: true
         expect(flash[:warning]).not_to eq(nil)
         expect(response.body).to eq("window.location.reload();")
       end
@@ -687,7 +687,7 @@ describe LeadsController do
       it "should notify the view if previous lead got deleted" do
         @previous.destroy
 
-        get :convert, params: { id: @lead.id, previous: @previous.id }, xhr: true
+        get :convert, params: {id: @lead.id, previous: @previous.id}, xhr: true
         expect(flash[:warning]).to eq(nil) # no warning, just silently remove the div
         expect(assigns[:previous]).to eq(@previous.id)
         expect(response).to render_template("leads/convert")
@@ -696,7 +696,7 @@ describe LeadsController do
       it "should notify the view if previous lead got protected" do
         @previous.update_attribute(:access, "Private")
 
-        get :convert, params: { id: @lead.id, previous: @previous.id }, xhr: true
+        get :convert, params: {id: @lead.id, previous: @previous.id}, xhr: true
         expect(flash[:warning]).to eq(nil)
         expect(assigns[:previous]).to eq(@previous.id)
         expect(response).to render_template("leads/convert")
@@ -717,7 +717,7 @@ describe LeadsController do
       @contact = build(:contact, user: current_user, lead: @lead)
       allow(Contact).to receive(:new).and_return(@contact)
 
-      put :promote, params: { id: 42, account: { id: 123 }, opportunity: { name: "Hello" } }, xhr: true
+      put :promote, params: {id: 42, account: {id: 123}, opportunity: {name: "Hello"}}, xhr: true
       expect(@lead.reload.status).to eq("converted")
       expect(assigns[:lead]).to eq(@lead)
       expect(assigns[:account]).to eq(@account)
@@ -744,7 +744,7 @@ describe LeadsController do
       @opportunity.permissions << create(:permission, user: she, asset: @opportunity)
       allow(@opportunity).to receive(:new).and_return(@opportunity)
 
-      put :promote, params: { id: @lead.id, access: "Lead", account: { name: "Hello", access: "Lead", user_id: current_user.id }, opportunity: { name: "World", access: "Lead", user_id: current_user.id } }, xhr: true
+      put :promote, params: {id: @lead.id, access: "Lead", account: {name: "Hello", access: "Lead", user_id: current_user.id}, opportunity: {name: "World", access: "Lead", user_id: current_user.id}}, xhr: true
       expect(@account.access).to eq("Shared")
       expect(@account.permissions.map(&:user_id).sort).to eq([7, 8])
       expect(@account.permissions.map(&:asset_id)).to eq([@account.id, @account.id])
@@ -759,14 +759,14 @@ describe LeadsController do
       @campaign = create(:campaign)
       @lead = create(:lead, user: current_user, campaign: @campaign)
 
-      put :promote, params: { id: @lead.id, account: { name: "Hello" }, opportunity: { name: "Hello", campaign_id: @campaign.id } }, xhr: true
+      put :promote, params: {id: @lead.id, account: {name: "Hello"}, opportunity: {name: "Hello", campaign_id: @campaign.id}}, xhr: true
       expect(assigns[:opportunity].campaign).to eq(@campaign)
     end
 
     it "should assign lead's source to the newly created opportunity" do
       @lead = create(:lead, user: current_user, source: "cold_call")
 
-      put :promote, params: { id: @lead.id, account: { name: "Hello" }, opportunity: { name: "Hello", source: @lead.source } }, xhr: true
+      put :promote, params: {id: @lead.id, account: {name: "Hello"}, opportunity: {name: "Hello", source: @lead.source}}, xhr: true
       expect(assigns[:opportunity].source).to eq(@lead.source)
     end
 
@@ -774,7 +774,7 @@ describe LeadsController do
       @lead = create(:lead)
       request.env["HTTP_REFERER"] = "http://localhost/leads"
 
-      put :promote, params: { id: @lead.id, account: { name: "Hello" }, opportunity: {} }, xhr: true
+      put :promote, params: {id: @lead.id, account: {name: "Hello"}, opportunity: {}}, xhr: true
       expect(assigns[:lead_status_total]).not_to be_nil
       expect(assigns[:lead_status_total]).to be_an_instance_of(HashWithIndifferentAccess)
     end
@@ -784,7 +784,7 @@ describe LeadsController do
       @lead = create(:lead, campaign: @campaign)
       request.env["HTTP_REFERER"] = "http://localhost/campaigns/#{@campaign.id}"
 
-      put :promote, params: { id: @lead.id, account: { name: "Hello" }, opportunity: {} }, xhr: true
+      put :promote, params: {id: @lead.id, account: {name: "Hello"}, opportunity: {}}, xhr: true
       expect(assigns[:campaign]).to eq(@campaign)
     end
 
@@ -794,7 +794,7 @@ describe LeadsController do
       @contact = build(:contact, first_name: nil) # make it fail
       allow(Contact).to receive(:new).and_return(@contact)
 
-      put :promote, params: { id: 42, account: { id: 123 } }, xhr: true
+      put :promote, params: {id: 42, account: {id: 123}}, xhr: true
       expect(@lead.reload.status).to eq("new")
       expect(response).to render_template("leads/promote")
     end
@@ -804,7 +804,7 @@ describe LeadsController do
         @lead = create(:lead, user: current_user)
         @lead.destroy
 
-        put :promote, params: { id: @lead.id }, xhr: true
+        put :promote, params: {id: @lead.id}, xhr: true
         expect(flash[:warning]).not_to eq(nil)
         expect(response.body).to eq("window.location.reload();")
       end
@@ -812,7 +812,7 @@ describe LeadsController do
       it "should reload current page with the flash message if the lead is protected" do
         @private = create(:lead, user: create(:user), access: "Private")
 
-        put :promote, params: { id: @private.id }, xhr: true
+        put :promote, params: {id: @private.id}, xhr: true
         expect(flash[:warning]).not_to eq(nil)
         expect(response.body).to eq("window.location.reload();")
       end
@@ -829,7 +829,7 @@ describe LeadsController do
 
     describe "AJAX request" do
       it "should reject the requested lead and render [reject] template" do
-        put :reject, params: { id: @lead.id }, xhr: true
+        put :reject, params: {id: @lead.id}, xhr: true
 
         expect(assigns[:lead]).to eq(@lead.reload)
         expect(@lead.status).to eq("rejected")
@@ -838,7 +838,7 @@ describe LeadsController do
 
       it "should get the data for leads sidebar when called from leads index" do
         request.env["HTTP_REFERER"] = "http://localhost/leads"
-        put :reject, params: { id: @lead.id }, xhr: true
+        put :reject, params: {id: @lead.id}, xhr: true
         expect(assigns[:lead_status_total]).not_to be_nil
         expect(assigns[:lead_status_total]).to be_an_instance_of(HashWithIndifferentAccess)
       end
@@ -848,7 +848,7 @@ describe LeadsController do
         @lead = create(:lead, campaign: @campaign)
 
         request.env["HTTP_REFERER"] = "http://localhost/campaigns/#{@campaign.id}"
-        put :reject, params: { id: @lead.id }, xhr: true
+        put :reject, params: {id: @lead.id}, xhr: true
         expect(assigns[:campaign]).to eq(@campaign)
       end
 
@@ -857,7 +857,7 @@ describe LeadsController do
           @lead = create(:lead, user: current_user)
           @lead.destroy
 
-          put :reject, params: { id: @lead.id }, xhr: true
+          put :reject, params: {id: @lead.id}, xhr: true
           expect(flash[:warning]).not_to eq(nil)
           expect(response.body).to eq("window.location.reload();")
         end
@@ -865,7 +865,7 @@ describe LeadsController do
         it "should reload current page with the flash message if the lead is protected" do
           @private = create(:lead, user: create(:user), access: "Private")
 
-          put :reject, params: { id: @private.id }, xhr: true
+          put :reject, params: {id: @private.id}, xhr: true
           expect(flash[:warning]).not_to eq(nil)
           expect(response.body).to eq("window.location.reload();")
         end
@@ -874,7 +874,7 @@ describe LeadsController do
 
     describe "HTML request" do
       it "should redirect to Leads index when a lead gets rejected from its landing page" do
-        put :reject, params: { id: @lead.id }
+        put :reject, params: {id: @lead.id}
 
         expect(assigns[:lead]).to eq(@lead.reload)
         expect(@lead.status).to eq("rejected")
@@ -887,7 +887,7 @@ describe LeadsController do
           @lead = create(:lead, user: current_user)
           @lead.destroy
 
-          put :reject, params: { id: @lead.id }
+          put :reject, params: {id: @lead.id}
           expect(flash[:warning]).not_to eq(nil)
           expect(response).to redirect_to(leads_path)
         end
@@ -895,7 +895,7 @@ describe LeadsController do
         it "should redirect to lead index if the lead is protected" do
           @private = create(:lead, user: create(:user), access: "Private")
 
-          put :reject, params: { id: @private.id }
+          put :reject, params: {id: @private.id}
           expect(flash[:warning]).not_to eq(nil)
           expect(response).to redirect_to(leads_path)
         end
@@ -956,7 +956,7 @@ describe LeadsController do
   #----------------------------------------------------------------------------
   describe "responding to GET redraw" do
     it "should save user selected lead preference" do
-      get :redraw, params: { per_page: 42, view: "long", sort_by: "first_name", naming: "after" }, xhr: true
+      get :redraw, params: {per_page: 42, view: "long", sort_by: "first_name", naming: "after"}, xhr: true
       expect(current_user.preference[:leads_per_page]).to eq(42)
       expect(current_user.preference[:leads_index_view]).to eq("long")
       expect(current_user.preference[:leads_sort_by]).to eq("leads.first_name ASC")
@@ -964,23 +964,23 @@ describe LeadsController do
     end
 
     it "should set similar options for Contacts" do
-      get :redraw, params: { sort_by: "first_name", naming: "after" }, xhr: true
+      get :redraw, params: {sort_by: "first_name", naming: "after"}, xhr: true
       expect(current_user.pref[:contacts_sort_by]).to eq("contacts.first_name ASC")
       expect(current_user.pref[:contacts_naming]).to eq("after")
     end
 
     it "should reset current page to 1" do
-      get :redraw, params: { per_page: 42, view: "long", sort_by: "first_name", naming: "after" }, xhr: true
+      get :redraw, params: {per_page: 42, view: "long", sort_by: "first_name", naming: "after"}, xhr: true
       expect(session[:leads_current_page]).to eq(1)
     end
 
     it "should select @leads and render [index] template" do
       @leads = [
         create(:lead, first_name: "Alice", user: current_user),
-        create(:lead, first_name: "Bobby", user: current_user)
+        create(:lead, first_name: "Bobby", user: current_user),
       ]
 
-      get :redraw, params: { per_page: 1, sort_by: "first_name" }, xhr: true
+      get :redraw, params: {per_page: 1, sort_by: "first_name"}, xhr: true
       expect(assigns(:leads)).to eq([@leads.first])
       expect(response).to render_template("leads/index")
     end
@@ -993,7 +993,7 @@ describe LeadsController do
       session[:leads_filter] = "contacted,rejected"
 
       @leads = [create(:lead, user: current_user, status: "new")]
-      post :filter, params: { status: "new" }, xhr: true
+      post :filter, params: {status: "new"}, xhr: true
       expect(assigns[:leads]).to eq(@leads)
       expect(response).to be_a_success
       expect(response).to render_template("leads/index")
@@ -1001,7 +1001,7 @@ describe LeadsController do
 
     it "should reset current page to 1" do
       @leads = []
-      post :filter, params: { status: "new" }, xhr: true
+      post :filter, params: {status: "new"}, xhr: true
 
       expect(session[:leads_current_page]).to eq(1)
     end

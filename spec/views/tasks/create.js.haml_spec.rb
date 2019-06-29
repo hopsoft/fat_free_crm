@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'spec_helper'
+require "spec_helper"
 
 describe "/tasks/create" do
   include TasksHelper
@@ -14,7 +14,7 @@ describe "/tasks/create" do
     login
   end
 
-  (TASK_STATUSES - ['completed']).each do |status|
+  (TASK_STATUSES - ["completed"]).each do |status|
     describe "create from #{status} tasks page" do
       before do
         assign(:view, status)
@@ -86,7 +86,7 @@ describe "/tasks/create" do
     expect(rendered).to have_text("Recent Items")
   end
 
-  (TASK_STATUSES - ['assigned']).each do |status|
+  (TASK_STATUSES - ["assigned"]).each do |status|
     describe "create from outside the Tasks tab" do
       before do
         @task = build_stubbed(:task, id: 42)

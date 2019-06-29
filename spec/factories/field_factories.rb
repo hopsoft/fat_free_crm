@@ -27,7 +27,7 @@ FactoryBot.define do
     field_group
     position            { FactoryBot.generate(:field_position) }
     label               { FactoryBot.generate(:field_label) }
-    name                { |f| f.label.downcase.gsub(/[^a-z0-9]+/, '_') }
+    name                { |f| f.label.downcase.gsub(/[^a-z0-9]+/, "_") }
     as { "string" }
     minlength           { rand(100) }
     updated_at          { FactoryBot.generate(:time) }

@@ -14,11 +14,11 @@ class CustomFieldDatePair < CustomFieldPair
     from = render(object.send(name))
     to = render(object.send(paired_with.name))
     if from.present? && to.present?
-      I18n.t('pair.from_to', from: from, to: to)
+      I18n.t("pair.from_to", from: from, to: to)
     elsif from.present? && !to.present?
-      I18n.t('pair.from_only', from: from)
+      I18n.t("pair.from_only", from: from)
     elsif !from.present? && to.present?
-      I18n.t('pair.to_only', to: to)
+      I18n.t("pair.to_only", to: to)
     else
       ""
     end
@@ -36,7 +36,7 @@ class CustomFieldDatePair < CustomFieldPair
       return if start.nil?
       from = obj.send(start.name)
       to = obj.send(name)
-      obj.errors.add(name.to_sym, ::I18n.t('activerecord.errors.models.custom_field.endbeforestart', field: start.label)) if from.present? && to.present? && (from > to)
+      obj.errors.add(name.to_sym, ::I18n.t("activerecord.errors.models.custom_field.endbeforestart", field: start.label)) if from.present? && to.present? && (from > to)
     end
   end
 
