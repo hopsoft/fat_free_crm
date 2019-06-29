@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 = simple_form_for(@task, html: one_submit_only, remote: true) do |f|
   = link_to_close new_task_path + "?view=#{@view}"
   = hidden_field_tag :view, @view

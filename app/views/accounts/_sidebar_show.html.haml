@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 - won = @account.opportunities.won.map(&:amount).compact.sum
 - lost = @account.opportunities.lost.map(&:amount).compact.sum
 - pipeline = @account.opportunities.pipeline.map(&:weighted_amount).compact.sum

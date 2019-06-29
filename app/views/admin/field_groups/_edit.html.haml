@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 = form_for([:admin, @field_group], html: one_submit_only, remote: true) do |f|
   = link_to_close edit_admin_field_group_path(@field_group)
   = f.error_messages

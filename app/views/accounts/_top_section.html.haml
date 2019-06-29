@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 = hook(:account_top_section, self, f: f) do
   .section
     %table
@@ -8,7 +9,7 @@
       %tr
         %td
           .label #{t :assigned_to}:
-          = user_select(:account, User.without(current_user), current_user)
+          = user_select(:account, User.without_user(current_user), current_user)
         %td= spacer
         %td
           .label #{t :category}:

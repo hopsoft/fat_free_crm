@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 - id = dom_id(@field)
 html = $.parseHTML('#{j render(partial: "admin/fields/form")}')
 $('##{id}').find('.edit_field').replaceWith( html )

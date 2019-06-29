@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 - id = dom_id(@user)
 $('##{id}').replaceWith('#{ j render(partial: "user", collection: [ @user ]) }');
 $('##{id}').effect("highlight", { duration:1000 });

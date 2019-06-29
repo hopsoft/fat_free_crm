@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 - asset.field_groups.each do |field_group|
   - fg = field_group.fields.without_pairs
   - if fg.select{|f| asset.send(f.name).present? }.any?

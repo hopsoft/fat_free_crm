@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'globby'
 require 'tmpdir'
 require 'fileutils'

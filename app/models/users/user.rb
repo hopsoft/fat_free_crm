@@ -48,7 +48,7 @@
 
 class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :confirmable,
-         :encryptable, :recoverable, :rememberable, :trackable
+    :encryptable, :recoverable, :rememberable, :trackable
   before_create :suspend_if_needs_approval
 
   has_one :avatar, as: :entity, dependent: :destroy  # Personal avatar.
@@ -59,21 +59,21 @@ class User < ActiveRecord::Base
   has_many :leads
   has_many :contacts
   has_many :opportunities
-  has_many :assigned_opportunities, class_name: 'Opportunity', foreign_key: 'assigned_to'
+  has_many :assigned_opportunities, class_name: "Opportunity", foreign_key: "assigned_to"
   has_many :permissions, dependent: :destroy
   has_many :preferences, dependent: :destroy
   has_many :lists
   has_and_belongs_to_many :groups
 
-  has_paper_trail class_name: 'Version', ignore: [:last_sign_in_at]
+  has_paper_trail class_name: "Version", ignore: [:last_sign_in_at]
 
-  scope :by_id, -> { order('id DESC') }
-  scope :without, ->(user) { where('id != ?', user.id).by_name }
-  scope :by_name, -> { order('first_name, last_name, email') }
+  scope :by_id, -> { order("id DESC") }
+  scope :without_user, ->(user) { where("id != ?", user.id).by_name }
+  scope :by_name, -> { order("first_name, last_name, email") }
 
   scope :text_search, ->(query) {
-    query = query.gsub(/[^\w\s\-\.'\p{L}]/u, '').strip
-    where('upper(username) LIKE upper(:s) OR upper(email) LIKE upper(:s) OR upper(first_name) LIKE upper(:s) OR upper(last_name) LIKE upper(:s)', s: "%#{query}%")
+    query = query.gsub(/[^\w\s\-\.'\p{L}]/u, "").strip
+    where("upper(username) LIKE upper(:s) OR upper(email) LIKE upper(:s) OR upper(first_name) LIKE upper(:s) OR upper(last_name) LIKE upper(:s)", s: "%#{query}%")
   }
 
   scope :my, ->(current_user) { accessible_by(current_user.ability) }
@@ -81,21 +81,21 @@ class User < ActiveRecord::Base
   scope :have_assigned_opportunities, -> {
     joins("INNER JOIN opportunities ON users.id = opportunities.assigned_to")
       .where("opportunities.stage <> 'lost' AND opportunities.stage <> 'won'")
-      .select('DISTINCT(users.id), users.*')
+      .select("DISTINCT(users.id), users.*")
   }
 
   validates :email,
-            presence: { message: :missing_email },
-            length: { minimum: 3, maximum: 254 },
-            uniqueness: { message: :email_in_use, case_sensitive: false },
-            format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
+    presence: {message: :missing_email},
+    length: {minimum: 3, maximum: 254},
+    uniqueness: {message: :email_in_use, case_sensitive: false},
+    format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create}
   validates :username,
-            uniqueness: { message: :username_taken, case_sensitive: false },
-            presence: { message: :missing_username },
-            format: { with: /[a-z0-9_-]+/i }
+    uniqueness: {message: :username_taken, case_sensitive: false},
+    presence: {message: :missing_username},
+    format: {with: /[a-z0-9_-]+/i}
   validates :password,
-            presence: { if: :password_required? },
-            confirmation: true
+    presence: {if: :password_required?},
+    confirmation: true
 
   #----------------------------------------------------------------------------
   def name
@@ -180,11 +180,11 @@ class User < ActiveRecord::Base
   # Prevent deleting a user unless she has no artifacts left.
   #----------------------------------------------------------------------------
   def has_related_assets?
-    sum = %w[Account Campaign Lead Contact Opportunity Comment Task].detect do |asset|
+    sum = %w[Account Campaign Lead Contact Opportunity Comment Task].detect { |asset|
       klass = asset.constantize
 
       asset != "Comment" && klass.assigned_to(self).exists? || klass.created_by(self).exists?
-    end
+    }
     !sum.nil?
   end
 
@@ -202,7 +202,7 @@ class User < ActiveRecord::Base
     def find_for_database_authentication(warden_conditions)
       conditions = warden_conditions.dup
       if login = conditions.delete(:email)
-        where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
+        where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", {value: login.downcase}]).first
       end
     end
   end

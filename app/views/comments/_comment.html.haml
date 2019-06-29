@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 - truncated = simple_format(truncate(comment.comment.gsub("\n", " "), length: 125))
 - formatted = defined?(RedCloth) ? RedCloth.new(comment.comment).to_html : simple_format(comment.comment)
 - collapsable = formatted.size > 150

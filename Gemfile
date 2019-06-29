@@ -1,101 +1,92 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-# Uncomment the database that you have configured in config/database.yml
-# ----------------------------------------------------------------------
-
-case ENV['CI'] && ENV['DB']
-when 'sqlite'
-  gem 'sqlite3'
-when 'mysql'
-  gem 'mysql2'
-when 'postgres'
-  gem 'pg', '~> 0.21.0' # Pinned, see https://github.com/fatfreecrm/fat_free_crm/pull/689
-else
-  gem 'pg', '~> 0.21.0'
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
 end
 
-# Removes a gem dependency
-def remove(name)
-  @dependencies.reject! { |d| d.name == name }
-end
+ruby "2.6.3"
 
-# Replaces an existing gem dependency (e.g. from gemspec) with an alternate source.
-def gem(name, *args)
-  remove(name)
-  super
-end
-
-# Bundler no longer treats runtime dependencies as base dependencies.
-# The following code restores this behaviour.
-# (See https://github.com/carlhuda/bundler/issues/1041)
-spec = Bundler.load_gemspec(File.expand_path("../fat_free_crm.gemspec", __FILE__))
-spec.runtime_dependencies.each do |dep|
-  gem dep.name, *dep.requirement.as_list
-end
-
-# Remove premailer auto-require
-gem 'premailer', require: false
-
-# Remove fat_free_crm dependency, to stop it from being auto-required too early.
-remove 'fat_free_crm'
+gem "activejob",                   "~> 5.2"
+gem "activemodel-serializers-xml", "~> 1.0"
+gem "acts-as-taggable-on",         "~> 6.0"
+gem "acts_as_commentable",         "~> 4.0"
+gem "acts_as_list",                "~> 0.9"
+gem "bootsnap",                    "~> 1.4", require: false
+gem "cancancan",                   "~> 3.0"
+gem "coffee-rails",                "~> 5.0"
+gem "country_select",              "~> 4.0"
+gem "devise",                      "~> 4.6"
+gem "devise-encryptable",          "~> 0.2"
+gem "devise-i18n",                 "~> 1.8"
+gem "dotenv-rails",                "~> 2.7", require: "dotenv/rails-now"
+gem "dynamic_form",                "~> 1.1"
+gem "email_reply_parser_ffcrm",    "~> 0.5"
+gem "execjs",                      "~> 2.7"
+gem "ffaker",                      "~> 2.11"
+gem "font-awesome-rails",          "~> 4.7"
+gem "haml",                        "~> 5.1"
+gem "jquery-migrate-rails",        "~> 1.2"
+gem "jquery-rails",                "~> 4.3"
+gem "jquery-ui-rails",             "~> 6.0"
+gem "nokogiri",                    "~> 1.10"
+gem "paper_trail",                 "~> 10.3"
+gem "paperclip",                   "~> 6.1"
+gem "pg",                          "~> 1.1"
+gem "premailer",                   "~> 1.11"
+gem "puma",                        "~> 4.0"
+gem "rails",                       "~> 5.1"
+gem "rails-i18n",                  "~> 5.1"
+gem "rails-observers",             "~> 0.1"
+gem "rails3-jquery-autocomplete",  "~> 1.0"
+gem "rails_autolink",              "~> 1.1"
+gem "ransack",                     "~> 2.1"
+gem "ransack_ui",                  "~> 1.3"
+gem "responders",                  "~> 2.0"
+gem "responds_to_parent",          "~> 1.1"
+gem "sass-rails",                  "~> 5.0"
+gem "select2-rails",               "~> 4.0"
+gem "simple_form",                 "~> 4.1"
+gem "sprockets-rails",             "~> 3.2"
+gem "therubyracer",                "~> 0.12", platform: :ruby
+gem "uglifier",                    "~> 4.1"
+gem "will_paginate",               "~> 3.1"
 
 group :development do
-  # don't load these gems in travis
-  unless ENV["CI"]
-    gem 'capistrano'
-    gem 'capistrano-bundler'
-    gem 'capistrano-rails'
-    gem 'capistrano-rvm'
-    gem 'guard'
-    gem 'guard-rspec'
-    gem 'guard-rails'
-    gem 'rb-inotify', require: false
-    gem 'rb-fsevent', require: false
-    gem 'rb-fchange', require: false
-    gem 'brakeman', require: false
-  end
+  gem "brakeman", require: false
+  gem "capistrano"
+  gem "capistrano-bundler"
+  gem "capistrano-rails"
+  gem "capistrano-rvm"
+  gem "guard"
+  gem "guard-rails"
+  gem "guard-rspec"
+  gem "magic_frozen_string_literal"
+  gem "rb-fchange", require: false
+  gem "rb-fsevent", require: false
+  gem "rb-inotify", require: false
+  gem "standardrb", "~> 1.0"
 end
 
 group :development, :test do
-  gem 'rails-controller-testing'
-  gem 'rspec-rails'
-  gem 'rspec-activemodel-mocks'
-  gem 'headless'
-  gem 'byebug'
-  gem 'pry-rails' unless ENV["CI"]
-  gem 'factory_bot_rails'
-  gem 'rubocop', '~> 0.52.0' # Pinned because upgrades require regenerating rubocop_todo.yml
-  gem 'rainbow'
-  gem 'puma' # used by capybara 3
+  gem "byebug"
+  gem "factory_bot_rails"
+  gem "headless"
+  gem "pry-rails"
+  gem "rails-controller-testing"
+  gem "rainbow"
+  gem "rspec-activemodel-mocks"
+  gem "rspec-rails"
 end
 
 group :test do
-  gem 'capybara'
-  gem 'selenium-webdriver'
-  gem 'chromedriver-helper'
-  gem 'database_cleaner'
-  gem 'acts_as_fu'
-  gem 'zeus', platform: :ruby unless ENV["CI"]
-  gem 'timecop'
+  gem "capybara"
+  gem "selenium-webdriver"
+  gem "chromedriver-helper"
+  gem "database_cleaner"
+  gem "acts_as_fu"
+  gem "zeus", platform: :ruby unless ENV["CI"]
+  gem "timecop"
 end
-
-group :heroku do
-  gem 'rails_12factor'
-  gem 'puma'
-end
-
-gem 'sass-rails'
-gem 'coffee-rails'
-gem 'uglifier'
-gem 'execjs'
-gem 'therubyracer', platform: :ruby unless ENV["CI"]
-gem 'nokogiri', '>= 1.8.1'
-gem 'activemodel-serializers-xml'
-gem 'bootsnap', require: false
-gem 'devise', '~>4.6'
-gem 'devise-i18n'
-gem "devise-encryptable"
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-gem 'activejob', '~> 5.1.6.1'

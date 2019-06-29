@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Globby
   class Result < Array
     def initialize(files, dirs)

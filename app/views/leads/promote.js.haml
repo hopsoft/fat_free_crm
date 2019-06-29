@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 - entity_name = controller.controller_name.singularize.underscore #account
 - @entity = instance_variable_get("@#{entity_name}")
 - id = called_from_landing_page? ? "convert_#{entity_name}" : dom_id(@entity)

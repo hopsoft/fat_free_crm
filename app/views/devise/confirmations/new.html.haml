@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 .standalone#standalone
   = simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
     .title= t('devise.confirmations.new.resend_confirmation_instructions')

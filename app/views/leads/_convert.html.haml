@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 .remote
   = form_for(@lead, url: promote_lead_path(@lead), html: one_submit_only, remote: true) do |f|
     = link_to_close convert_lead_path(@lead)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180107082701) do
+ActiveRecord::Schema.define(version: 2018_01_07_082701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +54,6 @@ ActiveRecord::Schema.define(version: 20180107082701) do
     t.text "subscribed_users"
     t.integer "contacts_count", default: 0
     t.integer "opportunities_count", default: 0
-    t.integer "pipeline_opportunities_count", default: 0
     t.index ["assigned_to"], name: "index_accounts_on_assigned_to"
     t.index ["user_id", "name", "deleted_at"], name: "index_accounts_on_user_id_and_name_and_deleted_at", unique: true
   end

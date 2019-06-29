@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 - objectives = []
 - objectives << t(:revenue_number, number_to_currency(campaign.target_revenue, precision: 0)) if campaign.target_revenue
 - objectives << t('pluralize.lead', count: campaign.target_leads) if campaign.target_leads

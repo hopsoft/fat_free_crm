@@ -5,11 +5,11 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-require 'net/imap'
-require 'mail'
-require 'email_reply_parser'
-require 'premailer'
-require 'nokogiri'
+require "net/imap"
+require "mail"
+require "email_reply_parser"
+require "premailer"
+require "nokogiri"
 
 module FatFreeCRM
   module MailProcessor
@@ -98,7 +98,7 @@ module FatFreeCRM
       def with_new_emails
         @imap.uid_search(%w[NOT SEEN]).each do |uid|
           begin
-            email = Mail.new(@imap.uid_fetch(uid, 'RFC822').first.attr['RFC822'])
+            email = Mail.new(@imap.uid_fetch(uid, "RFC822").first.attr["RFC822"])
             log "fetched new message...", email
             if is_valid?(email) && sent_from_known_user?(email)
               yield(uid, email)
@@ -167,11 +167,11 @@ module FatFreeCRM
       #------------------------------------------------------------------------------
       def find_sender(email_address)
         if @sender = User.find_by(
-          '(lower(email) = :email OR lower(alt_email) = :email) AND suspended_at IS NULL',
+          "(lower(email) = :email OR lower(alt_email) = :email) AND suspended_at IS NULL",
           email: email_address.downcase
         )
           # Set the PaperTrail user for versions (if user is found)
-          PaperTrail.whodunnit = @sender.id.to_s
+          PaperTrail.request.whodunnit = @sender.id.to_s
         end
       end
 
@@ -179,7 +179,7 @@ module FatFreeCRM
       def sender_has_permissions_for?(asset)
         return true if asset.access == "Public"
         return true if asset.user_id == @sender.id || asset.assigned_to == @sender.id
-        return true if asset.access == "Shared" && Permission.exists('user_id = ? AND asset_id = ? AND asset_type = ?', @sender.id, asset.id, asset.class.to_s)
+        return true if asset.access == "Shared" && Permission.exists("user_id = ? AND asset_id = ? AND asset_type = ?", @sender.id, asset.id, asset.class.to_s)
 
         false
       end
@@ -201,17 +201,17 @@ module FatFreeCRM
       def plain_text_body(email)
         # Extract all parts including nested
         parts = if email.multipart?
-                  email.parts.map { |p| p.multipart? ? p.parts : p }.flatten
-                else
-                  charset = email.charset
-                  [email]
+          email.parts.map { |p| p.multipart? ? p.parts : p }.flatten
+        else
+          charset = email.charset
+          [email]
         end
 
-        if text_part = parts.detect { |p| p.content_type.include?('text/plain') }
+        if text_part = parts.detect { |p| p.content_type.include?("text/plain") }
           text_body = text_part.body.to_s
           charset = text_part.charset if email.multipart?
         else
-          html_part = parts.detect { |p| p.content_type.include?('text/html') } || email
+          html_part = parts.detect { |p| p.content_type.include?("text/html") } || email
           text_body = Premailer.new(html_part.body.to_s, with_html_string: true).to_plain_text
           charset = html_part.charset if email.multipart?
         end
@@ -224,11 +224,11 @@ module FatFreeCRM
       # necessary as emails sometimes have invalid characters like MS "Smart Quotes."
       def clean_invalid_utf8_bytes(text, src_encoding)
         text.encode(
-          'UTF-8',
+          "UTF-8",
           src_encoding,
           invalid: :replace,
           undef: :replace,
-          replace: ''
+          replace: ""
         )
       end
     end

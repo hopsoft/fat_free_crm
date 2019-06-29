@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 - unless @activities.blank?
   $('#activities').html('#{ j render(partial: "activity", collection: @activities) }');
 - else

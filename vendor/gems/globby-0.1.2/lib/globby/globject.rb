@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Globby
   class GlObject
     attr_reader :files, :dirs

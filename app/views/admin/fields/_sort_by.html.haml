@@ -1,3 +1,4 @@
+-# frozen_string_literal: true
 - sort_by_menu_items = ["Field name", "Field label", "Field type", "Table name", "Display sequence", "Display block", "Display width", "Max size"].inject([]) do | items, sort_by|
   - items << %Q[{ name: "#{sort_by}", on_select: function() { #{redraw(:sort_by, sort_by.downcase!)} } }]
 

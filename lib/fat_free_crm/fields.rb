@@ -24,11 +24,14 @@ module FatFreeCRM
 
     module SingletonMethods
       def field_groups
-        if ActiveRecord::Base.connection.data_source_exists? 'field_groups'
+        if ActiveRecord::Base.connection.data_source_exists? "field_groups"
           FieldGroup.where(klass_name: name).order(:position)
         else
           []
         end
+      rescue => e # rescue allows for db creation
+        Rails.logger.error e
+        []
       end
 
       def fields
@@ -37,7 +40,7 @@ module FatFreeCRM
 
       def serialize_custom_fields!
         fields.each do |field|
-          serialize(field.name.to_sym, Array) if field.as == 'check_boxes'
+          serialize(field.name.to_sym, Array) if field.as == "check_boxes"
         end
       end
 
@@ -45,9 +48,9 @@ module FatFreeCRM
       def ransack_column_select_options
         field_groups.each_with_object({}) do |group, hash|
           group.fields.select { |f| f.collection.present? }.each do |field|
-            hash[field.name] = field.collection.each_with_object({}) do |option, options|
+            hash[field.name] = field.collection.each_with_object({}) { |option, options|
               options[option] = option
-            end
+            }
           end
         end
       end
