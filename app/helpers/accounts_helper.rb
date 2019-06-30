@@ -44,10 +44,10 @@ module AccountsHelper
     content_tag(:div, class: "label") {
       t(:account).html_safe +
         content_tag(:span, id: "account_create_title") {
-          " (#{t :create_new} #{t :or} <a href='#' onclick='crm.show_select_account(); return false;'>#{t :select_existing}</a>):".html_safe
+          " (#{t :create_new} <a href='#' onclick='crm.show_select_account(); return false;'>#{t :select_existing}</a>):".html_safe
         } +
         content_tag(:span, id: "account_select_title") {
-          " (<a href='#' onclick='crm.show_create_account(); return false;'>#{t :create_new}</a> #{t :or} #{t :select_existing}):".html_safe
+          " (<a href='#' onclick='crm.show_create_account(); return false;'>#{t :create_new}</a> #{t :select_existing}):".html_safe
         } +
         content_tag(:span, ":", id: "account_disabled_title")
     } +

@@ -187,7 +187,7 @@
       intro = $el.next("small")  unless intro.length
       section = $el.parent().next().children("div")
       section.slideToggle(
-        250
+        0
         =>
           arrow.html(if section.css('display') is 'none' then @COLLAPSED else @EXPANDED)
           intro.toggle()

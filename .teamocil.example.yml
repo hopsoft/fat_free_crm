@@ -1,0 +1,29 @@
+name: fat_free_crm
+windows:
+  - name: vim
+    root: /path/to/fat_free_crm
+    layout: main-vertical
+    panes:
+      - commands:
+        - asdf local nodejs 12.4.0
+        - asdf local ruby 2.6.3
+        - nvim
+
+  - name: console
+    root: /path/to/fat_free_crm
+    layout: main-vertical
+    panes:
+      - commands:
+        - asdf local nodejs 12.4.0
+        - asdf local ruby 2.6.3
+        - bundle exec rails c
+
+  - name: rails
+    root: /path/to/fat_free_crm
+    layout: even-horizontal
+    panes:
+      - commands:
+        - asdf local nodejs 12.4.0
+        - asdf local ruby 2.6.3
+        - lsof -t -i tcp:3000 | xargs kill -KILL
+        - bundle exec rails s

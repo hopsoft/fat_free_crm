@@ -68,6 +68,7 @@ group :development do
   gem "rb-fsevent", require: false
   gem "rb-inotify", require: false
   gem "standardrb", "~> 1.0"
+  gem "teamocil"
 end
 
 group :development, :test do

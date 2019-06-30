@@ -1,0 +1,226 @@
+$white: #fff;
+$black: #000;
+$light: #b5b5b7;
+$dark: #252839;
+$darker: #020022;
+$accent: #c3edfe;
+$cta: #52c034;
+$focus: #cfc3fe;
+
+* {
+  font-size: 16px !important;
+  font-family: helvetica, sans-serif;
+  line-height: 26px;
+}
+
+body { background-color: lighten($light, 25%); }
+
+small, .label {
+  font-size: 90% !important;
+  opacity: 0.5;
+}
+
+a {
+  &, &:link, &:visited {
+    color: $darker;
+    padding: 5px 8px;
+    border-radius: 5px !important;
+  }
+  &:hover {
+    background-color: $accent;
+  }
+  &.current {
+    border-color: darken($accent, 25%);
+    background-color: $accent;
+  }
+}
+
+.remote {
+  border: solid 1px lighten($light, 20%);
+  border-radius: 5px;
+  padding: 12px;
+  background-color: lighten($light, 25%);
+  a.close {
+    line-height: 16px;
+    background-color: $white;
+    border: none;
+    &, &:link, &:visited {
+      color: $darker;
+      padding: 5px 8px;
+      border-radius: 5px !important;
+    }
+    &:hover {
+      background-color: $accent;
+    }
+  }
+}
+
+.subtitle {
+  border: none;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.buttonbar {
+  border: none;
+}
+
+input[type="text"], select {
+  background-color: $white;
+  border: solid 1px $light;
+  border-radius: 4px;
+  padding: 2px 6px;
+  height: 26px;
+  line-height: 26px;
+  &:focus {
+    outline: none;
+    border-color: darken($focus, 15%);
+    box-shadow: 0 0 0 2px $focus;
+  }
+}
+
+select {
+  height: 32px;
+  line-height: 32px;
+  position: relative;
+  top: -1px;
+  margin-right: 4px;
+}
+
+.select2 {
+  .select2-selection {
+    height: 32px;
+    line-height: 32px;
+  }
+  .select2-container {
+    min-width: 240px;
+    border-color: darken($focus, 15%) !important;
+    box-shadow: 0 0 0 2px $focus;
+  }
+}
+
+input[type="submit"] {
+  color: $white;
+  background-color: $cta;
+  border: solid 1px darken($cta, 12%);
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.sidebar { min-width: 320px; }
+.top { margin: 0; }
+
+.panel, .main, .filters, .section {
+  padding: 14px;
+  background-color: $white !important;
+  border: solid 1px lighten($light, 10%);
+  border-radius: 5px;
+  box-shadow: 2px 2px 4px lighten($light, 15%), -2px 0px 4px lighten($light, 15%);
+}
+
+.fa { opacity: 0.6; }
+
+.strip {
+  &, * {
+    text-transform: lowercase;
+  }
+  &.new {
+    color: darken(#c0fdb9, 50%);
+    background-color: #c0fdb9 !important;
+  }
+  &.rejected {
+    color: darken(#fca5a9, 50%);
+    background-color: #fca5a9 !important;
+  }
+}
+
+.list {
+  li {
+    border-bottom: solid 1px lighten($light, 20%);
+  }
+}
+
+.title, .caption {
+  color: $dark !important;
+  border: none !important;
+  margin-bottom: 18px;
+  &, * {
+    font-size: 22px !important;
+  }
+}
+
+.highlight:hover {
+  background-color: lighten($accent, 10%);
+}
+
+ul.tools li {
+  border: none;
+}
+
+.tabs {
+  background-color: $dark;
+  li {
+    position: relative;
+    top: -10px;
+    a:link, a:visited {
+      background-color: lighten($dark, 25%);
+      border-bottom-left-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+      opacity: 0.9;
+      &.active {
+        opacity: 1;
+        background-color: lighten($light, 25%);
+      }
+    }
+    a:hover {
+      color: $white;
+      opacity: 1;
+    }
+  }
+}
+
+#header {
+  background-color: $dark;
+  text-align: right;
+  #welcome {
+    position: relative;
+    top: -5px;
+    float: none;
+    a {
+      margin-left: 6px;
+      color: $white;
+      opacity: 0.6;
+      &:hover, &.selected {
+        background: transparent;
+        color: $white;
+        opacity: 1;
+      }
+    }
+  }
+  &, * {
+    font-weight: lighter;
+  }
+}
+
+#search {
+  .tabs li a, .tabs li a:link, .tabs li a:visited {
+    background-color: transparent;
+    &.active {
+      background-color: lighten($light, 25%);
+    }
+  }
+
+  .search_form {
+    background-color: lighten($light, 25%);
+    border-radius: 5px;
+  }
+}
+
+#search_results_count {
+  float: right;
+  opacity: 0.3;
+  font-size: 12px !important;
+}

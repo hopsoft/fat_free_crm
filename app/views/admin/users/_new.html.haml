@@ -7,5 +7,4 @@
   = render "admin/users/profile", f: f
   .buttonbar
     = f.submit t(:create_user)
-    #{t :or}
     = link_to_cancel new_admin_user_path

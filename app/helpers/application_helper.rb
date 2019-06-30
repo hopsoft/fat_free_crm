@@ -143,10 +143,10 @@ module ApplicationHelper
 
   #----------------------------------------------------------------------------
   def link_to_close(url)
-    link_to("x", url + "#{url.include?("?") ? "&" : "?"}cancel=true",
-      remote: true,
-      class: "close",
-      title: t(:close_form))
+    # link_to("x", url + "#{url.include?("?") ? "&" : "?"}cancel=true",
+    #   remote: true,
+    #   class: "close",
+    #   title: t(:close_form))
   end
 
   # Bcc: to dropbox address if the dropbox has been set up.
@@ -373,7 +373,7 @@ module ApplicationHelper
       link_to(format.upcase, url_params, title: I18n.t(:"to_#{format}"))
     }
 
-    (exports + feeds + links).compact.join(" | ")
+    (exports + feeds + links).compact.join " "
   end
 
   def user_options

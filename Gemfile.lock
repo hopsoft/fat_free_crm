@@ -381,6 +381,7 @@ GEM
       rubocop (~> 0.67.1)
     standardrb (1.0.0)
       standard
+    teamocil (1.4.2)
     temple (0.8.1)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
@@ -479,6 +480,7 @@ DEPENDENCIES
   simple_form (~> 4.1)
   sprockets-rails (~> 3.2)
   standardrb (~> 1.0)
+  teamocil
   therubyracer (~> 0.12)
   timecop
   uglifier (~> 4.1)
