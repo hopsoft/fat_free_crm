@@ -42,7 +42,7 @@ de:
   action_destroy: gelöscht
   msg_require_admin: Sie müssen Administrator sein, um auf die Seite zu zugreifen.
   budget: Budget
-  could_not_find: Konnte %{value} nicht finden. Feel free to
+  could_not_find: "Konnte %{value} nicht finden. Feel free to:"
   leads_small: Anfragen
   final_review: Abschlussprüf.
   closed_ago_on: erledigt vor %{time_ago} am %{date}

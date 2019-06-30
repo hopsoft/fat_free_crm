@@ -9,8 +9,8 @@
     @[0].toUpperCase() + @.substring(1)
 
   window.crm =
-    EXPANDED: "&#9660;"
-    COLLAPSED: "&#9658;"
+    EXPANDED: "<i class='fa fa-chevron-down'></i>"
+    COLLAPSED: "<i class='fa fa-chevron-right'></i>"
     searchRequest: null
     autocompleter: null
     base_url: ""
@@ -180,7 +180,7 @@
     #----------------------------------------------------------------------------
     flip_subtitle: (el) ->
       $el = $(el)
-      arrow = $el.find("small")
+      arrow = $el.find("i")
       intro = $el.parent().next().children("small")
 
       # Optionally, the intro might be next to the link.
@@ -189,7 +189,7 @@
       section.slideToggle(
         0
         =>
-          arrow.html(if section.css('display') is 'none' then @COLLAPSED else @EXPANDED)
+          arrow.get(0).outerHTML = (if section.css('display') is 'none' then @COLLAPSED else @EXPANDED)
           intro.toggle()
       )
 

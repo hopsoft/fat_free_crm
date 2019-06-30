@@ -15,7 +15,7 @@ $focus: #cfc3fe;
 
 body { background-color: lighten($light, 25%); }
 
-small, .label {
+small, .label, .sorting_options {
   font-size: 90% !important;
   opacity: 0.5;
 }
@@ -25,6 +25,7 @@ a {
     color: $darker;
     padding: 5px 8px;
     border-radius: 5px !important;
+    cursor: pointer;
   }
   &:hover {
     background-color: $accent;
@@ -35,11 +36,20 @@ a {
   }
 }
 
+.create_asset a, .title_tools a {
+  background-color: #caffca;
+  border: solid 1px darken(#caffca, 25%);
+  color: darken(#caffca, 60%);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 .remote {
   border: solid 1px lighten($light, 20%);
   border-radius: 5px;
   padding: 12px;
   background-color: lighten($light, 25%);
+  margin-bottom: 40px;
   a.close {
     line-height: 16px;
     background-color: $white;
@@ -67,6 +77,10 @@ a {
   border: none;
 }
 
+input[type="text"] {
+  min-width: 340px;
+}
+
 input[type="text"], select {
   background-color: $white;
   border: solid 1px $light;
@@ -74,6 +88,17 @@ input[type="text"], select {
   padding: 2px 6px;
   height: 26px;
   line-height: 26px;
+  &:focus {
+    outline: none;
+    border-color: darken($focus, 15%);
+    box-shadow: 0 0 0 2px $focus;
+  }
+}
+
+textarea {
+  border: solid 1px $light;
+  border-radius: 4px;
+  padding: 2px 6px;
   &:focus {
     outline: none;
     border-color: darken($focus, 15%);
@@ -90,14 +115,8 @@ select {
 }
 
 .select2 {
-  .select2-selection {
-    height: 32px;
-    line-height: 32px;
-  }
-  .select2-container {
-    min-width: 240px;
-    border-color: darken($focus, 15%) !important;
-    box-shadow: 0 0 0 2px $focus;
+  .select2-selection, .select2-results {
+    border: solid 1px $light !important;
   }
 }
 
@@ -112,8 +131,13 @@ input[type="submit"] {
 
 .sidebar { min-width: 320px; }
 .top { margin: 0; }
+#flash {
+  color: $black;
+  text-shadow: none;
+  &.flash_notice { background-color: $accent; }
+}
 
-.panel, .main, .filters, .section {
+.panel, .main, .filters, .section, .menu {
   padding: 14px;
   background-color: $white !important;
   border: solid 1px lighten($light, 10%);
@@ -121,7 +145,22 @@ input[type="submit"] {
   box-shadow: 2px 2px 4px lighten($light, 15%), -2px 0px 4px lighten($light, 15%);
 }
 
-.fa { opacity: 0.6; }
+.standalone {
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.fa {
+  opacity: 0.6;
+  &, &::before {
+    display: inline-block;
+    width: 16px;
+  }
+  &.fa-chevron-right, &.fa-chevron-down {
+    margin-right: 3px;
+  }
+}
 
 .strip {
   &, * {
