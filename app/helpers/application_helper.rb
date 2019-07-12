@@ -52,7 +52,7 @@ module ApplicationHelper
 
     html = tag(:br)
     html << content_tag(:div, link_to(t(select_id), "#", id: select_id), class: "subtitle_tools")
-    html << content_tag(:div, "&nbsp;|&nbsp;".html_safe, class: "subtitle_tools")
+    html << content_tag(:div, "", class: "subtitle_tools")
     html << content_tag(:div, link_to_inline(create_id, create_url, related: dom_id(related), text: t(create_id)), class: "subtitle_tools")
     html << content_tag(:div, t(assets), class: :subtitle, id: "create_#{asset}_title")
     html << content_tag(:div, "", class: :remote, id: create_id, style: "display:none;")
@@ -220,7 +220,7 @@ module ApplicationHelper
     yes = link_to(t(:yes_button), params[:url] || model, method: :delete)
     no = link_to_function(t(:no_button), "$('#menu').html($('#confirm').html());")
     text = "$('#confirm').html( $('#menu').html() );\n"
-    text += "$('#menu').html('#{question} #{yes} : #{no}');"
+    text += "$('#menu').html('#{question} #{yes} #{no}');"
     text.html_safe
   end
 

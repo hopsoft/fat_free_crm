@@ -1,13 +1,13 @@
 -# frozen_string_literal: true
-%li.highlight[assigned]
+%div.highlight[assigned]
   - unless assigned.category.blank?
     .strip{class: assigned.category}= t(assigned.category)
   - else
     .strip.white #{t :other}
 
   .tools
-    = link_to_task_edit(assigned, bucket) + " | "
-    = link_to_discard(assigned) + " | " if shown_on_landing_page?
+    = link_to_task_edit(assigned, bucket)
+    = link_to_discard(assigned) if shown_on_landing_page?
     = link_to_task_delete(assigned, bucket)
 
   .indent

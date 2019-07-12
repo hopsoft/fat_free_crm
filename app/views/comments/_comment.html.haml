@@ -4,20 +4,19 @@
 - collapsable = formatted.size > 150
 - commentable = comment.commentable
 
-%li.comment.highlight[comment]
+%div.comment.highlight[comment]
   .body
-    = link_to avatar_for(comment.user, size: :small), user_path(comment.user)
     %ul.tools
       - if can?(:update, commentable)
         %li= link_to_edit(comment)
       - if can?(:destroy, commentable)
         %li= link_to_delete(comment)
 
-    = link_to(comment.user.full_name, user_path(comment.user)) + ","
+    -#= link_to avatar_for(comment.user, size: :small), user_path(comment.user)
+    = link_to(comment.user.full_name, user_path(comment.user))
     %tt
       = t(:added_note, value: timeago(comment.created_at) ).html_safe
       - if collapsable && can?(:read, commentable)
-        = " | "
         = link_to_function(comment.collapsed? ? t(:more) : t(:less), "crm.flip_note_or_email(this, '#{t(:more)}', '#{t(:less)}')", class: "toggle")
 
     - if can?(:read, commentable)

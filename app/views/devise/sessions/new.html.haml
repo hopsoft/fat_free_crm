@@ -18,7 +18,7 @@
         = t(:no_account)
         = link_to(t(:sign_up_now), new_registration_path(resource_name))
     .title= t(:login)
-    .section
+    .section{style: "padding:20px 20px 40px 20px;"}
       .label= t(:username)
       = f.input_field :email, as: :string
       .label= t(:password)

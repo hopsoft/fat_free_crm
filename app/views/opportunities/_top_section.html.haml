@@ -5,29 +5,29 @@
       %tr
         %td
           .label.req.top #{t :name}:
-          = f.text_field :name, autofocus: true, style: "width:325px"
+          = f.text_field :name, autofocus: true, style: ""
         %td= spacer
         %td
           .label.req.top #{t :stage}:
-          = f.select :stage, @stage, { selected: @opportunity.stage ? @opportunity.stage.to_sym : nil }, { style: "width:160px", class: 'select2' }
+          = f.select :stage, @stage, { selected: @opportunity.stage ? @opportunity.stage.to_sym : nil }, { style: "", class: 'select2' }
 
     %table{ border: 0, width: 500, cellpadding: 0, cellspacing: 0 }
       %tr
         %td
           .label #{t :close_date}:
-          = f.text_field :closes_on, value: f.object.closes_on, style: "width:110px;", autocomplete: :off, class: 'date'
+          = f.text_field :closes_on, value: f.object.closes_on, style: "", autocomplete: :off, class: 'date'
         %td= spacer
         %td
           .label #{t :probability} (%):
-          = f.text_field :probability, style: "width:110px; text-align:right;"
+          = f.text_field :probability, style: "text-align:right;"
         %td= spacer
         %td
           .label #{t :amount} #{t :currency}:
-          = f.text_field :amount, style: "width:110px; text-align:right;"
+          = f.text_field :amount, style: "text-align:right;"
         %td= spacer
         %td
           .label #{t :discount} #{t :currency}:
-          = f.text_field :discount, style: "width:110px; text-align:right;"
+          = f.text_field :discount, style: "text-align:right;"
 
     = fields_for(@account) do |a|
       = a.hidden_field :user_id
@@ -53,7 +53,7 @@
           %tr
             %td(colspan="3")
               .label= t(:background_info) + ':'
-              = f.text_area :background_info, style: "width:500px", rows: 3
+              = f.text_area :background_info, style: "", rows: 3
 
         = render partial: "/shared/tags", locals: {f: f, span: 3}
 

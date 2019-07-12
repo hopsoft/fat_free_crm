@@ -1,13 +1,13 @@
 -# frozen_string_literal: true
-%li.highlight[pending]
+%div.highlight[pending]
   - unless pending.category.blank?
     .strip{class: pending.category}= t(pending.category)
   - else
     .strip.white #{t :other}
 
   .tools
-    = link_to_task_edit(pending, bucket) + " | "
-    = link_to_discard(pending) + " | " if shown_on_landing_page?
+    = link_to_task_edit(pending, bucket)
+    = link_to_discard(pending) if shown_on_landing_page?
     = link_to_task_delete(pending, bucket)
 
   = check_box_tag dom_id(pending, :complete), 1, false, onclick: link_to_task_complete(pending, bucket)

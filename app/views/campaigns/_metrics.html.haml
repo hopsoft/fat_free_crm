@@ -6,12 +6,12 @@
 - unless objectives.empty?
   %dt
     %b #{t :target}:
-    = objectives.join(" | ")
+    = objectives.join(" ")
 %dt
   - unless objectives.empty?
     %b #{t :actual}:
-  = t(:revenue_number, number_to_currency(campaign.revenue.to_f, precision: 0)) + " | "
-  = t('pluralize.lead', campaign.leads_count.to_i) + " | "
+  = t(:revenue_number, number_to_currency(campaign.revenue.to_f, precision: 0))
+  = t('pluralize.lead', campaign.leads_count.to_i)
   = t('pluralize.opportunity', campaign.opportunities_count.to_i)
   - if campaign.opportunities_count? && campaign.leads_count? && campaign.leads_count != 0
-    = " | " + t(:conversion_number, number_to_percentage(campaign.opportunities_count * 100 / campaign.leads_count, precision: 1))
+    = t(:conversion_number, number_to_percentage(campaign.opportunities_count * 100 / campaign.leads_count, precision: 1))

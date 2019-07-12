@@ -20,6 +20,18 @@ small, .label, .sorting_options {
   opacity: 0.5;
 }
 
+div.label {
+  display: block !important;
+  &.req {
+    background: none;
+    &::after {
+      margin-left: 3px;
+      color: red;
+      content: "*";
+    }
+  }
+}
+
 a {
   &, &:link, &:visited {
     color: $darker;
@@ -36,6 +48,35 @@ a {
   }
 }
 
+tt {
+  &, * {
+    font-family: monospace;
+  }
+}
+.comment {
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 5px;
+
+  &.highlight {
+    background-color: #f6f6f6;
+  }
+
+  dt {
+    margin: 10px;
+    padding-left: 10px;
+    border-left: solid 4px $accent;
+    p {
+      font-size: 105% !important;
+    }
+  }
+
+  .buttons {
+    padding: 0;
+  }
+}
+
 .create_asset a, .title_tools a {
   background-color: #caffca;
   border: solid 1px darken(#caffca, 25%);
@@ -49,12 +90,16 @@ a {
   border: none;
 }
 
+.subtitle {
+  margin-bottom: 10px;
+}
+
 .remote {
   border: solid 1px lighten($light, 20%);
   border-radius: 5px;
   padding: 12px;
-  background-color: lighten($light, 25%);
   margin-bottom: 40px;
+  background-color: lighten($light, 25%);
   a.close {
     line-height: 16px;
     background-color: $white;
@@ -82,11 +127,10 @@ a {
   border: none;
 }
 
-input[type="text"] {
-  min-width: 340px;
+input[type="text"], input[type="password"] {
 }
 
-input[type="text"], select {
+input[type="text"], input[type="password"], select {
   background-color: $white;
   border: solid 1px $light;
   border-radius: 4px;
@@ -134,15 +178,23 @@ input[type="submit"] {
   cursor: pointer;
 }
 
+.errorExplanation {
+  margin: 0 0 20px 0;
+  border-radius: 5px;
+  box-shadow: 2px 2px 4px lighten($light, 15%), -2px 0px 4px lighten($light, 15%);
+}
+
 .sidebar { min-width: 320px; }
 .top { margin: 0; }
 #flash {
+  width: 100%;
+  display: flex;
   color: $black;
   text-shadow: none;
   &.flash_notice { background-color: $accent; }
 }
 
-.panel, .main, .filters, .section, .menu {
+.panel, .main, .filters, .section, .menu, .bucket {
   padding: 14px;
   background-color: $white !important;
   border: solid 1px lighten($light, 10%);
@@ -195,6 +247,25 @@ input[type="submit"] {
   }
 }
 
+.log {
+  border: solid 1px lighten($light, 20%);
+  border-radius: 5px;
+  padding: 12px;
+  background-color: lighten($light, 25%);
+  h3 {
+    color: $dark !important;
+    border: none !important;
+    padding: 0;
+    margin-bottom: 0;
+  }
+  .bucket {
+    margin-bottom: 16px;
+  }
+  input {
+    float: none;
+  }
+}
+
 .standalone {
   border: none;
   box-shadow: none;
@@ -241,8 +312,37 @@ input[type="submit"] {
   }
 }
 
-.highlight:hover {
-  background-color: lighten($accent, 10%);
+.highlight {
+  &.task {
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
+  }
+  &:hover {
+    background-color: lighten($accent, 10%);
+  }
+  a {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  input[type='checkbox'] {
+    float: none;
+    margin: 0 0 0 5px;
+  }
+  .indentwide {
+    display: inline-block;
+    margin-left: 0;
+  }
+  .strip { font-size: 12px !important; }
+  .call { background-color: #d3caff !important; }
+  .lunch { background-color: #caffca !important; }
+  .email { background-color: #caf2ff !important; }
+  .meeting { background-color: #ffcaca !important; }
+  .presentation { background-color: #f7c4e3 !important; }
+  .trip { background-color: #ffe997 !important; }
+  .money { background-color: #8eeb8b !important; }
+  .follow_up { background-color: #ffd497 !important; }
+  .white { color: $black !important; }
 }
 
 ul.tools li {
@@ -269,6 +369,10 @@ ul.tools li {
       opacity: 1;
     }
   }
+}
+
+.tags {
+  padding-top: 10px;
 }
 
 #header {

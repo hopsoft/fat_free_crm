@@ -8,10 +8,8 @@
   .subtitle_tools
     - unless field_group.name == "custom_fields"
       = link_to_inline(edit_form_id, edit_admin_field_group_path(field_group), text: t(:edit_field_group))
-      |
     = link_to(arrow_for(create_form_id) + t(:create_field), '#', class: 'create')
     - unless field_group.name == "custom_fields"
-      |
       = link_to_confirm(field_group)
 
   .subtitle{ id: "#{dom_id(field_group)}_title" }= field_group_subtitle(field_group)
