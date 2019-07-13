@@ -9,8 +9,8 @@
     @[0].toUpperCase() + @.substring(1)
 
   window.crm =
-    EXPANDED: "<i class='fa fa-chevron-down'></i>"
-    COLLAPSED: "<i class='fa fa-chevron-right'></i>"
+    EXPANDED: "<i class='fa fa-angle-down'></i>"
+    COLLAPSED: "<i class='fa fa-angle-right'></i>"
     searchRequest: null
     autocompleter: null
     base_url: ""

@@ -22,6 +22,7 @@ small, .label, .sorting_options {
 
 div.label {
   display: block !important;
+  margin-top: 8px;
   &.req {
     background: none;
     &::after {
@@ -130,7 +131,8 @@ tt {
 input[type="text"], input[type="password"] {
 }
 
-input[type="text"], input[type="password"], select {
+input[type="text"], input[type="password"], select, textarea {
+  margin-bottom: 8px;
   background-color: $white;
   border: solid 1px $light;
   border-radius: 4px;
@@ -277,9 +279,6 @@ input[type="submit"] {
   &, &::before {
     display: inline-block;
     width: 16px;
-  }
-  &.fa-chevron-right, &.fa-chevron-down {
-    margin-right: 3px;
   }
 }
 

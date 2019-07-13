@@ -37,7 +37,7 @@ module ApplicationHelper
   #----------------------------------------------------------------------------
   def subtitle(id, hidden = true, text = id.to_s.split("_").last.capitalize)
     content_tag("div",
-      link_to("#{hidden ? tag.i(class: "fa fa-chevron-right") : tag.i(class: "fa fa-chevron-down")} #{sanitize text}".html_safe,
+      link_to("#{hidden ? tag.i(class: "fa fa-angle-right") : tag.i(class: "fa fa-chevron-down")}#{sanitize text}".html_safe,
         url_for(controller: :home, action: :toggle, id: id),
         remote: true,
         onclick: "crm.flip_subtitle(this)"), class: "subtitle")
@@ -96,7 +96,7 @@ module ApplicationHelper
 
   #----------------------------------------------------------------------------
   def arrow_for(id)
-    tag.span tag.i(class: "fa fa-chevron-right"), id: "#{id}_arrow", class: :arrow
+    tag.span tag.i(class: "fa fa-angle-right"), id: "#{id}_arrow", class: :arrow
   end
 
   #----------------------------------------------------------------------------
@@ -433,7 +433,7 @@ module ApplicationHelper
   def section_title(id, hidden = true, text = nil, info_text = nil)
     text = id.to_s.split("_").last.capitalize if text.nil?
     content_tag("div", class: "subtitle show_attributes") do
-      content = link_to("#{hidden ? tag.i(class: "fa fa-chevron-right") : tag.i(class: "fa fa-chevron-down")} #{sanitize text}".html_safe,
+      content = link_to("#{hidden ? tag.i(class: "fa fa-angle-right") : tag.i(class: "fa fa-chevron-down")}#{sanitize text}".html_safe,
         url_for(controller: :home, action: :toggle, id: id),
         remote: true,
         onclick: "crm.flip_subtitle(this)")
