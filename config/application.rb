@@ -44,9 +44,9 @@ module FatFreeCRM
     end
 
     # Load development rake tasks (RSpec, Gem packaging, etc.)
-    rake_tasks do
-      Dir.glob(Rails.root.join("lib", "development_tasks", "*.rake")).each { |t| load t }
-    end
+    # rake_tasks do
+    #   Dir.glob(Rails.root.join("lib", "development_tasks", "*.rake")).each { |t| load t }
+    # end
 
     # Add migrations from all engines
     # Railties.engines.each do |engine|

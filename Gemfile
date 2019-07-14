@@ -56,10 +56,8 @@ gem "will_paginate",               "~> 3.1"
 
 group :development do
   gem "brakeman", require: false
-  gem "capistrano"
-  gem "capistrano-bundler"
-  gem "capistrano-rails"
-  gem "capistrano-rvm"
+  gem "capistrano",       "~> 3.11.0", require: false
+  gem "capistrano-rails", "~> 1.4.0",  require: false
   gem "guard"
   gem "guard-rails"
   gem "guard-rspec"
