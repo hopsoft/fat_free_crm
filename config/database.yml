@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 10).to_i %>
+  username: <%= ENV.fetch("PG_USER", "root") %>
+  password: <%= ENV.fetch("PG_PASSWORD", "password") %>
+  host: <%= ENV.fetch("PG_HOST", "localhost") %>
+  port: <%= ENV.fetch("PG_PORT", 5432).to_i %>
+
+development:
+  <<: *default
+  database: fat_free_crm_development
+
+test:
+  <<: *default
+  database: fat_free_crm_test
+
+production:
+  <<: *default
+  database: fat_free_crm_production
+
